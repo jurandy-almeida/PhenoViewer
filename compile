@@ -1,0 +1,7 @@
+#!/bin/bash
+
+javac -Xlint imageviewer/ImageViewer.java
+
+jar -cmf MANIFEST.MF ImageViewer.jar imageviewer/*.class
+
+rm -f imageviewer/*.class

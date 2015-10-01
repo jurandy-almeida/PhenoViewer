@@ -73,17 +73,17 @@ public abstract class PlotPanel extends JPanel {
   // Position and size of the area where the vertical scale
   // numbers will be drawn in pixel values.
   protected int fVertScaleX,fVertScaleY,
-                fVertScaleWidth,fVertScaleHeight;
+  fVertScaleWidth,fVertScaleHeight;
 
   // Position and size of the area where the horizontal scale
   // numbers will be drawn in pixel values.
   protected int fHorzScaleX, fHorzScaleY,
-                fHorzScaleWidth,fHorzScaleHeight;
+  fHorzScaleWidth,fHorzScaleHeight;
 
   // Position and size of the area where the horzontal label
   // will be drawn in pixel values.
   protected int fHorzLabelX,fHorzLabelY,
-                fHorzLabelWidth,fHorzLabelHeight;
+  fHorzLabelWidth,fHorzLabelHeight;
 
 
   // Upper limits: if the data values are below these limits then
@@ -306,35 +306,35 @@ public abstract class PlotPanel extends JPanel {
     // and count down.
     for (int i = x_value.length-1; i >= 0 ; i--) {
 
-        // Scale the data value to a pixel coordinate along the x axis.
-        horz =  (int)(fFrameWidth * ((x_value[i] - x_value[0])/x_range)
-                - del_horz/2.0) + fFrameX;
+      // Scale the data value to a pixel coordinate along the x axis.
+      horz =  (int)(fFrameWidth * ((x_value[i] - x_value[0])/x_range)
+                    - del_horz/2.0) + fFrameX;
 
-        // Don't let string go too far to the right. Use no more than
-        // the space available.
-        if ((horz + del_horz) > fPanelWidth) del_horz = fPanelWidth - horz;
+      // Don't let string go too far to the right. Use no more than
+      // the space available.
+      if ((horz + del_horz) > fPanelWidth) del_horz = fPanelWidth - horz;
 
-        // Format the x data value into a string
-        str_value = PlotFormat.getFormatted (x_value[i],
-                                            fXDecimalSci,
-                                            fXLoDecimalSci,
-                                            2);
+      // Format the x data value into a string
+      str_value = PlotFormat.getFormatted (x_value[i],
+                                           fXDecimalSci,
+                                           fXLoDecimalSci,
+                                           2);
 
-        // Now draw the number on the axis within the given box defined
-        // by the horz, fHorzScaleY, del_horz, and fHorzScaleHeight values.
-        //
-        // Use the first value to get the size of the font as selected by
-        // drawText() so that the number would fit into the area available.
-        if (i == x_value.length-1)
-            type_size = drawText (g, str_value,
-                                  horz, fHorzScaleY,
-                                  (int)del_horz, fHorzScaleHeight,
-                                  0, CENTER);
-        else
-             drawText (g, str_value,
-                       horz, fHorzScaleY,
-                       (int)del_horz, fHorzScaleHeight,
-                       type_size, CENTER);
+      // Now draw the number on the axis within the given box defined
+      // by the horz, fHorzScaleY, del_horz, and fHorzScaleHeight values.
+      //
+      // Use the first value to get the size of the font as selected by
+      // drawText() so that the number would fit into the area available.
+      if (i == x_value.length-1)
+        type_size = drawText (g, str_value,
+                              horz, fHorzScaleY,
+                              (int)del_horz, fHorzScaleHeight,
+                              0, CENTER);
+      else
+        drawText (g, str_value,
+                  horz, fHorzScaleY,
+                  (int)del_horz, fHorzScaleHeight,
+                  type_size, CENTER);
     }
 
     // Draw the vertical axis scale numbers.
@@ -348,33 +348,33 @@ public abstract class PlotPanel extends JPanel {
     // and count down.
     for (int i = y_value.length-1; i >= 0 ; i--) {
 
-        // Convert the y value to a string
-        str_value = PlotFormat.getFormatted (y_value[i],
-                                            fYDecimalSci, fYLoDecimalSci,
-                                            2);
+      // Convert the y value to a string
+      str_value = PlotFormat.getFormatted (y_value[i],
+                                           fYDecimalSci, fYLoDecimalSci,
+                                           2);
 
-        // Scale the data value to a pixel coordinate along the y axis.
-        fVertScaleY = fFrameY + fFrameHeight -
-                     (int)(fFrameHeight * ((y_value[i]-y_value[0])/y_range))
-                     - fVertScaleHeight;
+      // Scale the data value to a pixel coordinate along the y axis.
+      fVertScaleY = fFrameY + fFrameHeight -
+        (int)(fFrameHeight * ((y_value[i]-y_value[0])/y_range))
+        - fVertScaleHeight;
 
 
-        // Now draw the number on the axis within the given box defined
-        // by the fVertScaleX, fVertScaleY, fVertScaleWidth, and
-        // fVertScaleHeight values.
-        //
-        // Use the first value to get the size of the font as selected by
-        // drawText() so that the number would fit into the area available.
-        if (i == y_value.length-1)
-            type_size = drawText (g, str_value,
-                                 fVertScaleX, fVertScaleY,
-                                 fVertScaleWidth, fVertScaleHeight,
-                                 0, RIGHT);
-        else
-            drawText (g, str_value,
-                     fVertScaleX, fVertScaleY,
-                     fVertScaleWidth, fVertScaleHeight,
-                     type_size, RIGHT);
+      // Now draw the number on the axis within the given box defined
+      // by the fVertScaleX, fVertScaleY, fVertScaleWidth, and
+      // fVertScaleHeight values.
+      //
+      // Use the first value to get the size of the font as selected by
+      // drawText() so that the number would fit into the area available.
+      if (i == y_value.length-1)
+        type_size = drawText (g, str_value,
+                              fVertScaleX, fVertScaleY,
+                              fVertScaleWidth, fVertScaleHeight,
+                              0, RIGHT);
+      else
+        drawText (g, str_value,
+                  fVertScaleX, fVertScaleY,
+                  fVertScaleWidth, fVertScaleHeight,
+                  type_size, RIGHT);
     }
 
   } // drawAxesNumbers
@@ -411,10 +411,10 @@ public abstract class PlotPanel extends JPanel {
     boolean fixed_type_size = false;
     int type_size = 24;
 
-      // Fixed to a particular type size.
+    // Fixed to a particular type size.
     if (fixed_type_size_value > 0) {
-        fixed_type_size = true;
-        type_size = fixed_type_size_value;
+      fixed_type_size = true;
+      type_size = fixed_type_size_value;
     }
 
     int type_size_min = 8;
@@ -436,13 +436,13 @@ public abstract class PlotPanel extends JPanel {
       // See if the text will fit in the allotted
       // vertical limits
       if (msg_height < box_height && msg_width < box_width) {
-          y = y_box + box_height/2 + (msg_height/2);
-          if (relative_position == CENTER)
-              x = x_box + box_width/2 -  (msg_width/2);
-          else if (relative_position == RIGHT)
-            x = x_box + box_width - msg_width;
+        y = y_box + box_height/2 + (msg_height/2);
+        if (relative_position == CENTER)
+          x = x_box + box_width/2 -  (msg_width/2);
+        else if (relative_position == RIGHT)
+          x = x_box + box_width - msg_width;
           else
-            x = x_box;
+          x = x_box;
           break;
       }
 

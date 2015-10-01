@@ -106,12 +106,12 @@ public class HistogramPanel extends PlotPanel {
     // Then calculate the difference between the values
     //  (assumes linear scale)
     double range = fXScaleValue[fNumXScaleValues-1] -
-                        fXScaleValue[0];
+      fXScaleValue[0];
     double dx = range/(fNumXScaleValues-1);
 
     // Now set the intermediate scale values.
     for (int i=1; i < (fNumXScaleValues-1); i++) {
-        fXScaleValue[i] = i*dx + fXScaleValue[0];
+      fXScaleValue[i] = i*dx + fXScaleValue[0];
     }
 
   } // getScaling
@@ -157,21 +157,21 @@ public class HistogramPanel extends PlotPanel {
     int start_y = fFrameY + fFrameHeight;
 
     for (int i=0; i < bins.length; i++) {
-        int bar_height =  (int)(bins[i] * scale_factor);
+      int bar_height =  (int)(bins[i] * scale_factor);
 
-        int bar_x =  (int)(i * step_width) + start_x;
+      int bar_x =  (int)(i * step_width) + start_x;
 
-        // Bar drawn from top left corner
-        int bar_y= start_y-bar_height;
+      // Bar drawn from top left corner
+      int bar_y= start_y-bar_height;
 
-        g.setColor (fBarLineColor);
-        g.drawRect (bar_x,bar_y, bar_width ,bar_height);
+      g.setColor (fBarLineColor);
+      g.drawRect (bar_x,bar_y, bar_width ,bar_height);
 
-        if (i == fHistogram.getFilterBin())
-          g.setColor (Color.BLACK);
-        else
-          g.setColor (fBarFillColor);
-        g.fillRect (bar_x+1, bar_y+1, bar_width-2, bar_height-1);
+      if (i == fHistogram.getFilterBin())
+        g.setColor (Color.BLACK);
+      else
+        g.setColor (fBarFillColor);
+      g.fillRect (bar_x+1, bar_y+1, bar_width-2, bar_height-1);
     }
 
     // Find the scale value of the full frame height.

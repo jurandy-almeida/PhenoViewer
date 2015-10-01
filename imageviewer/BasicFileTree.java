@@ -32,112 +32,114 @@ import java.util.*;
 
 public class BasicFileTree extends JTree
 {
-    final JScrollPane scrollPane = new JScrollPane(this);
+  final JScrollPane scrollPane = new JScrollPane(this);
 
-    Vector files = new Vector();
+  Vector files = new Vector();
 
-    FileFilter filter = null;
-    
-    /**
+  FileFilter filter = null;
+
+  String root;
+
+  /**
      * root assumed to be top node. On windows there is more than one root.
      * Each Drive is considered a different file system root in windows
      * where as in linux it always one root '/'
      *
      */
-    public BasicFileTree()
-    {
-        this(null);
-    }
+  public BasicFileTree()
+  {
+    this(null);
+  }
 
-    public BasicFileTree(String topFolder)
-    {
-        setRootDirectory(topFolder);
-        scrollPane.setMinimumSize(new Dimension(90, 90));
-    }
-   
-    public BasicFileTree(String topFolder, FileFilter fileFilter)
-    {
-        filter = fileFilter;
-        setRootDirectory(topFolder);
-        scrollPane.setMinimumSize(new Dimension(90, 90));
-    }
+  public BasicFileTree(String topFolder)
+  {
+    setRootDirectory(topFolder);
+    scrollPane.setMinimumSize(new Dimension(90, 90));
+  }
 
-    public void setRootDirectory(String topFolder) 
-    {
-        files.clear();
-        setModel(createTreeModel(topFolder));
-    }
- 
-    public JScrollPane getScrollPane()
-    {
-        return scrollPane;
-    }    
+  public BasicFileTree(String topFolder, FileFilter fileFilter)
+  {
+    filter = fileFilter;
+    setRootDirectory(topFolder);
+    scrollPane.setMinimumSize(new Dimension(90, 90));
+  }
 
-    public FileNode getNextLeaf()
-    {
-        FileNode node = (FileNode) getLastSelectedPathComponent();
-        
-        if (node != null) 
-        {
-            int index = files.indexOf(node);
-            if (index < files.size() - 1)
-              return (FileNode) files.get(index + 1); 
-            else
-              return (FileNode) files.firstElement();
-        }
-        else
-            return (FileNode) files.firstElement();
-    }
+  public void setRootDirectory(String topFolder)
+  {
+    files.clear();
+    setModel(createTreeModel(topFolder));
+  }
 
-    public FileNode getPreviousLeaf()
-    {
-        FileNode node = (FileNode) getLastSelectedPathComponent();
-        
-        if (node != null) 
-        {
-            int index = files.indexOf(node);
-            if (index > 0)
-              return (FileNode) files.get(index - 1); 
-            else
-              return (FileNode) files.lastElement();
-        }
-        else
-            return (FileNode) files.lastElement();
-    }
+  public JScrollPane getScrollPane()
+  {
+    return scrollPane;
+  }
 
-    private DefaultTreeModel createTreeModel(String topFolder) {
-        /**
+  public FileNode getNextLeaf()
+  {
+    FileNode node = (FileNode) getLastSelectedPathComponent();
+
+    if (node != null)
+    {
+      int index = files.indexOf(node);
+      if (index < files.size() - 1)
+        return (FileNode) files.get(index + 1);
+      else
+        return (FileNode) files.firstElement();
+    }
+    else
+      return (FileNode) files.firstElement();
+  }
+
+  public FileNode getPreviousLeaf()
+  {
+    FileNode node = (FileNode) getLastSelectedPathComponent();
+
+    if (node != null)
+    {
+      int index = files.indexOf(node);
+      if (index > 0)
+        return (FileNode) files.get(index - 1);
+      else
+        return (FileNode) files.lastElement();
+    }
+    else
+      return (FileNode) files.lastElement();
+  }
+
+  private DefaultTreeModel createTreeModel(String topFolder) {
+    /**
          * If the topfolder is null we are working in the shit operating system
          * so now we have to find out what the drives are and add them manualy?
          * why can't people just use linux. It's free?
          */
-        File f;
-        if(topFolder == null) 
-            f = new File("/");
-        else
-            f = new File(topFolder);
+    File f;
+    if(topFolder == null)
+      f = new File("/");
+    else
+      f = new File(topFolder);
 
-        FileNode root = new FileNode(f);
-        explore(root);
-        DefaultTreeModel treeModel = new DefaultTreeModel(root);
+    FileNode root = new FileNode(f);
+    explore(root);
+    DefaultTreeModel treeModel = new DefaultTreeModel(root);
 
-        return treeModel;        
-    }
+    return treeModel;
+  }
 
-    private void explore(FileNode root) 
+  private void explore(FileNode root)
+  {
+    root.explore(filter);
+    Enumeration leaf = root.children();
+
+    while(leaf.hasMoreElements())
     {
-        root.explore(filter);
-        Enumeration leaf = root.children();
+      FileNode node = (FileNode) leaf.nextElement();
+      if (node.isDirectory())
+        explore(node);
+      else
+        files.add(node);
+    }
+  }
 
-        while(leaf.hasMoreElements())
-        {
-            FileNode node = (FileNode) leaf.nextElement();
-            if (node.isDirectory())
-              explore(node);
-            else
-              files.add(node);
-        }
-    }  
-    
-    
+
 }

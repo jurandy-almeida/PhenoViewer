@@ -26,7 +26,7 @@ public class PlotFormat
   final static DecimalFormat SF3 = new DecimalFormat ("0.000E0");
   final static DecimalFormat SF4 = new DecimalFormat ("0.0000E0");
 
- /**
+  /**
   * The options include 1 to 3 decimal places. Values below
   * decimalLimit use decimal notation; above this use scientific
   * notation.
@@ -39,25 +39,25 @@ public class PlotFormat
                                      double decimal_hi_limit,
                                      double decimal_lo_limit,
                                      int decimal_places) {
-  // If less than decimalLimit, or equal to zero, use decimal style
+    // If less than decimalLimit, or equal to zero, use decimal style
     if (val == 0.0 ||  (Math.abs (val) <= decimal_hi_limit &&
-        Math.abs (val) > decimal_lo_limit)) {
-        switch  (decimal_places) {
-          case 1 : return DF1.format (val);
-          case 2 : return DF2.format (val);
-          case 3 : return DF3.format (val);
-          case 4 : return DF4.format (val);
-          default: return DF1.format (val);
-        }
+                        Math.abs (val) > decimal_lo_limit)) {
+      switch  (decimal_places) {
+        case 1 : return DF1.format (val);
+        case 2 : return DF2.format (val);
+        case 3 : return DF3.format (val);
+        case 4 : return DF4.format (val);
+        default: return DF1.format (val);
+      }
     } else {
       // Create the format for Scientific Notation with E
-        switch  (decimal_places) {
-          case 1 : return SF1.format (val);
-          case 2 : return SF2.format (val);
-          case 3 : return SF3.format (val);
-          case 4 : return SF4.format (val);
-          default: return SF1.format (val);
-        }
+      switch  (decimal_places) {
+        case 1 : return SF1.format (val);
+        case 2 : return SF2.format (val);
+        case 3 : return SF3.format (val);
+        case 4 : return SF4.format (val);
+        default: return SF1.format (val);
+      }
     }
   } // getFormatted
 

@@ -33,8 +33,8 @@ public class Histogram
     // Could throw an exception but will just
     // use default values;
     if (hi < lo) {
-        lo = 0.0;
-        hi = 1.0;
+      lo = 0.0;
+      hi = 1.0;
     }
     if (numBins <= 0) numBins = 1;
     fNumBins = numBins;
@@ -48,13 +48,13 @@ public class Histogram
   // This constructor includes the title and horizontal
   // axis label.
   public Histogram (String title, String xLabel,
-                   int fNumBins, double lo, double hi) {
+                    int fNumBins, double lo, double hi) {
     this (fNumBins, lo, hi);// Invoke overloaded constructor
     fTitle= title;
     fXLabel = xLabel;
   } // ctor
 
-//--- Histogram description --------------------------------
+  //--- Histogram description --------------------------------
   /** Get to title string. **/
   public String getTitle ()
   { return fTitle; }
@@ -71,40 +71,40 @@ public class Histogram
   public void setXLabel (String xLabel)
   { fXLabel = xLabel; }
 
-//--- Bin info access --------------------------------------
-  public int getFilterBin () 
+  //--- Bin info access --------------------------------------
+  public int getFilterBin ()
   { return filterBin; }
 
-  public void setFilterBin(int bin) 
+  public void setFilterBin(int bin)
   {
     if ((bin >= -1) && (bin < fBins.length))
       filterBin = bin;
   }
 
-   /** Get the low end of the range. **/
+  /** Get the low end of the range. **/
   public double getLo ()
-  { 
+  {
     if (filterBin != -1)
       return (double)(filterBin * fRange) / fNumBins;
     else
-      return fLo; 
+      return fLo;
   }
 
   /** Get the high end of the range.**/
   public double getHi ()
-  { 
+  {
     if (filterBin != -1)
       return (double)((filterBin + 1) * fRange) / fNumBins;
     else
-      return fHi; 
+      return fHi;
   }
 
   /** Get the number of entries in the largest bin. **/
   public int getMax () {
     int max = 0;
     for (int i=0; i < fNumBins;i++)
-         if (max < fBins[i]) max = fBins[i];
-    return max;
+      if (max < fBins[i]) max = fBins[i];
+      return max;
   }
 
   /**
@@ -120,8 +120,8 @@ public class Histogram
   public int getMin () {
     int min = getMax ();
     for (int i=0; i < fNumBins; i++)
-         if (min > fBins[i]) min = fBins[i];
-    return min;
+      if (min > fBins[i]) min = fBins[i];
+      return min;
   }
 
   /** Get the total number of entries not counting
@@ -130,7 +130,7 @@ public class Histogram
   public int getTotal () {
     int total = 0;
     for (int i=0; i < fNumBins; i++)
-         total += fBins[i];
+      total += fBins[i];
     return total;
   }
 
@@ -142,7 +142,7 @@ public class Histogram
   public void add (double x) {
     if (x >= fHi) fOverflows++;
     else if (x < fLo) fUnderflows++;
-    else {
+      else {
       double val = x - fLo;
 
       // Casting to int will round off to lower
@@ -172,11 +172,11 @@ public class Histogram
    **/
   public int getValue (int bin_num) {
     if (bin_num < 0)
-        return fUnderflows;
+      return fUnderflows;
     else if (bin_num >= fNumBins)
-        return fOverflows;
-    else
-        return fBins[bin_num];
+      return fOverflows;
+      else
+      return fBins[bin_num];
   }
 
 
@@ -213,7 +213,7 @@ public class Histogram
     return stat;
   }// getStats()
 
- /**
+  /**
    * Create the histogram from a user derived array along with the
    * under and overflow values.
    * The low and high range values that the histogram
@@ -226,8 +226,8 @@ public class Histogram
    * @param hi value of the upper range limit.
   **/
   public void pack (int [] user_bins,
-                   int under, int over,
-                   double lo, double hi) {
+                    int under, int over,
+                    double lo, double hi) {
     fNumBins = user_bins.length;
     fBins = new int[fNumBins];
     for (int i = 0; i < fNumBins; i++) {

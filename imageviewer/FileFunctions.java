@@ -34,58 +34,58 @@ import java.util.*;
 public class FileFunctions
 
 {
-   
-    public FileFunctions()
-    {
-        
+
+  public FileFunctions()
+  {
+
+  }
+
+
+  public Date readDate(File f)
+  {
+    String dat = null, tim = null;
+    Date dateTime = null;
+
+    try {
+      BufferedReader br = new BufferedReader(
+        new FileReader(f.getAbsolutePath()));
+
+      try {
+        String str = null;
+        do {
+          str = br.readLine();
+        } while ((str != null) && !str.toUpperCase().
+                 equals("SECTION FINGERPRINT"));
+
+        do {
+          str = br.readLine();
+          if (str != null) {
+            if (str.substring(0, 3).toUpperCase().equals("DAT"))
+              dat = str.substring(4, str.length());
+            if (str.substring(0, 3).toUpperCase().equals("TIM"))
+              tim = str.substring(4, str.length());
+          }
+        } while ((str != null) && !str.toUpperCase().
+                 equals("ENDSECTION FINGERPRINT"));
+      }
+      finally {
+        br.close();
+      }
+
+    } catch (IOException e) {
+      System.out.println("File not found.");
     }
 
-   
-    public Date readDate(File f) 
-    {
-        String dat = null, tim = null;
-        Date dateTime = null;
-
-        try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader(f.getAbsolutePath()));
- 
-            try {
-                String str = null;
-                do {
-                    str = br.readLine();
-                } while ((str != null) && !str.toUpperCase().
-                         equals("SECTION FINGERPRINT"));
-
-                do {
-                    str = br.readLine();
-                    if (str != null) {
-                        if (str.substring(0, 3).toUpperCase().equals("DAT"))
-                            dat = str.substring(4, str.length());          
-                        if (str.substring(0, 3).toUpperCase().equals("TIM"))
-                            tim = str.substring(4, str.length());          
-                    }
-                } while ((str != null) && !str.toUpperCase().
-                         equals("ENDSECTION FINGERPRINT"));
-            }
-            finally {
-                br.close();
-            }
-
-        } catch (IOException e) {
-            System.out.println("File not found.");
-        }
-
-        if ((dat != null) && (tim != null)) {
-            try {
-                SimpleDateFormat format = 
-                      new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                dateTime = format.parse(dat + " " + tim);
-            } catch (ParseException e) {
-			    throw new RuntimeException("Unknown file format.", e);
-            }
-        }
-
-        return dateTime;
+    if ((dat != null) && (tim != null)) {
+      try {
+        SimpleDateFormat format =
+          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        dateTime = format.parse(dat + " " + tim);
+      } catch (ParseException e) {
+        throw new RuntimeException("Unknown file format.", e);
+      }
     }
+
+    return dateTime;
+  }
 }

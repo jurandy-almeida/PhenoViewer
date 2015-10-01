@@ -12,9 +12,3 @@ Software de processamento e análise de imagens biológicas para o projeto e-Phe
  * Abrir séries de imagens
  * Máscaras de região
  * Exibir Histograma interativo das imagens abertas
-
-//#Bibliotecas em uso:
-// * http://opencsv.sourceforge.net/ (CSV Analyzer)
-// * http://www.jfree.org/jfreechart/ (CSV Analyzer)
-// * https://drewnoakes.com/code/exif/
-// * http://sourceforge.net/projects/jiu/ (MSC)

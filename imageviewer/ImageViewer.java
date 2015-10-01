@@ -399,7 +399,7 @@ public class ImageViewer extends JFrame implements ActionListener {
     graphPanel.setLayout(new GridLayout(1, 1));
     graphPanel.setBorder(new TitledBorder("Time Series"));
     graphPanel.setPreferredSize(new Dimension(1024, 128));
-    averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean());
+    averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
     rhythmPanel = new JPanel();
     rhythmPanel.setLayout(new GridLayout(1, 1));
     rhythmScroll = new JScrollPane();

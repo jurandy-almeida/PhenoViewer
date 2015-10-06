@@ -1,4 +1,4 @@
-package imageviewer;
+package phenoviewer;
 
 import java.io.*;
 import java.net.*;

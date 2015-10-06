@@ -20,7 +20,7 @@
      *
      */
 
-package imageviewer;
+package phenoviewer;
 
 import javax.swing.*;
 import javax.swing.event.*;

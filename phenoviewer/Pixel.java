@@ -1,4 +1,4 @@
-package imageviewer;
+package phenoviewer;
 
 /**
  * Object for pixels of mask

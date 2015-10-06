@@ -20,7 +20,7 @@
  *
  */
 
-package imageviewer;
+package phenoviewer;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -39,12 +39,11 @@ public class BasicFileList extends JList
 
   FileFilter filter = null;
 
-  /**
-     * root assumed to be top node. On windows there is more than one root.
-     * Each Drive is considered a different file system root in windows
-     * where as in linux it always one root '/'
-     *
-     */
+  /*
+  root assumed to be top node. On windows there is more than one root.
+  Each Drive is considered a different file system root in windows
+  where as in linux it always one root '/'
+  */
   public BasicFileList()
   {
     this(null);
@@ -95,11 +94,11 @@ public class BasicFileList extends JList
   }
 
   private DefaultListModel createListModel(String topFolder) {
-    /**
-         * If the topfolder is null we are working in the shit operating system
-         * so now we have to find out what the drives are and add them manualy?
-         * why can't people just use linux. It's free?
-         */
+    /*
+    If the topfolder is null we are working in the shit operating system
+    so now we have to find out what the drives are and add them manualy?
+    why can't people just use linux. It's free?
+    */
     if(topFolder == null)
       explore("/");
     else

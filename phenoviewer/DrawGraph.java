@@ -1,4 +1,4 @@
-package imageviewer;
+package phenoviewer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

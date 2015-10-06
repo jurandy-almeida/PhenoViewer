@@ -4,7 +4,7 @@
 //  This code freely available. No copyright claimed.
 //  2003
 
-package imageviewer;
+package phenoviewer;
 
 import java.awt.*;
 import javax.swing.*;

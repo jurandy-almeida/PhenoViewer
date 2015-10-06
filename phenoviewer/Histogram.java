@@ -5,7 +5,7 @@
 //  2003
 //
 
-package imageviewer;
+package phenoviewer;
 
 /** This class provides the bare essentials for a histogram.**/
 public class Histogram

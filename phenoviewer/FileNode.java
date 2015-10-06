@@ -20,7 +20,7 @@
  *
  */
 
-package imageviewer;
+package phenoviewer;
 
 import javax.swing.tree.*;
 import javax.swing.*;

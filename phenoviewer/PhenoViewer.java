@@ -1,4 +1,4 @@
-package imageviewer;
+package phenoviewer;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -25,7 +25,7 @@ import javax.swing.tree.*;
 
 import com.sun.imageio.plugins.bmp.BMPImageReader;
 
-public class ImageViewer extends JFrame implements ActionListener {
+public class PhenoViewer extends JFrame implements ActionListener {
   JScrollPane imageScroll, rhythmScroll;
 
   BasicFileTree treeImage;
@@ -79,7 +79,7 @@ public class ImageViewer extends JFrame implements ActionListener {
 
   int rotateIndex = 3;
 
-  public ImageViewer() {
+  public PhenoViewer() {
     super("e-Phenology Image Viewer");
     setSize(1280, 960);
     container = getContentPane();
@@ -859,7 +859,7 @@ public class ImageViewer extends JFrame implements ActionListener {
   }
 
   public static void main(String arg[]) {
-    new ImageViewer();
+    new PhenoViewer();
   }
 
   public void calcAverageRBGMask() {

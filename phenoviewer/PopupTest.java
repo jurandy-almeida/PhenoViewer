@@ -1,4 +1,4 @@
-package imageviewer;
+package phenoviewer;
 
 import javax.swing.*;
 import java.awt.event.*;

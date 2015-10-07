@@ -1,3 +1,7 @@
+/**
+This class loads an CSV file so that the user can select dynamic graphing options for data visualization
+@author Héctor Castelli Zacharias
+*/
 package phenoviewer;
 
 import java.io.*;
@@ -26,23 +30,25 @@ import org.jfree.ui.RefineryUtilities;
 public class CSVAnalyzer extends JFrame {
 
 
-  /*Return the graphic panel that should be added on the JFrame
-   *
-   *@param title The title of the Graph
-   *@param axisX The title of the X axis
-   *@param axisY The title of the Y axis
-   *@param data A XYSeriesCollection containing the data to be plotted
-   *@param orientation 1 means Vertical, 2 means Horizontal
-   *@param legend Show legend?
-   *@param tooltip Show tooltip?
-   *@param url generate URL?
-   *@param mode 0 means exact, 1 means rounded, 2 means area
-   *@param showShape show shapes on points?
-   *@param showLine show lines between points?
-   *@param fillShape fill shapes if shown?
-   *@param bgColor the color of the background.
+  /**
+   Return the graphic panel that should be added on the JFrame
+   @param title The title of the Graph
+   @param axisX The title of the X axis
+   @param axisY The title of the Y axis
+   @param data A XYSeriesCollection containing the data to be plotted
+   @param showLine  Show line between points
+   param showShape Show shapes on points
+   param shapeFill Fill shapes
+   param autoSort Sort data automatically by X values
+   param allowDuplicateXValues Allow/Disallow duplicated X values
+   param backcolor The default background color of the graph
+   param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
+   param showLegend Show legend
+   param createTooltip Create tooltip
+   param createURL Create URL
+   param modeGraph (0-exact;1-Rounded Curve;2-Area)
    */
-   public static ChartPanel createGraphPanel(String title, String axisX, String axisY, XYSeriesCollection data, int orientation, boolean legend, boolean tooltip, boolean url, int mode, boolean showShape, boolean showLine, boolean fillShape, Color bgColor) {
+  public static ChartPanel createGraphPanel(String title, String axisX, String axisY, XYSeriesCollection data, int orientation, boolean legend, boolean tooltip, boolean url, int mode, boolean showShape, boolean showLine, boolean fillShape, Color bgColor) {
     //if orientation = 0 -> PlotOrientation.VERTICAL
     //if mode = 0 -> exact; if = 1 SplineRenderer; if = 2 Area
     PlotOrientation orient;
@@ -85,18 +91,30 @@ public class CSVAnalyzer extends JFrame {
 
 
 
-  //Parameters
-  boolean showLine = true; //Show Line between points on graph
-  boolean showShape = false; //Show different shapes per series on graph
-  boolean shapeFill = true; //Fill the shapes
-  boolean autoSort = false; //Sort the data by X values automatically
-  boolean allowDuplicateXValues = true; //Enable duplicated values on X
-  Color backcolor = Color.LIGHT_GRAY; //Sets the color of the plot background
-  int orientation = 0; //Sets flag for vertical orientation
+  /**
+    @param showLine  Show line between points
+    @param showShape Show shapes on points
+    @param shapeFill Fill shapes
+    @param autoSort Sort data automatically by X values
+    @param allowDuplicateXValues Allow/Disallow duplicated X values
+    @param backcolor The default background color of the graph
+    @param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
+    @param showLegend Show legend
+    @param createTooltip Create tooltip
+    @param createURL Create URL
+    @param modeGraph (0-exact;1-Rounded Curve;2-Area)
+  */
+  boolean showLine = true;
+  boolean showShape = false;
+  boolean shapeFill = true;
+  boolean autoSort = false;
+  boolean allowDuplicateXValues = true;
+  Color backcolor = Color.LIGHT_GRAY;
+  int orientation = 0;
   boolean showLegend = true;
   boolean createTooltip = true;
   boolean createURL = false;
-  int modeGraph = 0;  // For radio logic
+  int modeGraph = 0;
 
 
   /**

@@ -38,15 +38,15 @@ public class CSVAnalyzer extends JFrame {
    @param data A XYSeriesCollection containing the data to be plotted
    @param showLine  Show line between points
    @param showShape Show shapes on points
-   @param shapeFill Fill shapes
+   @param fillShape Fill shapes
    @param autoSort Sort data automatically by X values
    @param allowDuplicateXValues Allow/Disallow duplicated X values
-   @param backcolor The default background color of the graph
+   @param bgColor The default background color of the graph
    @param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
    @param showLegend Show legend
-   @param createTooltip Create tooltip
-   @param createURL Create URL
-   @param modeGraph (0-exact;1-Rounded Curve;2-Area)
+   @param tooltip Create tooltip
+   @param url Create URL
+   @param mode (0-exact;1-Rounded Curve;2-Area)
    @return CharPanel component with the specified proprierties
    */
   public static ChartPanel createGraphPanel(String title, String axisX, String axisY, XYSeriesCollection data, int orientation, boolean legend, boolean tooltip, boolean url, int mode, boolean showShape, boolean showLine, boolean fillShape, Color bgColor) {

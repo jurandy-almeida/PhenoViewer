@@ -39,10 +39,12 @@ public class BasicFileList extends JList
 
   FileFilter filter = null;
 
-  /*
-  root assumed to be top node. On windows there is more than one root.
-  Each Drive is considered a different file system root in windows
-  where as in linux it always one root '/'
+  /**
+    The root is assumed to be the top node.
+    (On windows there is more than one root, as each driver is considered as one different file system.
+    On linux there is always one root: '/'.)
+    @param topFolder The path to the top folder, where the file list will begin.
+    @fileFilter The file filter desired on this file list.
   */
   public BasicFileList()
   {
@@ -82,6 +84,10 @@ public class BasicFileList extends JList
     }
   }
 
+  /**
+  Set a given folder as list root.
+  @param topFolder the folder to be set as root.
+  */
   public void setRootDirectory(String topFolder)
   {
     files.clear();
@@ -93,12 +99,11 @@ public class BasicFileList extends JList
     return scrollPane;
   }
 
+  /**
+  @topFolder the folder root from where we create the list.
+  @return ListModel.
+  */
   private DefaultListModel createListModel(String topFolder) {
-    /*
-    If the topfolder is null we are working in the shit operating system
-    so now we have to find out what the drives are and add them manualy?
-    why can't people just use linux. It's free?
-    */
     if(topFolder == null)
       explore("/");
     else
@@ -112,6 +117,10 @@ public class BasicFileList extends JList
     return listModel;
   }
 
+  /**
+  Explores the filesystem and adds date to all the nonfolder entries (files)
+  @param path The filesystem path to explore.
+  */
   private void explore(String path)
   {
     File root = new File(path);
@@ -125,6 +134,11 @@ public class BasicFileList extends JList
     }
   }
 
+  /**
+  Reads the date from a file and returns it
+  @param f A file that we want to know the date of.
+  @return The given file date.
+  */
   private Date readDate(File f)
   {
     String dat = null, tim = null;

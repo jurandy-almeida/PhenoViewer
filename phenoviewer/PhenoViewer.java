@@ -73,7 +73,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   FileNode currentMask = null;
 
-  double[] zoomFactors = new double[] { 0.25, 0.5, 1.0, 2.0, 4.0 };
+  double[] zoomFactors = new double[] { 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 
   int[] rotateFactors = new int[] { -3, -2, -1, 0, 1, 2, 3 };
 
@@ -189,7 +189,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageMenu.add(rotateLeft);
     menuBar.add(imageMenu);
 
-    toolsMenu = new JMenu("Tools");
+    toolsMenu = new JMenu("Color Tools");
     toolsMenu.setMnemonic('T');
     redBandItem = new JMenuItem("Red Channel");
     redBandItem.setMnemonic('R');
@@ -218,7 +218,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     toolsMenu.add(resetItem);
     menuBar.add(toolsMenu);
 
-    colorMenu = new JMenu("Color");
+    colorMenu = new JMenu("Histogram");
     colorMenu.setMnemonic('C');
     ButtonGroup colorGroup = new ButtonGroup();
     rgbModel = new JRadioButtonMenuItem("RGB");

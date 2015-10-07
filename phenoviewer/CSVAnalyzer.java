@@ -37,16 +37,17 @@ public class CSVAnalyzer extends JFrame {
    @param axisY The title of the Y axis
    @param data A XYSeriesCollection containing the data to be plotted
    @param showLine  Show line between points
-   param showShape Show shapes on points
-   param shapeFill Fill shapes
-   param autoSort Sort data automatically by X values
-   param allowDuplicateXValues Allow/Disallow duplicated X values
-   param backcolor The default background color of the graph
-   param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
-   param showLegend Show legend
-   param createTooltip Create tooltip
-   param createURL Create URL
-   param modeGraph (0-exact;1-Rounded Curve;2-Area)
+   @param showShape Show shapes on points
+   @param shapeFill Fill shapes
+   @param autoSort Sort data automatically by X values
+   @param allowDuplicateXValues Allow/Disallow duplicated X values
+   @param backcolor The default background color of the graph
+   @param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
+   @param showLegend Show legend
+   @param createTooltip Create tooltip
+   @param createURL Create URL
+   @param modeGraph (0-exact;1-Rounded Curve;2-Area)
+   @return CharPanel component with the specified proprierties
    */
   public static ChartPanel createGraphPanel(String title, String axisX, String axisY, XYSeriesCollection data, int orientation, boolean legend, boolean tooltip, boolean url, int mode, boolean showShape, boolean showLine, boolean fillShape, Color bgColor) {
     //if orientation = 0 -> PlotOrientation.VERTICAL
@@ -91,19 +92,8 @@ public class CSVAnalyzer extends JFrame {
 
 
 
-  /**
-    @param showLine  Show line between points
-    @param showShape Show shapes on points
-    @param shapeFill Fill shapes
-    @param autoSort Sort data automatically by X values
-    @param allowDuplicateXValues Allow/Disallow duplicated X values
-    @param backcolor The default background color of the graph
-    @param orientation The default orientation of the graph (0-HORIZONTAL;1-VERTICAL)
-    @param showLegend Show legend
-    @param createTooltip Create tooltip
-    @param createURL Create URL
-    @param modeGraph (0-exact;1-Rounded Curve;2-Area)
-  */
+
+
   boolean showLine = true;
   boolean showShape = false;
   boolean shapeFill = true;
@@ -115,11 +105,9 @@ public class CSVAnalyzer extends JFrame {
   boolean createTooltip = true;
   boolean createURL = false;
   int modeGraph = 0;
-
-
   /**
    * Takes data from a CSV file and places it into a table for display.
-   * @param source - a reference to the file where the CSV data is located.
+   * @param source Path to the CSV to be anayzed
    */
   public CSVAnalyzer(String source) {
     super("CSV Analyzer - "+source+".");

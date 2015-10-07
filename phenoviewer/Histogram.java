@@ -1,9 +1,9 @@
-// "Java Tech"
-//  Code provided with book for educational purposes only.
-//  No warranty or guarantee implied.
-//  This code freely available. No copyright claimed.
-//  2003
-//
+/* "Java Tech"
+ *  Code provided with book for educational purposes only.
+ *  No warranty or guarantee implied.
+ *  This code freely available. No copyright claimed.
+ *  2003
+ */
 
 package phenoviewer;
 

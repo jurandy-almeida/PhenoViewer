@@ -329,15 +329,16 @@ public class PhenoViewer extends JFrame implements ActionListener {
     });
     treeMask.getSelectionModel().setSelectionMode(
       TreeSelectionModel.SINGLE_TREE_SELECTION);
-    //treeMask.addTreeSelectionListener(new TreeSelectionListener() {
-    //	public void valueChanged(TreeSelectionEvent e) {
-    //		TreePath path = e.getPath();
-    //		treeMask.imageScrollPathToVisible(path);
-    //		FileNode node = (FileNode) path.getLastPathComponent();
-    //		if (node != currentMask)
-    //			changeMask(node);
-    //	}
-    //});
+    /*treeMask.addTreeSelectionListener(new TreeSelectionListener() {
+     *	public void valueChanged(TreeSelectionEvent e) {
+     *		TreePath path = e.getPath();
+     *		treeMask.imageScrollPathToVisible(path);
+     *		FileNode node = (FileNode) path.getLastPathComponent();
+     *		if (node != currentMask)
+     *			changeMask(node);
+     *	}
+     *});
+     */
     treeMask.addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent e) {
         int selRow = treeMask.getRowForLocation(e.getX(), e.getY());

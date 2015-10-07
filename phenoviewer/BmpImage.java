@@ -388,24 +388,4 @@ public class BmpImage
     }
     return img;
   }
-
-  /**
-     * A public test routine (you must pass the filename as the 1st arg)
-     */
-  //    public static void main( String args[] )
-  //    {
-  //        try
-  //        {
-  //            FileInputStream inFile = new FileInputStream(args[0]);
-  //            DataInputStream is = new DataInputStream( new
-  //                                      BufferedInputStream(inFile) );
-  //            BmpImage im = new BmpImage(args[0]);
-  //            ImageProducer img = im.extractImage(is);
-  //            System.out.println("Output:\n" + im);
-  //        }
-  //        catch ( Exception e )
-  //        {
-  //            System.out.println(e);
-  //        }
-  //    }
 }

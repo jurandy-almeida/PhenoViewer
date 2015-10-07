@@ -114,27 +114,28 @@ public class FileNode extends DefaultMutableTreeNode
       {
         e.printStackTrace();
         // we can't explore this folder so mark it
+      }
+      finally
+      {
         explored = true;
       }
-
-      explored = true;
     }
   }
 
   public FileNode getNode(File f)
   {
     /*
-         * make sure the file exists.
-         *
-         * break down the file path into it's components. Then start with the
-         * root component and compare with the nodes again starting from root.
-         *
-         * if the root component is null, use the listRoots() method to get
-         * a list of all the roots (windows). Then compare with each of them
-         * to find the correct root node. Next list the child nodes of the
-         * matching root node, and compare with them. Repeat until you have a
-         * match or have finished traversing the whole branch.
-         */
+     * make sure the file exists.
+     *
+     * break down the file path into it's components. Then start with the
+     * root component and compare with the nodes again starting from root.
+     *
+     * if the root component is null, use the listRoots() method to get
+     * a list of all the roots (windows). Then compare with each of them
+     * to find the correct root node. Next list the child nodes of the
+     * matching root node, and compare with them. Repeat until you have a
+     * match or have finished traversing the whole branch.
+     */
 
     if(f.exists())
     {

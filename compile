@@ -1,6 +1,6 @@
 #!/bin/bash
 
-javac -Xlint phenoviewer/PhenoViewer.java
+javac -Xlint -nowarn -classpath .:lib/* phenoviewer/PhenoViewer.java
 
 jar -cmf MANIFEST.MF PhenoViewer.jar phenoviewer/*.class
 

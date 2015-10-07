@@ -24,6 +24,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 public class CSVAnalyzer extends JFrame {
+
+
   /*Return the graphic panel that should be added on the JFrame
    *
    *@param title The title of the Graph
@@ -262,11 +264,11 @@ public class CSVAnalyzer extends JFrame {
         this.add(panel);
       }
       catch (IOException ex) {
-        System.out.println("ERROR: Reader bugged!");
+        System.out.println("ERROR: List Reader malfunctioned!");
       }
     }
     catch (FileNotFoundException ex) {
-      System.out.println("ERROR: File not found!");
+      System.out.println("ERROR: File error!");
     }
   }
 }

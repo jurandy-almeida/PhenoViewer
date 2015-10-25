@@ -1,0 +1,446 @@
+Compiled from "BasicFileList.java"
+public class phenoviewer.BasicFileList extends javax.swing.JList {
+  final javax.swing.JScrollPane scrollPane;
+  java.util.SortedMap<java.util.Date, java.io.File> files;
+  java.io.FileFilter filter;
+  public phenoviewer.BasicFileList();
+  public phenoviewer.BasicFileList(java.lang.String);
+  public phenoviewer.BasicFileList(java.lang.String, java.io.FileFilter);
+  public java.io.File getSelectedValue();
+  public void setSelectedValue(java.io.File);
+  public void setRootDirectory(java.lang.String);
+  public javax.swing.JScrollPane getScrollPane();
+  public java.lang.Object getSelectedValue();
+}
+Compiled from "BasicFileTree.java"
+public class phenoviewer.BasicFileTree extends javax.swing.JTree {
+  final javax.swing.JScrollPane scrollPane;
+  java.util.Vector files;
+  java.io.FileFilter filter;
+  java.lang.String root;
+  public phenoviewer.BasicFileTree();
+  public phenoviewer.BasicFileTree(java.lang.String);
+  public phenoviewer.BasicFileTree(java.lang.String, java.io.FileFilter);
+  public void setRootDirectory(java.lang.String);
+  public javax.swing.JScrollPane getScrollPane();
+  public phenoviewer.FileNode getNextLeaf();
+  public phenoviewer.FileNode getPreviousLeaf();
+}
+Compiled from "DrawGraph.java"
+public class phenoviewer.DrawGraph extends javax.swing.JPanel {
+  public phenoviewer.DrawGraph(java.util.List<java.lang.Float>, java.util.List<java.lang.Float>, java.util.List<java.lang.Float>, java.util.List<java.lang.Float>, int);
+  protected void paintComponent(java.awt.Graphics);
+  protected void plotLine(java.awt.Graphics, java.util.List<java.lang.Float>, java.util.List<java.lang.Float>, java.awt.Color, java.awt.Color);
+  static {};
+}
+Compiled from "FileFunctions.java"
+public class phenoviewer.FileFunctions {
+  public phenoviewer.FileFunctions();
+  public java.util.Date readDate(java.io.File);
+}
+Compiled from "FileNode.java"
+public class phenoviewer.FileNode extends javax.swing.tree.DefaultMutableTreeNode {
+  public phenoviewer.FileNode(java.io.File);
+  public boolean getAllowsChildren();
+  public boolean isLeaf();
+  public java.io.File getFile();
+  public boolean isExplored();
+  public boolean isDirectory();
+  public java.lang.String toString();
+  public void explore();
+  public void explore(java.io.FileFilter);
+  public phenoviewer.FileNode getNode(java.io.File);
+  public javax.swing.tree.TreePath getPath(java.io.File);
+}
+Compiled from "Histogram.java"
+public class phenoviewer.Histogram {
+  protected java.lang.String fTitle;
+  protected java.lang.String fXLabel;
+  protected int[] fBins;
+  protected int fNumBins;
+  protected int fUnderflows;
+  protected int fOverflows;
+  protected double fLo;
+  protected double fHi;
+  protected double fRange;
+  protected int filterBin;
+  public phenoviewer.Histogram(int, double, double);
+  public phenoviewer.Histogram(java.lang.String, java.lang.String, int, double, double);
+  public java.lang.String getTitle();
+  public void setTitle(java.lang.String);
+  public java.lang.String getXLabel();
+  public void setXLabel(java.lang.String);
+  public int getFilterBin();
+  public void setFilterBin(int);
+  public double getLo();
+  public double getHi();
+  public int getMax();
+  public int[] getBins();
+  public int getMin();
+  public int getTotal();
+  public void add(double);
+  public void clear();
+  public int getValue(int);
+  public double[] getStats();
+  public void pack(int[], int, int, double, double);
+}
+Compiled from "HistogramPanel.java"
+class phenoviewer.HistogramPanel$1 extends java.awt.event.MouseAdapter {
+  final phenoviewer.HistogramPanel this$0;
+  phenoviewer.HistogramPanel$1(phenoviewer.HistogramPanel);
+  public void mouseClicked(java.awt.event.MouseEvent);
+}
+Compiled from "HistogramPanel.java"
+public class phenoviewer.HistogramPanel extends phenoviewer.PlotPanel {
+  protected phenoviewer.Histogram fHistogram;
+  protected java.awt.Color fBarLineColor;
+  protected java.awt.Color fBarFillColor;
+  int fGap;
+  double fTopMargin;
+  double fSideMargin;
+  double[] fXScaleValue;
+  double[] fYScaleValue;
+  int fNumYScaleValues;
+  int fNumXScaleValues;
+  public phenoviewer.HistogramPanel(phenoviewer.Histogram);
+  public void setHistogram(phenoviewer.Histogram);
+  void getScaling();
+  public void setBarColors(java.awt.Color, java.awt.Color);
+  void paintContents(java.awt.Graphics);
+  java.lang.String getTitle();
+  java.lang.String getXLabel();
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.ImageDisplay extends javax.swing.JLabel {
+  static final float[][] RED_BAND_MATRIX;
+  static final float[][] GREEN_BAND_MATRIX;
+  static final float[][] BLUE_BAND_MATRIX;
+  static final float[][] INVERSE_BAND_MATRIX;
+  static final float[][] AVERAGE_BAND_MATRIX;
+  boolean isImageLoaded;
+  boolean isMaskLoaded;
+  java.awt.Image displayImage;
+  java.awt.Image displayImageMask;
+  phenoviewer.Histogram redHistogram;
+  phenoviewer.Histogram greenHistogram;
+  phenoviewer.Histogram blueHistogram;
+  java.util.ArrayList<java.lang.Float> redMean;
+  java.util.ArrayList<java.lang.Float> greenMean;
+  java.util.ArrayList<java.lang.Float> blueMean;
+  java.util.ArrayList<java.lang.Float> totalMean;
+  java.util.ArrayList<java.lang.Integer> visualRhythm;
+  java.lang.String colorModel;
+  int imgWidth;
+  int imgHeight;
+  double imgScale;
+  double imgAngle;
+  boolean imgInvX;
+  boolean imgInvY;
+  java.awt.image.BufferedImage biSrc;
+  java.awt.image.BufferedImage biDest;
+  java.awt.image.BufferedImage biShow;
+  java.awt.image.BufferedImage biMask;
+  java.awt.image.Raster srcRaster;
+  java.awt.image.WritableRaster dstRaster;
+  java.awt.image.BufferedImage bi;
+  java.awt.image.BufferedImage biM;
+  java.awt.Graphics2D big;
+  java.util.ArrayList<phenoviewer.Pixel> maskPixels;
+  java.util.TreeMap<java.lang.Double, java.lang.Integer> maskIndex;
+  static final boolean $assertionsDisabled;
+  phenoviewer.ImageDisplay();
+  public boolean isImageLoaded();
+  public boolean isMaskLoaded();
+  public phenoviewer.Histogram getRedHistogram();
+  public phenoviewer.Histogram getGreenHistogram();
+  public phenoviewer.Histogram getBlueHistogram();
+  public java.util.List<java.lang.Float> getRedMean();
+  public java.util.List<java.lang.Float> getGreenMean();
+  public java.util.List<java.lang.Float> getBlueMean();
+  public java.util.List<java.lang.Float> getTotalMean();
+  public java.util.List<java.lang.Integer> getVisualRhythmPixels();
+  public java.awt.image.BufferedImage getVisualRhythmImage();
+  public void setColorModel(java.lang.String);
+  public void loadFile(java.lang.String);
+  public void computeColorHistograms();
+  public boolean isFlippedHorizontally();
+  public boolean flipHorizontally();
+  public boolean isFlippedVertically();
+  public boolean flipVertically();
+  public double getAngle();
+  public boolean setAngle(double);
+  public double getScale();
+  public boolean setScale(double);
+  public boolean originalSize();
+  public boolean fitToSize(int, int);
+  public void createBufferedImages();
+  public void bandCombine(float[][]);
+  public void prepare();
+  public void prepareMask();
+  public void filter();
+  public void reset();
+  public void update(java.awt.Graphics);
+  public void paintComponent(java.awt.Graphics);
+  public void resetMask();
+  public void resetSeries();
+  public void processingMask();
+  public void indexingMask();
+  public void loadFileMask(phenoviewer.FileNode);
+  public void calcAvgRGB(java.io.File);
+  public void calcVisualRhythm(java.io.File);
+  static {};
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$10 extends java.awt.event.MouseAdapter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$10(phenoviewer.PhenoViewer);
+  public void mouseClicked(java.awt.event.MouseEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$11 extends java.awt.event.MouseAdapter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$11(phenoviewer.PhenoViewer);
+  public void mouseClicked(java.awt.event.MouseEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$12 extends java.awt.event.ComponentAdapter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$12(phenoviewer.PhenoViewer);
+  public void componentResized(java.awt.event.ComponentEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$13 implements java.awt.event.ActionListener {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$13(phenoviewer.PhenoViewer);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$14 extends javax.swing.filechooser.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$14(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+  public java.lang.String getDescription();
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$15 extends javax.swing.filechooser.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$15(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+  public java.lang.String getDescription();
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$16 extends javax.swing.filechooser.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$16(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+  public java.lang.String getDescription();
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$1 extends javax.swing.ButtonGroup {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$1(phenoviewer.PhenoViewer);
+  public void setSelected(javax.swing.ButtonModel, boolean);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$2 implements java.io.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$2(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$3 implements javax.swing.event.TreeSelectionListener {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$3(phenoviewer.PhenoViewer);
+  public void valueChanged(javax.swing.event.TreeSelectionEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$4 implements java.io.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$4(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$5 implements javax.swing.event.ListSelectionListener {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$5(phenoviewer.PhenoViewer);
+  public void valueChanged(javax.swing.event.ListSelectionEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$6 implements java.io.FileFilter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$6(phenoviewer.PhenoViewer);
+  public boolean accept(java.io.File);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$7 extends java.awt.event.MouseAdapter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$7(phenoviewer.PhenoViewer);
+  public void mousePressed(java.awt.event.MouseEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$8 implements javax.swing.event.PopupMenuListener {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$8(phenoviewer.PhenoViewer);
+  public void popupMenuCanceled(javax.swing.event.PopupMenuEvent);
+  public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent);
+  public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent);
+}
+Compiled from "PhenoViewer.java"
+class phenoviewer.PhenoViewer$9 extends java.awt.event.MouseAdapter {
+  final phenoviewer.PhenoViewer this$0;
+  phenoviewer.PhenoViewer$9(phenoviewer.PhenoViewer);
+  public void mouseClicked(java.awt.event.MouseEvent);
+}
+Compiled from "PhenoViewer.java"
+public class phenoviewer.PhenoViewer extends javax.swing.JFrame implements java.awt.event.ActionListener {
+  javax.swing.JScrollPane imageScroll;
+  javax.swing.JScrollPane rhythmScroll;
+  phenoviewer.BasicFileTree treeImage;
+  phenoviewer.BasicFileTree treeMask;
+  phenoviewer.BasicFileList listImage;
+  phenoviewer.ImageDisplay imageDisplay;
+  phenoviewer.HistogramPanel redPanel;
+  phenoviewer.HistogramPanel greenPanel;
+  phenoviewer.HistogramPanel bluePanel;
+  javax.swing.JMenuItem averageSeries;
+  javax.swing.JMenuItem rhythmSeries;
+  javax.swing.JMenuItem redBandItem;
+  javax.swing.JMenuItem greenBandItem;
+  javax.swing.JMenuItem blueBandItem;
+  javax.swing.JMenuItem inverseBandItem;
+  javax.swing.JMenuItem averageBandItem;
+  javax.swing.JMenuItem resetItem;
+  javax.swing.JMenuItem openImageItem;
+  javax.swing.JMenuItem openMaskItem;
+  javax.swing.JMenuItem saveSeriesItem;
+  javax.swing.JMenuItem exitItem;
+  javax.swing.JMenuItem rgbModel;
+  javax.swing.JMenuItem hsbModel;
+  javax.swing.JMenuItem nextImage;
+  javax.swing.JMenuItem prevImage;
+  javax.swing.JMenuItem slideShow;
+  javax.swing.JMenuItem zoomOut;
+  javax.swing.JMenuItem zoomIn;
+  javax.swing.JMenuItem fitScreen;
+  javax.swing.JMenuItem oriSize;
+  javax.swing.JMenuItem flipHor;
+  javax.swing.JMenuItem flipVer;
+  javax.swing.JMenuItem rotateRight;
+  javax.swing.JMenuItem rotateLeft;
+  javax.swing.JMenu fileMenu;
+  javax.swing.JMenu viewMenu;
+  javax.swing.JMenu imageMenu;
+  javax.swing.JMenu toolsMenu;
+  javax.swing.JMenu colorMenu;
+  javax.swing.JMenu seriesMenu;
+  javax.swing.JPanel histogramPanel;
+  javax.swing.JPanel rhythmPanel;
+  javax.swing.JPanel graphPanel;
+  phenoviewer.DrawGraph averagePanel;
+  javax.swing.JTabbedPane tabbedPaneImage;
+  javax.swing.JTabbedPane tabbedPaneMask;
+  javax.swing.JMenuBar menuBar;
+  javax.swing.JPopupMenu popupMenu;
+  java.awt.Container container;
+  javax.swing.Timer timer;
+  phenoviewer.FileNode currentNode;
+  phenoviewer.FileNode currentMask;
+  double[] zoomFactors;
+  int[] rotateFactors;
+  int rotateIndex;
+  public phenoviewer.PhenoViewer();
+  public void actionPerformed(java.awt.event.ActionEvent);
+  public static void main(java.lang.String[]);
+  public void calcAverageRBGMask();
+  public void calcVisualRhythmMask();
+  public void writeCSVHeader(java.io.BufferedWriter);
+  public void writeCSVMean(java.io.BufferedWriter, java.lang.Integer);
+  public void writeCSVDate(java.io.BufferedWriter, java.io.File);
+  public void writeCSVLine(java.io.BufferedWriter, java.io.File, java.lang.Integer);
+  public void writeCSVFile();
+  static void access$000(phenoviewer.PhenoViewer, phenoviewer.FileNode);
+  static void access$100(phenoviewer.PhenoViewer, phenoviewer.FileNode);
+  static void access$200(phenoviewer.PhenoViewer);
+  static void access$300(phenoviewer.PhenoViewer);
+}
+Compiled from "Pixel.java"
+public class phenoviewer.Pixel {
+  int x;
+  int y;
+  public phenoviewer.Pixel();
+  public void setX(int);
+  public int getX();
+  public void setY(int);
+  public int getY();
+}
+Compiled from "PlotFormat.java"
+public class phenoviewer.PlotFormat {
+  static final java.text.DecimalFormat DF1;
+  static final java.text.DecimalFormat DF2;
+  static final java.text.DecimalFormat DF3;
+  static final java.text.DecimalFormat DF4;
+  static final java.text.DecimalFormat SF1;
+  static final java.text.DecimalFormat SF2;
+  static final java.text.DecimalFormat SF3;
+  static final java.text.DecimalFormat SF4;
+  public phenoviewer.PlotFormat();
+  public static java.lang.String getFormatted(double, double, double, int);
+  static {};
+}
+Compiled from "PlotPanel.java"
+public abstract class phenoviewer.PlotPanel extends javax.swing.JPanel {
+  protected java.awt.Color fFrameLineColor;
+  protected java.awt.Color fFrameFillColor;
+  protected java.awt.Color fAxesNumColor;
+  protected java.awt.Color fTitleColor;
+  protected java.awt.Color fBgColor;
+  protected int fPanelWidth;
+  protected int fPanelHeight;
+  protected int fFrameWidth;
+  protected int fFrameHeight;
+  protected int fFrameX;
+  protected int fFrameY;
+  protected int fTitleX;
+  protected int fTitleY;
+  protected int fTitleWidth;
+  protected int fTitleHeight;
+  protected int fVertScaleX;
+  protected int fVertScaleY;
+  protected int fVertScaleWidth;
+  protected int fVertScaleHeight;
+  protected int fHorzScaleX;
+  protected int fHorzScaleY;
+  protected int fHorzScaleWidth;
+  protected int fHorzScaleHeight;
+  protected int fHorzLabelX;
+  protected int fHorzLabelY;
+  protected int fHorzLabelWidth;
+  protected int fHorzLabelHeight;
+  double fYDecimalSci;
+  double fXDecimalSci;
+  double fYLoDecimalSci;
+  double fXLoDecimalSci;
+  static final int CENTER;
+  static final int LEFT;
+  static final int RIGHT;
+  static final double FRAME_HT;
+  static final double FRAME_WD;
+  static final double FRAME_X;
+  static final double FRAME_Y;
+  protected double TITLE_HT;
+  static final double VSCALE_X;
+  static final double VSCALE_HT;
+  static final double VSCALE_WD;
+  protected double HSCALE_HT;
+  public phenoviewer.PlotPanel();
+  abstract java.lang.String getTitle();
+  abstract java.lang.String getXLabel();
+  abstract void getScaling();
+  abstract void paintContents(java.awt.Graphics);
+  public void getPositions();
+  public void setFrameColors(java.awt.Color, java.awt.Color, java.awt.Color, java.awt.Color, java.awt.Color);
+  public void paintComponent(java.awt.Graphics);
+  public void paintFrame(java.awt.Graphics);
+  void drawAxesNumbers(java.awt.Graphics, double[], double[]);
+  int drawText(java.awt.Graphics, java.lang.String, int, int, int, int, int, int);
+}

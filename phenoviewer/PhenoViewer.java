@@ -909,9 +909,11 @@ public class PhenoViewer extends JFrame implements ActionListener {
       writer.append(";meanR");
       writer.append(";meanG");
       writer.append(";meanB");
+      //writer.append(";meanH");
       writer.append(";relR");
       writer.append(";relG");
       writer.append(";relB");
+      //writer.append(";excG");
       writer.append('\n');
     } catch (IOException e) {
       e.printStackTrace();

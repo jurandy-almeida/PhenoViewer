@@ -20,45 +20,42 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class PhenoViewer extends JFrame implements ActionListener {
-  JScrollPane imageScroll, rhythmScroll;
 
-  BasicFileTree treeImage;
+  JScrollPane imageScroll; //imageDisplay Placeholder
 
-  // greice
-  BasicFileTree treeMask;
-  //
-
+  BasicFileTree treeImage, treeMask; //The Tree Browsers for the image and the masks
+  JTabbedPane tabbedPaneImage, tabbedPaneMask; //The Tabbed browser for date or tree
   BasicFileList listImage;
 
-  ImageDisplay imageDisplay;
+  protected ImageDisplay imageDisplay; //Where the image is loaded
 
-  CSVAnalyzer csvanalyzer;
+  CSVAnalyzer csvanalyzer; //CSV Analyzer
 
-  HistogramPanel redPanel, greenPanel, bluePanel;
+  HistogramPanel redPanel, greenPanel, bluePanel; //The histograms pannels
 
-  JMenuItem averageSeries, rhythmSeries; // greice
 
-  JMenuItem redBandItem, greenBandItem, blueBandItem, inverseBandItem,
-  averageBandItem, resetItem;
-
-  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel;
-
-  JMenuItem nextImage, prevImage, slideShow;
-
-  JMenuItem zoomOut, zoomIn, fitScreen, oriSize;
-
-  JMenuItem flipHor, flipVer, rotateRight, rotateLeft;
-
-  JMenuItem csvparser;
-
+  //Menu
   JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, seriesMenu, analysisMenu;
 
-  JPanel histogramPanel, rhythmPanel, graphPanel;
+  //Menu Items
+  //File
+  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel;
+  //View
+  JMenuItem nextImage, prevImage, slideShow, zoomOut, zoomIn, fitScreen, oriSize;
+  //Image
+  JMenuItem flipHor, flipVer, rotateRight, rotateLeft;
+  //Color Tools
+  JMenuItem redBandItem, greenBandItem, blueBandItem, inverseBandItem, averageBandItem, resetItem;
+  //Histogram
+  //Series
+  JMenuItem averageSeries, rhythmSeries;
+  //Analysis
+  JMenuItem csvparser;
+
+  //Panels
+  JPanel histogramPanel;
 
   DrawGraph averagePanel;
-
-  JTabbedPane tabbedPaneImage, tabbedPaneMask;
-
   JMenuBar menuBar;
 
   JPopupMenu popupMenu;
@@ -74,12 +71,12 @@ public class PhenoViewer extends JFrame implements ActionListener {
   double[] zoomFactors = new double[] { 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 
   int[] rotateFactors = new int[] { -3, -2, -1, 0, 1, 2, 3 };
-
   int rotateIndex = 3;
 
   public PhenoViewer() {
     super("e-Phenology Image Viewer");
     setSize(800, 700);
+
     container = getContentPane();
 
     menuBar = new JMenuBar();
@@ -266,6 +263,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                                     KeyEvent.CTRL_MASK));
     csvparser.addActionListener(this);
     analysisMenu.add(csvparser);
+    //analysisMenu.add(vRhythm);
     menuBar.add(analysisMenu);
 
     JPanel filesPanel = new JPanel();
@@ -404,17 +402,17 @@ public class PhenoViewer extends JFrame implements ActionListener {
     });
     imageDisplay.setComponentPopupMenu(popupMenu);
 
-    graphPanel = new JPanel();
-    graphPanel.setLayout(new GridLayout(1, 1));
-    graphPanel.setBorder(new TitledBorder("Time Series"));
-    graphPanel.setPreferredSize(new Dimension(1024, 128));
+    //graphPanel = new JPanel();
+    //graphPanel.setLayout(new GridLayout(1, 1));
+    //graphPanel.setBorder(new TitledBorder("Time Series"));
+    //graphPanel.setPreferredSize(new Dimension(1024, 128));
     averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
-    rhythmPanel = new JPanel();
-    rhythmPanel.setLayout(new GridLayout(1, 1));
-    rhythmScroll = new JScrollPane();
-    rhythmScroll.getViewport().add(rhythmPanel);
+    //rhythmPanel = new JPanel();
+    //rhythmPanel.setLayout(new GridLayout(1, 1));
+    //rhythmScroll = new JScrollPane();
+    //rhythmScroll.getViewport().add(//rhythmPanel);
 
-    container.add(BorderLayout.PAGE_END, graphPanel);
+    //container.add(BorderLayout.PAGE_END, graphPanel);
 
     histogramPanel = new JPanel();
     histogramPanel.setLayout(new GridLayout(3, 0));
@@ -571,17 +569,17 @@ public class PhenoViewer extends JFrame implements ActionListener {
       else if (source == saveSeriesItem)
       writeCSVFile();
       else if ((source == averageSeries) || (source == rhythmSeries)) {
-      graphPanel.removeAll();
+      //graphPanel.removeAll();
       if (averageSeries.isSelected()) {
         calcAverageRBGMask();
-        graphPanel.add(averagePanel);
+        //graphPanel.add(averagePanel);
       }
       else if (rhythmSeries.isSelected()) {
         calcVisualRhythmMask();
-        graphPanel.add(rhythmScroll);
+        ////graphPanel.add(rhythmScroll);
       }
-      graphPanel.revalidate();
-      graphPanel.repaint();
+      //graphPanel.revalidate();
+      //graphPanel.repaint();
     }
     else if ((source == rgbModel) || (source == hsbModel)) {
       imageDisplay.setColorModel(((JRadioButtonMenuItem) source)
@@ -682,9 +680,9 @@ public class PhenoViewer extends JFrame implements ActionListener {
     if (averageSeries.isSelected())
       averagePanel.repaint();
     else if (rhythmSeries.isSelected()) {
-      rhythmPanel.removeAll();
-      rhythmPanel.revalidate();
-      rhythmPanel.repaint();
+      //rhythmPanel.removeAll();
+      //rhythmPanel.revalidate();
+      //rhythmPanel.repaint();
     }
     container.setCursor(null);
   }
@@ -790,6 +788,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
   }
 
   private void rotateRight() {
+    //ADD angle instead of setting to an mask.
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (++rotateIndex > 6)
       rotateIndex = 3;
@@ -810,6 +809,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
   }
 
   private void rotateLeft() {
+    //ADD angle instead of setting to an mask.
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (--rotateIndex < 0)
       rotateIndex = 3;
@@ -914,10 +914,10 @@ public class PhenoViewer extends JFrame implements ActionListener {
           root = (FileNode) root.getNextNode();
         }
       }
-      rhythmPanel.removeAll();
-      rhythmPanel.add(new JLabel(new ImageIcon(imageDisplay.getVisualRhythmImage())));
-      rhythmPanel.revalidate();
-      rhythmPanel.repaint();
+      //rhythmPanel.removeAll();
+      //rhythmPanel.add(new JLabel(new ImageIcon(imageDisplay.getVisualRhythmImage())));
+      //rhythmPanel.revalidate();
+      //rhythmPanel.repaint();
     }
     container.setCursor(null);
   }

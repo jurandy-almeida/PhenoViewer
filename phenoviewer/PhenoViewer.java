@@ -1,29 +1,23 @@
 package phenoviewer;
 
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
-import java.net.MalformedURLException;
+import java.rmi.server.ExportException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
 import javax.swing.tree.*;
-
-import com.sun.imageio.plugins.bmp.BMPImageReader;
 
 public class PhenoViewer extends JFrame implements ActionListener {
   JScrollPane imageScroll, rhythmScroll;
@@ -37,6 +31,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
   BasicFileList listImage;
 
   ImageDisplay imageDisplay;
+
+  CSVAnalyzer csvanalyzer;
 
   HistogramPanel redPanel, greenPanel, bluePanel;
 
@@ -53,7 +49,9 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   JMenuItem flipHor, flipVer, rotateRight, rotateLeft;
 
-  JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, seriesMenu;
+  JMenuItem csvparser;
+
+  JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, seriesMenu, analysisMenu;
 
   JPanel histogramPanel, rhythmPanel, graphPanel;
 
@@ -81,7 +79,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   public PhenoViewer() {
     super("e-Phenology Image Viewer");
-    setSize(1280, 960);
+    setSize(800, 700);
     container = getContentPane();
 
     menuBar = new JMenuBar();
@@ -253,12 +251,22 @@ public class PhenoViewer extends JFrame implements ActionListener {
     seriesGroup.add(averageSeries);
     seriesMenu.add(averageSeries);
     rhythmSeries = new JRadioButtonMenuItem("Visual Rhythm");
-    rhythmSeries.setMnemonic('C');
+    rhythmSeries.setMnemonic('V');
     rhythmSeries.addActionListener(this);
     rhythmSeries.setSelected(false);
     seriesGroup.add(rhythmSeries);
     seriesMenu.add(rhythmSeries);
     menuBar.add(seriesMenu);
+
+    analysisMenu = new JMenu("Analysis");
+    analysisMenu.setMnemonic('A');
+    csvparser = new JMenuItem("Analyse CSV");
+    csvparser.setMnemonic('C');
+    csvparser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+                                                    KeyEvent.CTRL_MASK));
+    csvparser.addActionListener(this);
+    analysisMenu.add(csvparser);
+    menuBar.add(analysisMenu);
 
     JPanel filesPanel = new JPanel();
     filesPanel.setLayout(new GridLayout(2, 1));
@@ -579,6 +587,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
       imageDisplay.setColorModel(((JRadioButtonMenuItem) source)
                                  .getText());
       histogramPanel.repaint();
+    } else if (source == csvparser) {
+      CSVParse();
     }
   }
 
@@ -863,6 +873,18 @@ public class PhenoViewer extends JFrame implements ActionListener {
     new PhenoViewer();
   }
 
+  private void CSVParse() {
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    int result = fileChooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File selectedFile = fileChooser.getSelectedFile();
+      //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+      String path = selectedFile.getAbsolutePath();
+      new CSVAnalyzer(path).setVisible(true);
+    }
+  }
+
   public void calcAverageRBGMask() {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (imageDisplay.isMaskLoaded()) {
@@ -899,6 +921,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
     }
     container.setCursor(null);
   }
+
+
   //greice
   public void writeCSVHeader(BufferedWriter writer) {
     try {

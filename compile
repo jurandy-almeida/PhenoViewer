@@ -2,6 +2,6 @@
 
 javac -Xlint -nowarn -classpath .:lib/* phenoviewer/PhenoViewer.java
 
-jar -cmf MANIFEST.MF PhenoViewer.jar phenoviewer/*.class
+jar -cmf MANIFEST.MF PhenoViewer.jar phenoviewer/*.class org/jdesktop `find org/apache/commons/lang3/ -type f -name *.class`
 
 rm -f phenoviewer/*.class

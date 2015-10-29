@@ -486,6 +486,9 @@ public class PhenoViewer extends JFrame implements ActionListener {
     setVisible(true);
   }
 
+
+  //###################################################################################################
+
   public void actionPerformed(ActionEvent e) {
     Object source = e.getSource();
     if (source == openImageItem) {

@@ -33,7 +33,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   HistogramPanel redPanel, greenPanel, bluePanel; //The histograms pannels
 
-
   //Menu
   JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, seriesMenu, analysisMenu;
 
@@ -406,7 +405,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     //graphPanel.setLayout(new GridLayout(1, 1));
     //graphPanel.setBorder(new TitledBorder("Time Series"));
     //graphPanel.setPreferredSize(new Dimension(1024, 128));
-    averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
+    //averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
     //rhythmPanel = new JPanel();
     //rhythmPanel.setLayout(new GridLayout(1, 1));
     //rhythmScroll = new JScrollPane();
@@ -482,8 +481,11 @@ public class PhenoViewer extends JFrame implements ActionListener {
     setExtendedState(Frame.MAXIMIZED_BOTH);
     disableImageOperations();
     disableMaskOperations();
+
     pack();
     setVisible(true);
+    //treeImage.systemPrintFileVector();
+
   }
 
 
@@ -882,7 +884,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
     int result = fileChooser.showOpenDialog(this);
     if (result == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
-      //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
       String path = selectedFile.getAbsolutePath();
       new CSVAnalyzer(path).setVisible(true);
     }
@@ -1066,6 +1067,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     }
   }
 }
+
 
 /**
  * This class has functions of processing images - view

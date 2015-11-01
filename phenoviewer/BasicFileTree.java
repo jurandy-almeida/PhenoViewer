@@ -154,7 +154,8 @@ public class BasicFileTree extends JTree
   public ArrayList<File> getFileArray() {
     ArrayList<File> result = new ArrayList<File>();
     for(int i=0;i <files.size();i++){
-      result.add(files.elementAt(i).getFile());
+      FileNode f = (FileNode) files.elementAt(i);
+      result.add(f.getFile());
     }
     return result;
   }

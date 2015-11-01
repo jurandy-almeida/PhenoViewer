@@ -12,4 +12,4 @@ Software de processamento e análise de imagens biológicas para o projeto e-Phe
  * Abrir séries de imagens
  * Máscaras de região
  * Exibir Histograma interativo das imagens abertas
- * Ler e mostrar um arquivo CSV com gŕaficos personalizados **(em construção)**
+ * Ler e mostrar um arquivo CSV com gŕaficos personalizados

@@ -141,5 +141,22 @@ public class BasicFileTree extends JTree
     }
   }
 
+  public Vector getFileVector() {
+    return files;
+  }
+
+  public void systemPrintFileVector() {
+    for(int i=0;i <files.size();i++){
+      System.out.println(files.elementAt(i).toString());
+    }
+  }
+
+  public ArrayList<File> getFileArray() {
+    ArrayList<File> result = new ArrayList<File>();
+    for(int i=0;i <files.size();i++){
+      result.add(files.elementAt(i).getFile());
+    }
+    return result;
+  }
 
 }

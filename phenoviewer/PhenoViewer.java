@@ -920,6 +920,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
           root = (FileNode) root.getNextNode();
         }
       }
+      VisualRhythm vrhythm = new VisualRhythm(imageDisplay.getVisualRhythmImage());
       //rhythmPanel.removeAll();
       //rhythmPanel.add(new JLabel(new ImageIcon(imageDisplay.getVisualRhythmImage())));
       //rhythmPanel.revalidate();

@@ -155,7 +155,9 @@ public class BasicFileTree extends JTree
     ArrayList<File> result = new ArrayList<File>();
     for(int i=0;i <files.size();i++){
       FileNode f = (FileNode) files.elementAt(i);
-      result.add(f.getFile());
+      File fl = new File(f.getFile().getAbsolutePath());
+      result.add(fl);
+      System.out.println("FILE ADDED->"+fl.getAbsolutePath());
     }
     return result;
   }

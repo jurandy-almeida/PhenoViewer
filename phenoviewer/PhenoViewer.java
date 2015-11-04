@@ -841,7 +841,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
     if (result == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       String path = selectedFile.getAbsolutePath();
-      new CSVAnalyzer(path).setVisible(true);
+      CSVHandler csvhandle = new CSVHandler();
+      csvhandle.AnalyzeCSV(path).setVisible(true);
     }
   }
 

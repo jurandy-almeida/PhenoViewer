@@ -244,6 +244,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     averageSeries.setMnemonic('C');
     averageSeries.addActionListener(this);
     averageSeries.setSelected(false);
+    averageSeries.setEnabled(false);
     seriesGroup.add(averageSeries);
     seriesMenu.add(averageSeries);
     rhythmSeries = new JRadioButtonMenuItem("Visual Rhythm");

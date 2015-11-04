@@ -19,12 +19,12 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-
 /**
  * This class has functions of processing images - view
  * @author EPHENOLOGY
  *
  */
+@SuppressWarnings("serial")
 public class ImageDisplay extends JLabel {
   // red band Matrix
   static final float RED_BAND_MATRIX[][] = { { 1.0f, 0.0f, 0.0f },
@@ -61,7 +61,7 @@ public class ImageDisplay extends JLabel {
 
   Histogram redHistogram, greenHistogram, blueHistogram;
 
-  ArrayList<Float> redMean, greenMean, blueMean, totalMean;
+  ArrayList<Float> redMean, greenMean, blueMean, hMean, totalMean, excG;
 
   ArrayList<Integer> visualRhythm;
 
@@ -116,7 +116,9 @@ public class ImageDisplay extends JLabel {
     redMean = new ArrayList<Float>();
     greenMean = new ArrayList<Float>();
     blueMean = new ArrayList<Float>();
+    hMean = new ArrayList<Float>();
     totalMean = new ArrayList<Float>();
+    excG = new ArrayList<Float>();
     visualRhythm = new ArrayList<Integer>();
     isImageLoaded = false;
     isMaskLoaded = false;// greice
@@ -156,8 +158,16 @@ public class ImageDisplay extends JLabel {
     return blueMean;
   }
 
+  public List<Float> getHMean() {
+    return hMean;
+  }
+
   public List<Float> getTotalMean() {
     return totalMean;
+  }
+
+  public List<Float> getExcessGreen() {
+    return excG;
   }
 
   public List<Integer> getVisualRhythmPixels() {
@@ -218,6 +228,7 @@ public class ImageDisplay extends JLabel {
 
     createBufferedImages();
 
+    if(biShow!=null) biShow.flush();
     biShow = biSrc;
 
     redHistogram.setFilterBin(-1);
@@ -349,6 +360,7 @@ public class ImageDisplay extends JLabel {
     int width = displayImage.getWidth(this);
     int height = displayImage.getHeight(this);
 
+    if(biSrc!=null) biSrc.flush();
     biSrc = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
     Graphics2D g2D = biSrc.createGraphics();
@@ -357,6 +369,7 @@ public class ImageDisplay extends JLabel {
 
     srcRaster = biSrc.getRaster();
 
+    if(biDest!=null) biDest.flush();
     biDest = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
     dstRaster = (WritableRaster) biDest.getRaster();
@@ -381,6 +394,7 @@ public class ImageDisplay extends JLabel {
         .floor(imgWidth * cos + imgHeight * sin);
       int newImgHeight = (int) Math.floor(imgHeight * cos + imgWidth
                                           * sin);
+      if(bi!=null) bi.flush();
       bi = new BufferedImage(newImgWidth, newImgHeight,
                              BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2D = bi.createGraphics();
@@ -417,6 +431,7 @@ public class ImageDisplay extends JLabel {
         .floor(imgWidth * cos + imgHeight * sin);
       int newImgHeight = (int) Math.floor(imgHeight * cos + imgWidth
                                           * sin);
+      if(biM!=null) biM.flush();
       biM = new BufferedImage(newImgWidth, newImgHeight,
                               BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2D = biM.createGraphics();
@@ -501,6 +516,8 @@ public class ImageDisplay extends JLabel {
   }
 
   public void reset() {
+    System.gc();
+    if(biShow!=null) biShow.flush();
     if (isImageLoaded) {
       biShow = biSrc;
       computeColorHistograms();
@@ -533,6 +550,7 @@ public class ImageDisplay extends JLabel {
 
   //greice
   public void resetMask() {
+    if(biMask!=null) biMask.flush();
     if (isMaskLoaded) {
       biMask = biShow;
       resetSeries();
@@ -544,8 +562,10 @@ public class ImageDisplay extends JLabel {
     redMean.clear();
     greenMean.clear();
     blueMean.clear();
+    hMean.clear();
     totalMean.clear();
     visualRhythm.clear();
+    excG.clear();
   }
 
   public void processingMask() {
@@ -676,6 +696,51 @@ public class ImageDisplay extends JLabel {
       int sumR = 0;
       int sumG = 0;
       int sumB = 0;
+      int sumH = 0;
+      int sumExG = 0;
+      for (Pixel p : maskPixels) {
+        int i = p.getX();
+        int j = p.getY();
+        int rgb = biCalc.getRGB(i, j);
+        int r = (rgb & 0xFF0000) >> 16;
+        int g = (rgb & 0xFF00) >> 8;
+        int b = (rgb & 0xFF);
+        float[] hsv = Color.RGBtoHSB(r, g, b, null);
+        int h = (int) (255.0 * hsv[0]);
+
+        sumR = sumR + r;
+        sumG = sumG + g;
+        sumB = sumB + b;
+        sumH = sumH + h;
+        sumExG = sumExG + g + g -b -r;
+
+      }
+      float meanR = (float) sumR/maskPixels.size();
+      float meanG = (float) sumG/maskPixels.size();
+      float meanB = (float) sumB/maskPixels.size();
+      float meanH = (float) sumH/maskPixels.size();
+      float total = meanR + meanG + meanB;
+      float excessGreen = (float) sumExG/(maskPixels.size());
+
+      redMean.add(meanR);
+      greenMean.add(meanG);
+      blueMean.add(meanB);
+      hMean.add(meanH);
+      totalMean.add(total);
+      excG.add(excessGreen);
+      biCalc.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void calcExcGreen(File f) {
+    try {
+      BufferedImage biCalc = ImageIO.read(f);
+      int sumR = 0;
+      int sumG = 0;
+      int sumB = 0;
+      int sumExG = 0;
       for (Pixel p : maskPixels) {
         int i = p.getX();
         int j = p.getY();
@@ -687,21 +752,17 @@ public class ImageDisplay extends JLabel {
         sumR = sumR + r;
         sumG = sumG + g;
         sumB = sumB + b;
-
+        sumExG = sumExG + g + g -b -r;
       }
-      float meanR = (float) sumR/maskPixels.size();
-      float meanG = (float) sumG/maskPixels.size();
-      float meanB = (float) sumB/maskPixels.size();
-      float total = meanR + meanG + meanB;
 
-      redMean.add(meanR);
-      greenMean.add(meanG);
-      blueMean.add(meanB);
-      totalMean.add(total);
+      float excG = (float) sumExG/(maskPixels.size());
+      greenMean.add(excG);
+      biCalc.flush();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
+
 
   public void calcVisualRhythm(File f) {
     try {
@@ -713,6 +774,7 @@ public class ImageDisplay extends JLabel {
         int rgb = biCalc.getRGB(i, j);
         visualRhythm.add(rgb);
       }
+      biCalc.flush();
     } catch (IOException e) {
       e.printStackTrace();
     }

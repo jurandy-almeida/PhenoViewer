@@ -930,32 +930,33 @@ public class PhenoViewer extends JFrame implements ActionListener {
   }
 
 
-  //greice
-  public void writeCSVHeader(BufferedWriter writer) {
+  private void writeCSVHeader(BufferedWriter writer) {
     try {
       writer.append("filename");
       writer.append(";year");
-      writer.append(";doy");
+      writer.append(";day");
       writer.append(";hour");
       writer.append(";meanR");
       writer.append(";meanG");
       writer.append(";meanB");
-      //writer.append(";meanH");
       writer.append(";relR");
       writer.append(";relG");
       writer.append(";relB");
-      //writer.append(";excG");
+      writer.append(";excG");
+      writer.append(";meanH");
       writer.append('\n');
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void writeCSVMean(BufferedWriter writer, Integer line) {
+  private void writeCSVMean(BufferedWriter writer, Integer line) {
     float meanR = imageDisplay.getRedMean().get(line);
     float meanG = imageDisplay.getGreenMean().get(line);
     float meanB = imageDisplay.getBlueMean().get(line);
+    float meanH = imageDisplay.getHMean().get(line);
     float total = imageDisplay.getTotalMean().get(line);
+    float excG = imageDisplay.getExcessGreen().get(line);
     float relR = meanR / total;
     float relG = meanG / total;
     float relB = meanB / total;
@@ -972,12 +973,30 @@ public class PhenoViewer extends JFrame implements ActionListener {
       writer.append(";");
       writer.append("" + Float.toString(relB));//.replace(".", ","));
       writer.append(";");
+      writer.append("" + Float.toString(excG));//.replace(".", ","));
+      writer.append(";");
+      writer.append("" + Float.toString(meanH));//.replace(".", ","));
+      writer.append(";");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void writeCSVDate(BufferedWriter writer, File file) {
+  private int calculaDia(File file) {
+    Date date = new FileFunctions().readDate(file);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.DAY_OF_YEAR);
+  }
+
+  private int calculaAno(File file) {
+    Date date = new FileFunctions().readDate(file);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.YEAR);
+  }
+
+  private void writeCSVDate(BufferedWriter writer, File file) {
     FileFunctions ff = new FileFunctions();
     Date date = ff.readDate(file);
 
@@ -985,13 +1004,13 @@ public class PhenoViewer extends JFrame implements ActionListener {
     cal.setTime(date);
 
     int year = cal.get(Calendar.YEAR);
-    int doy = cal.get(Calendar.DAY_OF_YEAR);
+    int day = cal.get(Calendar.DAY_OF_YEAR);
     int hour = cal.get(Calendar.HOUR_OF_DAY);
 
     try {
       writer.append("" + Integer.toString(year));
       writer.append(";");
-      writer.append("" + Integer.toString(doy));
+      writer.append("" + Integer.toString(day));
       writer.append(";");
       writer.append("" + Integer.toString(hour));
       writer.append(";");
@@ -1000,7 +1019,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     }
   }
 
-  public void writeCSVLine(BufferedWriter writer, File file, Integer line) {
+  private void writeCSVLine(BufferedWriter writer, File file, Integer line) {
     try {
       writer.append(file.getName());
       writer.append(";");
@@ -1010,6 +1029,74 @@ public class PhenoViewer extends JFrame implements ActionListener {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private int diasDoAno(File file) { //calculo de ano bissexto
+    if(file==null) return 365;
+    Date date = new FileFunctions().readDate(file);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    int ano = cal.get(Calendar.YEAR);
+    if ( ( ano % 4 == 0 && ano % 100 != 0 ) || ano % 400 == 0 ) return 366;
+    return 365;
+  }
+
+  private void writeCSVBlankLine(BufferedWriter writer, int dia, int ano) {
+    try {
+      writer.append("0;"+ano+";"+dia+";0;0;0;0;0;0;0;0;0;\n");
+    } catch( IOException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  public void writeCSV(String filePath, String maskName) {
+    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    if (!averageSeries.isSelected()) {
+      FileNode root = (FileNode) treeImage.getModel().getRoot();
+      while (root != null) {
+        if (root.isLeaf())
+          imageDisplay.calcAvgRGB(root.getFile());
+        root = (FileNode) root.getNextNode();
+      }
+    }
+    try {
+      FileWriter fw;
+
+      if(maskName != null) fw = new FileWriter(new File(filePath+"\\"+maskName+".csv"), false);
+      else fw = new FileWriter(new File(filePath), false);
+      BufferedWriter writer = new BufferedWriter(fw);
+      File file = null; int dia_atual = 1, dia_maximo, ano = 2014;
+      FileNode root = (FileNode) treeImage.getModel().getRoot();
+
+      writeCSVHeader(writer);
+
+      Integer line = 0;
+      while (root != null) {
+        if (root.isLeaf()) {
+          file = root.getFile();
+          int dia = calculaDia(file); ano = calculaAno(file);
+          while(dia > dia_atual) {
+            writeCSVBlankLine(writer, dia_atual, ano);
+            dia_atual++;
+          }
+          writeCSVLine(writer, file, line);
+          line++;
+          dia_atual = dia + 1;
+        }
+        root = (FileNode) root.getNextNode();
+      }
+      dia_maximo = diasDoAno(file);
+      while(dia_atual <= dia_maximo) {
+        writeCSVBlankLine(writer, dia_atual, ano);
+        dia_atual++;
+      }
+      writer.flush();
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    container.setCursor(null);
   }
 
   public void writeCSVFile() {
@@ -1036,37 +1123,36 @@ public class PhenoViewer extends JFrame implements ActionListener {
           filePath = filePath + ".csv";
       }
 
-      container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-      if (!averageSeries.isSelected()) {
-        FileNode root = (FileNode) treeImage.getModel().getRoot();
-        while (root != null) {
-          if (root.isLeaf())
-            imageDisplay.calcAvgRGB(root.getFile());
-          root = (FileNode) root.getNextNode();
-        }
-      }
-      try {
-        FileWriter fw = new FileWriter(new File(filePath), false);
-        BufferedWriter writer = new BufferedWriter(fw);
+      writeCSV(filePath,null);
 
-        writeCSVHeader(writer);
-
-        Integer line = 0;
-        FileNode root = (FileNode) treeImage.getModel().getRoot();
-        while (root != null) {
-          if (root.isLeaf()) {
-            writeCSVLine(writer, root.getFile(), line);
-            line++;
-          }
-          root = (FileNode) root.getNextNode();
-        }
-        writer.flush();
-        writer.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      container.setCursor(null);
       JOptionPane.showMessageDialog(this, "Operation successfull.");
+    }
+  }
+
+  public void writeMultipleCSVFiles() {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setMultiSelectionEnabled(true);
+    chooser.setDialogTitle("Choose the masks that will be exported.");
+    chooser.setCurrentDirectory(new File("./masks/"));
+    chooser.showOpenDialog(this);
+    File[] files = chooser.getSelectedFiles();
+
+    chooser.setDialogTitle("Choose the destination folder.");
+    chooser.setCurrentDirectory(new File("."));
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    chooser.setAcceptAllFileFilterUsed(false);
+    File dir=null;
+    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+      dir = chooser.getSelectedFile();
+    }
+    else return;
+
+    for(int i=0;i<files.length;i++) {
+      FileNode node = new FileNode(files[i]);
+      changeMask(node);
+      String maskName = node.getFile().getName();
+      maskName = maskName.substring(0, maskName.length()-4);
+      writeCSV(dir.getPath(),maskName);
     }
   }
 }

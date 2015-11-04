@@ -34,7 +34,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
   HistogramPanel redPanel, greenPanel, bluePanel; //The histograms pannels
 
   //Menu
-  JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, seriesMenu, analysisMenu;
+  JMenu fileMenu, viewMenu, imageMenu, toolsMenu, colorMenu, analysisMenu;
 
   //Menu Items
   //File
@@ -46,10 +46,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
   //Color Tools
   JMenuItem redBandItem, greenBandItem, blueBandItem, inverseBandItem, averageBandItem, resetItem;
   //Histogram
-  //Series
-  JMenuItem averageSeries, rhythmSeries;
-  //Analysis
-  JMenuItem csvparser;
+  //Analysis and Series
+  JMenuItem csvparser, rhythmSeries;
 
   //Panels
   JPanel histogramPanel;
@@ -229,41 +227,20 @@ public class PhenoViewer extends JFrame implements ActionListener {
     colorMenu.add(hsbModel);
     menuBar.add(colorMenu);
 
-    seriesMenu = new JMenu("Series");
-    seriesMenu.setMnemonic('S');
-    ButtonGroup seriesGroup = new ButtonGroup() {
-      @Override
-      public void setSelected(ButtonModel m, boolean b) {
-        if (b && m != null && m != getSelection())
-          super.setSelected(m, b);
-        else if (!b && m == getSelection())
-          clearSelection();
-      }
-    };
-    averageSeries = new JRadioButtonMenuItem("Average Colors");
-    averageSeries.setMnemonic('C');
-    averageSeries.addActionListener(this);
-    averageSeries.setSelected(false);
-    averageSeries.setEnabled(false);
-    seriesGroup.add(averageSeries);
-    seriesMenu.add(averageSeries);
-    rhythmSeries = new JRadioButtonMenuItem("Visual Rhythm");
-    rhythmSeries.setMnemonic('V');
-    rhythmSeries.addActionListener(this);
-    rhythmSeries.setSelected(false);
-    seriesGroup.add(rhythmSeries);
-    seriesMenu.add(rhythmSeries);
-    menuBar.add(seriesMenu);
-
     analysisMenu = new JMenu("Analysis");
     analysisMenu.setMnemonic('A');
     csvparser = new JMenuItem("Analyse CSV");
     csvparser.setMnemonic('C');
-    csvparser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+    csvparser.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
                                                     KeyEvent.CTRL_MASK));
     csvparser.addActionListener(this);
     analysisMenu.add(csvparser);
-    //analysisMenu.add(vRhythm);
+    rhythmSeries = new JMenuItem("Visual Rhythm");
+    rhythmSeries.setMnemonic('V');
+    rhythmSeries.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
+                                                    KeyEvent.CTRL_MASK));
+    rhythmSeries.addActionListener(this);
+    analysisMenu.add(rhythmSeries);
     menuBar.add(analysisMenu);
 
     JPanel filesPanel = new JPanel();
@@ -385,7 +362,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
         menuBar.add(imageMenu);
         menuBar.add(toolsMenu);
         menuBar.add(colorMenu);
-        menuBar.add(seriesMenu);
         menuBar.revalidate();
       }
 
@@ -397,7 +373,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
         popupMenu.add(imageMenu);
         popupMenu.add(toolsMenu);
         popupMenu.add(colorMenu);
-        popupMenu.add(seriesMenu);
       }
     });
     imageDisplay.setComponentPopupMenu(popupMenu);
@@ -574,23 +549,12 @@ public class PhenoViewer extends JFrame implements ActionListener {
       resetImage();
       else if (source == saveSeriesItem)
       writeCSVFile();
-      else if ((source == averageSeries) || (source == rhythmSeries)) {
-      //graphPanel.removeAll();
-      if (averageSeries.isSelected()) {
-        calcAverageRBGMask();
-        //graphPanel.add(averagePanel);
-      }
-      else if (rhythmSeries.isSelected()) {
-        calcVisualRhythmMask();
-        ////graphPanel.add(rhythmScroll);
-      }
-      //graphPanel.revalidate();
-      //graphPanel.repaint();
-    }
-    else if ((source == rgbModel) || (source == hsbModel)) {
+      else if ((source == rgbModel) || (source == hsbModel)) {
       imageDisplay.setColorModel(((JRadioButtonMenuItem) source)
                                  .getText());
       histogramPanel.repaint();
+    } else if (source == rhythmSeries) {
+      calcVisualRhythmMask();
     } else if (source == csvparser) {
       CSVParse();
     }
@@ -617,11 +581,11 @@ public class PhenoViewer extends JFrame implements ActionListener {
   }
 
   private void enableMaskOperations() {
-    seriesMenu.setEnabled(true);
+    rhythmSeries.setEnabled(true);
   }
 
   private void disableMaskOperations() {
-    seriesMenu.setEnabled(false);
+    rhythmSeries.setEnabled(false);
   }
 
   private void changeImage(FileNode node) {
@@ -663,11 +627,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
         imageDisplay.filter();
         imageDisplay.repaint();
         histogramPanel.repaint();
-        if (averageSeries.isSelected())
-          calcAverageRBGMask();
-        else if (rhythmSeries.isSelected())
-          calcVisualRhythmMask();
-          container.setCursor(null);
       }
     }
   }
@@ -683,13 +642,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageDisplay.filter();
     imageDisplay.repaint();
     histogramPanel.repaint();
-    if (averageSeries.isSelected())
-      averagePanel.repaint();
-    else if (rhythmSeries.isSelected()) {
-      //rhythmPanel.removeAll();
-      //rhythmPanel.revalidate();
-      //rhythmPanel.repaint();
-    }
+
     container.setCursor(null);
   }
 
@@ -894,17 +847,13 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   public void calcAverageRBGMask() {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    try {
     if (imageDisplay.isMaskLoaded()) {
-      if (imageDisplay.getGreenMean().size() != listImage.getModel().getSize()) {
-        imageDisplay.resetSeries();
-        FileNode root = (FileNode) treeImage.getModel().getRoot();
-        while (root != null) {
-          if (root.isLeaf())
-            imageDisplay.calcAvgRGB(root.getFile());
-          root = (FileNode) root.getNextNode();
-        }
-      }
-      averagePanel.repaint();
+        AvgRgb avg = new AvgRgb(treeImage.getFileArray(), currentMask.getFile());
+    }
+    }
+    catch (IOException e) {
+      e.printStackTrace();
     }
     container.setCursor(null);
   }
@@ -912,20 +861,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
   public void calcVisualRhythmMask() {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (imageDisplay.isMaskLoaded()) {
-      if (imageDisplay.getVisualRhythmPixels().size() != listImage.getModel().getSize()) {
-        imageDisplay.resetSeries();
-        FileNode root = (FileNode) treeImage.getModel().getRoot();
-        while (root != null) {
-          if (root.isLeaf())
-            imageDisplay.calcVisualRhythm(root.getFile());
-          root = (FileNode) root.getNextNode();
-        }
-      }
-      VisualRhythm vrhythm = new VisualRhythm(imageDisplay.getVisualRhythmImage());
-      //rhythmPanel.removeAll();
-      //rhythmPanel.add(new JLabel(new ImageIcon(imageDisplay.getVisualRhythmImage())));
-      //rhythmPanel.revalidate();
-      //rhythmPanel.repaint();
+        VisualRhythm vr = new VisualRhythm(treeImage.getFileArray(), currentMask.getFile());
+        VRhythmPanel vrhythm = new VRhythmPanel(vr.process());
     }
     container.setCursor(null);
   }
@@ -1053,14 +990,14 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   public void writeCSV(String filePath, String maskName) {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    if (!averageSeries.isSelected()) {
+    /*if (!averageSeries.isSelected()) {
       FileNode root = (FileNode) treeImage.getModel().getRoot();
       while (root != null) {
         if (root.isLeaf())
           imageDisplay.calcAvgRGB(root.getFile());
         root = (FileNode) root.getNextNode();
       }
-    }
+    }*/
     try {
       FileWriter fw;
 

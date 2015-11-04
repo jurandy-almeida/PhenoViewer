@@ -141,25 +141,16 @@ public class BasicFileTree extends JTree
     }
   }
 
-  public Vector getFileVector() {
-    return files;
-  }
-
-  public void systemPrintFileVector() {
-    for(int i=0;i <files.size();i++){
-      System.out.println(files.elementAt(i).toString());
-    }
-  }
-
   public ArrayList<File> getFileArray() {
     ArrayList<File> result = new ArrayList<File>();
-    for(int i=0;i <files.size();i++){
-      FileNode f = (FileNode) files.elementAt(i);
-      File fl = new File(f.getFile().getAbsolutePath());
-      result.add(fl);
-      System.out.println("FILE ADDED->"+fl.getAbsolutePath());
+    FileNode root = (FileNode) this.getModel().getRoot();
+    while (root!=null) {
+      if (root.isLeaf())
+          result.add(root.getFile());
+      root = (FileNode) root.getNextNode();
     }
     return result;
   }
+
 
 }

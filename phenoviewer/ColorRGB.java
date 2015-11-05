@@ -33,6 +33,10 @@ public class ColorRGB {
 		return "ColorRGB [r=" + r + ", g=" + g + ", b=" + b + "]";
 	}
 
+  public String toCSV() {
+    return ""+r+","+g+","+b+"";
+  }
+
 	public ColorRGB()
 	{
 		setR(0);

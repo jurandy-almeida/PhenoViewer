@@ -37,6 +37,11 @@ public class ColorRGB {
     return ""+r+","+g+","+b+"";
   }
 
+  public ColorRGB toRelRGB() {
+    float total = r + g + b;
+    return new ColorRGB(r/total*100,g/total*100,b/total*100);
+  }
+
 	public ColorRGB()
 	{
 		setR(0);

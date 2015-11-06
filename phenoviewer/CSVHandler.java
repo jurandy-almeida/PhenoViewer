@@ -68,11 +68,11 @@ public class CSVHandler {
         ArrayList<Float> meanHArray = meanh.process();
         ArrayList<Float> excgArray = excg.process();
 
-        String[] title = ("filename,year,day,hour,avgR,avgG,avgB,meanH,excG").split(",");
+        String[] title = ("filename,year,day,hour,avgR,avgG,avgB,relR,relG,relB,meanH,excG").split(",");
         writer.writeNext(title);
 
         for (int i=0; i<avgArray.size(); i++) {
-          String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
+          String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+avgArray.get(i).toRelRGB().toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
           writer.writeNext(entries);
         }
         writer.close();

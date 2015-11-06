@@ -629,6 +629,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
         histogramPanel.repaint();
       }
     }
+    container.setCursor(null);
   }
 
   private void resetMask() {
@@ -845,20 +846,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
       csvhandle.AnalyzeCSV(path).setVisible(true);
     }
   }
-
-  public void calcAverageRBGMask() {
-    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    try {
-      if (imageDisplay.isMaskLoaded()) {
-        AvgRgb avg = new AvgRgb(treeImage.getFileArray(), currentMask.getFile());
-      }
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    container.setCursor(null);
-  }
-
   public void calcVisualRhythmMask() {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (imageDisplay.isMaskLoaded()) {

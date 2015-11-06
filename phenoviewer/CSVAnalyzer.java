@@ -109,7 +109,7 @@ public class CSVAnalyzer extends JFrame {
    * Takes data from a CSV file and places it into a table for display.
    * @param source Path to the CSV to be anayzed
    */
-  public CSVAnalyzer(JTable table, String[] legend, String[][] graphData) {
+  public CSVAnalyzer(JTable table, final String[] legend, String[][] graphData) {
     super("CSV Analyzer");
     this.setSize(580, 720);
 
@@ -128,7 +128,7 @@ public class CSVAnalyzer extends JFrame {
     JPanel checkPanel = new JPanel();
 
     //Initialize the array with flags for data plotting
-    boolean[] data = new boolean[legend.length];
+    final boolean[] data = new boolean[legend.length];
     Arrays.fill(data, false);
 
     // Define ChangeListener

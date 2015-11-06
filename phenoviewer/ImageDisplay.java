@@ -96,8 +96,6 @@ public class ImageDisplay extends JLabel {
 
   Graphics2D big;
 
-  TreeMap<Double, Integer> maskIndex;
-
   ImageDisplay() {
     setBackground(Color.black);
     redHistogram = new Histogram("Red", "", 16, 0, 256);
@@ -508,26 +506,6 @@ public class ImageDisplay extends JLabel {
     g2D.dispose();
 
     isMaskLoaded = true;
-
-    Raster maskRaster = biMask.getRaster();
-
-    width = biMask.getWidth();
-    height = biMask.getHeight();
-
-    //identifica pixels da imagem original que sao brancos e representam a mascara.
-    for (int i = 0; i < width; i++)
-      for (int j = 0; j < height; j++) {
-      Pixel pixel = new Pixel();
-      int r = maskRaster.getSample(i, j, 0);
-      int g = maskRaster.getSample(i, j, 1);
-      int b = maskRaster.getSample(i, j, 2);
-      if ((r == 255) && (g == 255) && (b == 255)) {
-        pixel.setX(i);
-        pixel.setY(j);
-      }
-    }
-
-    //indexingMask();
   }
 
   @SuppressWarnings("deprecation")

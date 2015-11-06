@@ -61,10 +61,6 @@ public class ImageDisplay extends JLabel {
 
   Histogram redHistogram, greenHistogram, blueHistogram;
 
-  ArrayList<Float> redMean, greenMean, blueMean, hMean, totalMean, excG;
-
-  ArrayList<Integer> visualRhythm;
-
   String colorModel = "RGB";
 
   int imgWidth, imgHeight;
@@ -100,10 +96,6 @@ public class ImageDisplay extends JLabel {
 
   Graphics2D big;
 
-  //greice
-  ArrayList<Pixel> maskPixels;
-  //
-
   TreeMap<Double, Integer> maskIndex;
 
   ImageDisplay() {
@@ -111,15 +103,6 @@ public class ImageDisplay extends JLabel {
     redHistogram = new Histogram("Red", "", 16, 0, 256);
     greenHistogram = new Histogram("Green", "", 16, 0, 256);
     blueHistogram = new Histogram("Blue", "", 16, 0, 256);
-    maskPixels = new ArrayList<Pixel>();
-    maskIndex = new TreeMap<Double, Integer>();
-    redMean = new ArrayList<Float>();
-    greenMean = new ArrayList<Float>();
-    blueMean = new ArrayList<Float>();
-    hMean = new ArrayList<Float>();
-    totalMean = new ArrayList<Float>();
-    excG = new ArrayList<Float>();
-    visualRhythm = new ArrayList<Integer>();
     isImageLoaded = false;
     isMaskLoaded = false;// greice
   }
@@ -144,50 +127,6 @@ public class ImageDisplay extends JLabel {
 
   public Histogram getBlueHistogram() {
     return blueHistogram;
-  }
-
-  public List<Float> getRedMean() {
-    return redMean;
-  }
-
-  public List<Float> getGreenMean() {
-    return greenMean;
-  }
-
-  public List<Float> getBlueMean() {
-    return blueMean;
-  }
-
-  public List<Float> getHMean() {
-    return hMean;
-  }
-
-  public List<Float> getTotalMean() {
-    return totalMean;
-  }
-
-  public List<Float> getExcessGreen() {
-    return excG;
-  }
-
-  public List<Integer> getVisualRhythmPixels() {
-    return visualRhythm;
-  }
-
-  public BufferedImage getVisualRhythmImage() {
-    int width = maskPixels.size();
-    int height = visualRhythm.size() / maskPixels.size();
-
-    BufferedImage vr = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-    int p = 0;
-    for (int j = 0; j < vr.getHeight(); j++)
-      for (int i = 0; i < vr.getWidth(); i++)	{
-      vr.setRGB(i, j, visualRhythm.get(p));
-      p++;
-    }
-
-    return vr;
   }
 
   public void setColorModel(String colorModel) {
@@ -553,23 +492,11 @@ public class ImageDisplay extends JLabel {
     if(biMask!=null) biMask.flush();
     if (isMaskLoaded) {
       biMask = biShow;
-      resetSeries();
       isMaskLoaded = false;
     }
   }
 
-  public void resetSeries() {
-    redMean.clear();
-    greenMean.clear();
-    blueMean.clear();
-    hMean.clear();
-    totalMean.clear();
-    visualRhythm.clear();
-    excG.clear();
-  }
-
   public void processingMask() {
-    maskPixels.clear();
 
     int width = displayImageMask.getWidth(this);
     int height = displayImageMask.getHeight(this);
@@ -597,59 +524,10 @@ public class ImageDisplay extends JLabel {
       if ((r == 255) && (g == 255) && (b == 255)) {
         pixel.setX(i);
         pixel.setY(j);
-        maskPixels.add(pixel); //cria lista de pixels da mascara- brancos.
       }
     }
 
-    indexingMask();
-  }
-
-  public void indexingMask() {
-    maskIndex.clear();
-    // find the center
-    int center_x = 0;
-    int center_y = 0;
-    for (Pixel p : maskPixels) {
-      center_x += p.getX();
-      center_y += p.getY();
-    }
-    center_x /= maskPixels.size();
-    center_y /= maskPixels.size();
-    // convert to polar coordinates
-    ArrayList<Double> rhoList = new ArrayList<Double>();
-    ArrayList<Double> thetaList = new ArrayList<Double>();
-    for (Pixel p : maskPixels) {
-      int dx = p.getX() - center_x;
-      int dy = p.getY() - center_y;
-      double rho = Math.sqrt(dx * dx + dy * dy);
-      double theta = Math.atan2(dy, dx);
-      rhoList.add(rho);
-      thetaList.add(theta);
-    }
-    // compute the orientation histogram
-    int OriBins = 36;
-    int[] hist = new int[OriBins];
-    for (int i = 0; i < OriBins; i++)
-      hist[i]= 0;
-    for (Double angle : thetaList) {
-      int bin = (int) (OriBins * (angle + Math.PI + 0.001) / (2.0 * Math.PI));
-      assert(bin >= 0 && bin <= OriBins);
-      bin = Math.min(bin, OriBins - 1);
-      hist[bin]++;
-    }
-    // find maximum value in the histogram
-    double maxval = 0;
-    int maxloc = 0;
-    for (int i = 0; i < OriBins; i++)
-      if (hist[i] > maxval) {
-      maxval = hist[i];
-      maxloc = i;
-    }
-    double angle = 2.0 * Math.PI * (maxloc + 0.5) / OriBins - Math.PI;
-    for (int i = 0; i < thetaList.size(); i++)
-      thetaList.set(i, thetaList.get(i) - angle);
-    for (int i = 0; i < thetaList.size(); i++)
-      maskIndex.put(2 * Math.PI * rhoList.get(i) + thetaList.get(i), i);
+    //indexingMask();
   }
 
   @SuppressWarnings("deprecation")
@@ -687,96 +565,6 @@ public class ImageDisplay extends JLabel {
       }
 
       processingMask();
-    }
-  }
-
-  public void calcAvgRGB(File f) {
-    try {
-      BufferedImage biCalc = ImageIO.read(f);
-      int sumR = 0;
-      int sumG = 0;
-      int sumB = 0;
-      int sumH = 0;
-      int sumExG = 0;
-      for (Pixel p : maskPixels) {
-        int i = p.getX();
-        int j = p.getY();
-        int rgb = biCalc.getRGB(i, j);
-        int r = (rgb & 0xFF0000) >> 16;
-        int g = (rgb & 0xFF00) >> 8;
-        int b = (rgb & 0xFF);
-        float[] hsv = Color.RGBtoHSB(r, g, b, null);
-        int h = (int) (255.0 * hsv[0]);
-
-        sumR = sumR + r;
-        sumG = sumG + g;
-        sumB = sumB + b;
-        sumH = sumH + h;
-        sumExG = sumExG + g + g -b -r;
-
-      }
-      float meanR = (float) sumR/maskPixels.size();
-      float meanG = (float) sumG/maskPixels.size();
-      float meanB = (float) sumB/maskPixels.size();
-      float meanH = (float) sumH/maskPixels.size();
-      float total = meanR + meanG + meanB;
-      float excessGreen = (float) sumExG/(maskPixels.size());
-
-      redMean.add(meanR);
-      greenMean.add(meanG);
-      blueMean.add(meanB);
-      hMean.add(meanH);
-      totalMean.add(total);
-      excG.add(excessGreen);
-      biCalc.flush();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void calcExcGreen(File f) {
-    try {
-      BufferedImage biCalc = ImageIO.read(f);
-      int sumR = 0;
-      int sumG = 0;
-      int sumB = 0;
-      int sumExG = 0;
-      for (Pixel p : maskPixels) {
-        int i = p.getX();
-        int j = p.getY();
-        int rgb = biCalc.getRGB(i, j);
-        int r = (rgb & 0xFF0000) >> 16;
-        int g = (rgb & 0xFF00) >> 8;
-        int b = (rgb & 0xFF);
-
-        sumR = sumR + r;
-        sumG = sumG + g;
-        sumB = sumB + b;
-        sumExG = sumExG + g + g -b -r;
-      }
-
-      float excG = (float) sumExG/(maskPixels.size());
-      greenMean.add(excG);
-      biCalc.flush();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-
-  public void calcVisualRhythm(File f) {
-    try {
-      BufferedImage biCalc = ImageIO.read(f);
-      for (Map.Entry<Double, Integer> entry : maskIndex.entrySet()) {
-        Pixel p = maskPixels.get(entry.getValue());
-        int i = p.getX();
-        int j = p.getY();
-        int rgb = biCalc.getRGB(i, j);
-        visualRhythm.add(rgb);
-      }
-      biCalc.flush();
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 }

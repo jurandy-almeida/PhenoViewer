@@ -377,6 +377,18 @@ public class PhenoViewer extends JFrame implements ActionListener {
     });
     imageDisplay.setComponentPopupMenu(popupMenu);
 
+    //graphPanel = new JPanel();
+    //graphPanel.setLayout(new GridLayout(1, 1));
+    //graphPanel.setBorder(new TitledBorder("Time Series"));
+    //graphPanel.setPreferredSize(new Dimension(1024, 128));
+    //averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
+    //rhythmPanel = new JPanel();
+    //rhythmPanel.setLayout(new GridLayout(1, 1));
+    //rhythmScroll = new JScrollPane();
+    //rhythmScroll.getViewport().add(//rhythmPanel);
+
+    //container.add(BorderLayout.PAGE_END, graphPanel);
+
     histogramPanel = new JPanel();
     histogramPanel.setLayout(new GridLayout(3, 0));
     histogramPanel.setBorder(new TitledBorder("Color Histogram"));
@@ -448,6 +460,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
     pack();
     setVisible(true);
+    //treeImage.systemPrintFileVector();
 
   }
 
@@ -831,6 +844,19 @@ public class PhenoViewer extends JFrame implements ActionListener {
       CSVHandler csvhandle = new CSVHandler();
       csvhandle.AnalyzeCSV(path).setVisible(true);
     }
+  }
+
+  public void calcAverageRBGMask() {
+    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    try {
+      if (imageDisplay.isMaskLoaded()) {
+        AvgRgb avg = new AvgRgb(treeImage.getFileArray(), currentMask.getFile());
+      }
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    container.setCursor(null);
   }
 
   public void calcVisualRhythmMask() {

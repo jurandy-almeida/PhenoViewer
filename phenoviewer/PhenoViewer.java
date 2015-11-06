@@ -857,6 +857,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   public void writeCSVFile() {
     CSVHandler handle = new CSVHandler();
-    handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile());
+    handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),handle.FileToSave());
   }
 }

@@ -49,14 +49,21 @@ public class CSVHandler {
     return cal.get(Calendar.HOUR_OF_DAY);
   }
 
-  public void WriteCSV(ArrayList<File> imageList, File mask) {
-    try {
-      JFrame parentFrame = new JFrame();
+  public File FileToSave() {
+    JFrame parentFrame = new JFrame();
       JFileChooser fileChooser = new JFileChooser();
       fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
       int result = fileChooser.showSaveDialog(parentFrame);
       if (result == JFileChooser.APPROVE_OPTION) {
-        File fileToSave = fileChooser.getSelectedFile();
+        return fileChooser.getSelectedFile();
+      } else {
+        return null;
+      }
+  }
+
+
+  public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
+    try {
         BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
         CSVWriter writer = new CSVWriter(out);
 
@@ -76,7 +83,6 @@ public class CSVHandler {
           writer.writeNext(entries);
         }
         writer.close();
-      }
     }
     catch (IOException e) {
       e.printStackTrace();

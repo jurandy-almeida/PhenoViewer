@@ -1,10 +1,15 @@
+Add Mass Renamer (new one or reimplement)
 
-Read .tiff
+Create Multiple Mask Export
 
-Create separate CSV exporter
+Create selction on what data to export
+
+Retirar MediaTracker do ImageDisplay e usar metodo de load image do TimeSeriesOperator
+
+Add Mask Generator
 
 Add R integration
 
 Add Classification
 
-Add Mass Renamerxx
+Read .tif

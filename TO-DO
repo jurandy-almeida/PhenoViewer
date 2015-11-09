@@ -13,3 +13,7 @@ Add R integration
 Add Classification
 
 Read .tif
+
+Use JAI for imaging
+
+Align Images that are not the same size or have moved

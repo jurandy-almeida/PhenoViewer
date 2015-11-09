@@ -1,0 +1,4 @@
+#!/bin/bash
+javac -Xlint -nowarn -classpath .:lib/jcommon-1.0.23.jar:lib/jfreechart-1.0.19.jar:lib/opencsv-3.5.jar phenoviewer/PhenoViewer.java
+cd phenoviewer/
+javap *.class > ../DESCRIPTION

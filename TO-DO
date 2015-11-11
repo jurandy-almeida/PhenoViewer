@@ -2,17 +2,19 @@ Add Mass Renamer (new one or reimplement)
 
 Create Multiple Mask Export
 
-Create selction on what data to export
+Create selction on what data to export (CSV FILTER  cria arquivo X-filtered.csv)
 
 Retirar MediaTracker do ImageDisplay e usar metodo de load image do TimeSeriesOperator
 
-Add Mask Generator
+Add Mask Generator (falta função de quadriculado e de geometria)
 
 Add R integration
 
 Add Classification
 
 Read .tif
+
+Read Larger images (wider AND/OR heavier)
 
 Use JAI for imaging
 

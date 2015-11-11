@@ -218,7 +218,7 @@ public class FileNode extends DefaultMutableTreeNode
       File parent = f;
       FileNode root = (FileNode) getRoot();
       TreePath path;
-      ArrayList nodes = new ArrayList();
+      ArrayList<FileNode> nodes = new ArrayList<FileNode>();
 
       while(true)
       {

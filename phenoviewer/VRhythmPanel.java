@@ -17,8 +17,8 @@ public class VRhythmPanel extends JFrame {
     setVisible(true);
   }
 
-  VRhythmPanel(BufferedImage vrimage) {
-    super("Visual Rhythm");
+  VRhythmPanel(BufferedImage vrimage, String name) {
+    super("Visual Rhythm - "+name);
     setSize(800,150);
     addImage(vrimage);
     setVisible(true);

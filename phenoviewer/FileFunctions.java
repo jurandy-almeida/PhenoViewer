@@ -45,10 +45,47 @@ public class FileFunctions
   {
     Date dateTime = null;
 
+    try {
+      String dat = null, tim = null;
+      try {
+        BufferedReader br = new BufferedReader(
+          new FileReader(f.getAbsolutePath()));
+        String str = null;
+        do {
+          str = br.readLine();
+        } while ((str != null) && !str.toUpperCase().
+                 equals("SECTION FINGERPRINT"));
+
+        do {
+          str = br.readLine();
+          if (str != null) {
+            if (str.substring(0, 3).toUpperCase().equals("DAT"))
+              dat = str.substring(4, str.length());
+            if (str.substring(0, 3).toUpperCase().equals("TIM"))
+              tim = str.substring(4, str.length());
+          }
+        } while ((str != null) && !str.toUpperCase().
+                 equals("ENDSECTION FINGERPRINT"));
+        br.close();
+      } catch (IOException e) {
+        System.out.println("File not found.");
+      }
+
+      if ((dat != null) && (tim != null)) {
+        try {
+          SimpleDateFormat format =
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+          dateTime = format.parse(dat + " " + tim);
+        } catch (ParseException e) {
+          System.out.println("Unknown file format.");
+        }
+      }
+  } catch (Exception e) {
     SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
     //System.out.println("Modified Date :- " + sdf.format(f.lastModified()));
     dateTime = new Date(f.lastModified());
-
+  } finally {
     return dateTime;
   }
+}
 }

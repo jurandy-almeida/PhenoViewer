@@ -65,6 +65,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   FileNode currentMask = null;
 
+  int vr = 0;
+
   double[] zoomFactors = new double[] { 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 
   int[] rotateFactors = new int[] { -3, -2, -1, 0, 1, 2, 3 };
@@ -562,6 +564,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                  .getText());
       histogramPanel.repaint();
     } else if (source == rhythmSeries) {
+      vr = 1;
       calcVisualRhythmMask();
     } else if (source == csvparser) {
       CSVParse();
@@ -636,6 +639,9 @@ public class PhenoViewer extends JFrame implements ActionListener {
         imageDisplay.repaint();
         histogramPanel.repaint();
       }
+      if (vr == 1) {
+        calcVisualRhythmMask();
+      }
     }
     container.setCursor(null);
   }
@@ -651,6 +657,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageDisplay.filter();
     imageDisplay.repaint();
     histogramPanel.repaint();
+    resetVR();
 
     container.setCursor(null);
   }
@@ -858,13 +865,19 @@ public class PhenoViewer extends JFrame implements ActionListener {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     if (imageDisplay.isMaskLoaded()) {
       VisualRhythm vr = new VisualRhythm(treeImage.getFileArray(), currentMask.getFile());
-      VRhythmPanel vrhythm = new VRhythmPanel(vr.process());
+      VRhythmPanel vrhythm = new VRhythmPanel(vr.process(), currentMask.getFile().getName());
     }
     container.setCursor(null);
   }
 
+  private void resetVR() {
+    vr = 0;
+  }
+
   public void writeCSVFile() {
+    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     CSVHandler handle = new CSVHandler();
     handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),handle.FileToSave());
+    container.setCursor(null);
   }
 }

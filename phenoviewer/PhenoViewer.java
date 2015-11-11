@@ -38,7 +38,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   //Menu Items
   //File
-  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel;
+  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel, maskCreator;
   //View
   JMenuItem nextImage, prevImage, slideShow, zoomOut, zoomIn, fitScreen, oriSize;
   //Image
@@ -99,6 +99,12 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                                          KeyEvent.CTRL_MASK));
     saveSeriesItem.addActionListener(this);
     fileMenu.add(saveSeriesItem);
+    maskCreator = new JMenuItem("Create Mask");
+    maskCreator.setMnemonic('M');
+    maskCreator.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+                                                   KeyEvent.CTRL_MASK));
+    maskCreator.addActionListener(this);
+    fileMenu.add(maskCreator);
     exitItem = new JMenuItem("Exit");
     exitItem.setMnemonic('X');
     exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
@@ -511,6 +517,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
         treeMask.setRootDirectory(chooser.getSelectedFile().getPath());
         container.setCursor(null);
       }
+    } else if (source == maskCreator){
+      PaintFrame pntFrame = new PaintFrame(imageDisplay, true);
     } else if (source == exitItem)
       System.exit(0);
       else if (source == nextImage)

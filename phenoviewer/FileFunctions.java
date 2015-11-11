@@ -46,7 +46,7 @@ public class FileFunctions
     Date dateTime = null;
 
     SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-    System.out.println("Modified Date :- " + sdf.format(f.lastModified()));
+    //System.out.println("Modified Date :- " + sdf.format(f.lastModified()));
     dateTime = new Date(f.lastModified());
 
     return dateTime;

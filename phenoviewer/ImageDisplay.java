@@ -96,6 +96,8 @@ public class ImageDisplay extends JLabel {
 
   Graphics2D big;
 
+  ImageFunctions ifun = new ImageFunctions();
+
   ImageDisplay() {
     setBackground(Color.black);
     redHistogram = new Histogram("Red", "", 16, 0, 256);
@@ -145,14 +147,7 @@ public class ImageDisplay extends JLabel {
   }
 
   public void loadFile(String fileName) {
-    displayImage = Toolkit.getDefaultToolkit().getImage(fileName);
-    MediaTracker mt = new MediaTracker(this);
-    mt.addImage(displayImage, 1);
-    try {
-      mt.waitForAll();
-    } catch (Exception e) {
-      System.out.println("Exception while loading.");
-    }
+    displayImage = ifun.load(fileName);
 
     isImageLoaded = true;
 
@@ -521,13 +516,7 @@ public class ImageDisplay extends JLabel {
 
     if(!fileName.equals("")){
       if(fileName.toLowerCase().endsWith(".bmp")){
-
-        try {
-          displayImageMask =ImageIO.read(new URL(node.getFile().toURL(), node.getFile().getName()));
-        } catch (IOException e) {
-          //
-          e.printStackTrace();
-        }
+        displayImageMask = ifun.load(fileName);
       }
       else{
 

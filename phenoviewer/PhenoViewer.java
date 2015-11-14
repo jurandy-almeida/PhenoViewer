@@ -866,6 +866,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     if (imageDisplay.isMaskLoaded()) {
       VisualRhythm vr = new VisualRhythm(treeImage.getFileArray(), currentMask.getFile());
       VRhythmPanel vrhythm = new VRhythmPanel(vr.process(), currentMask.getFile().getName());
+      //add list
     }
     container.setCursor(null);
   }
@@ -877,7 +878,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
   public void writeCSVFile() {
     container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     CSVHandler handle = new CSVHandler();
-    handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),handle.FileToSave());
+    File toSave = handle.FileToSave();
+    if (toSave != null) handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),toSave);
     container.setCursor(null);
   }
 }

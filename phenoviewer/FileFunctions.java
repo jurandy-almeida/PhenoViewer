@@ -43,6 +43,8 @@ public class FileFunctions
 
   public Date readDate(File f)
   {
+    //Plano B: ordenar pelo nome
+    //Plano C: forçar série
     Date dateTime = null;
 
     try {

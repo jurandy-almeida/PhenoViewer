@@ -83,6 +83,7 @@ public class CSVHandler {
           writer.writeNext(entries);
         }
         writer.close();
+        out = null;
     }
     catch (IOException e) {
       e.printStackTrace();

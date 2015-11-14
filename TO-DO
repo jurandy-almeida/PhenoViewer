@@ -1,10 +1,22 @@
-Add Mass Renamer (new one or reimplement)
+Criar ImageFunctions com Load() e Close() para substituir nas funçoes
 
-Create Multiple Mask Export
+X Use JAI for imaging
+
+Retirar MediaTracker do ImageDisplay e usar metodo de load image do TimeSeriesOperator
+
+PaintBrush desamarrar (passar imagem e mascara) (nao passar ImageDisplay)
+
+PhenoViewer gravar BufferedImage e passar como parâmetro pro Display e PaintBrush
+
+Criar novo construtor pra usar BI ou FileNode
+
+
+*Add Mass Renamer (new one or reimplement) (verificar cabeçalho da imagem com data ou pedir pra especificar data incial)
+
+*Create Multiple Mask Export
 
 Create selction on what data to export (CSV FILTER  cria arquivo X-filtered.csv)
 
-Retirar MediaTracker do ImageDisplay e usar metodo de load image do TimeSeriesOperator
 
 Add Mask Generator (falta função de quadriculado e de geometria)
 
@@ -12,10 +24,9 @@ Add R integration
 
 Add Classification
 
+
 Read .tif
 
 Read Larger images (wider AND/OR heavier)
-
-Use JAI for imaging
 
 Align Images that are not the same size or have moved

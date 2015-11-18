@@ -34,6 +34,17 @@ public class ImageFunctions {
     return load((File)new File(path));
   }
 
+  //Name Place-holders
+  public BufferedImage read(File f) {
+    return load(f);
+  }
+  public BufferedImage read(FileNode f) {
+    return load(f);
+  }
+  public BufferedImage read(String f) {
+    return load(f);
+  }
+
   public ImageIcon toIcon(BufferedImage img) {
     return new ImageIcon(img);
   }

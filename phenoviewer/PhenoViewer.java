@@ -520,7 +520,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
         container.setCursor(null);
       }
     } else if (source == maskCreator){
-      PaintFrame pntFrame = new PaintFrame(imageDisplay, true);
+      PaintFrame pntFrame = new PaintFrame(imageDisplay.biSrc, imageDisplay.biMask, true);
     } else if (source == exitItem)
       System.exit(0);
       else if (source == nextImage)

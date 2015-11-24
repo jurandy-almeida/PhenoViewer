@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -19,16 +20,17 @@ public class PaintBrush extends JPanel {
 	private int opacity = 160;
 	private int polygonX[], polygonY[], polyPos;
 	private boolean first, erase, creatingPolygon, auxPolygon;
-	BufferedImage mask, original, scaledOriginal;
+	BufferedImage mask, original, scaledOriginal, maskor;
 	Color maskColor;
 	Graphics2D maskG;
 
-	public PaintBrush(ImageDisplay imageDisplay, boolean edit) {
+	public PaintBrush( BufferedImage ori, BufferedImage mskr, boolean edit) {
 		erase = false;
 		first = true;
 		maskColor = new Color(255, 255, 255, opacity);
 		creatingPolygon = false;
-		original = imageDisplay.biSrc;
+		original = ori; //imageDisplay.biSrc;
+    maskor = mskr;
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
 		w = original.getWidth();
 		h = original.getHeight();
@@ -50,7 +52,7 @@ public class PaintBrush extends JPanel {
 		if (edit) {
 			for (int j = 0; j < h; j++)
 				for (int i = 0; i < w; i++){
-					if (imageDisplay.biMask.getRGB(i, j) == -1) {
+					if (maskor.getRGB(i, j) == -1) {
 						maskG.drawLine(i, j, i, j);
 					}
 				}

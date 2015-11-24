@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
@@ -16,7 +17,7 @@ public class PaintFrame extends JFrame
 	private PaintBrush paint;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
-	public PaintFrame(ImageDisplay imageDisplay, boolean edit) {
+	public PaintFrame(BufferedImage original, BufferedImage maskor, boolean edit) {
 		setTitle("Create Mask");
 //        setSize(1280,960+border);
 //        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -194,7 +195,7 @@ public class PaintFrame extends JFrame
         polygonButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
        		 (KeyStroke) zoomOut.getValue(Action.ACCELERATOR_KEY), "zoomOut");
 
-        paint = new PaintBrush(imageDisplay, edit);
+        paint = new PaintBrush(original, maskor, edit);
         paint.setAlignmentX(Component.LEFT_ALIGNMENT);
         JScrollPane scrollPane = new JScrollPane(paint);
         scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -242,7 +243,6 @@ public class PaintFrame extends JFrame
         );
         getContentPane().setLayout(groupLayout);
         pack();
-
         this.addWindowListener(new WindowAdapter() {
         	public void windowClosing(WindowEvent e) {
         		paint.close();

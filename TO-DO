@@ -1,17 +1,10 @@
-Criar ImageFunctions com Load() e Close() para substituir nas funçoes
-
-X Use JAI for imaging
-
-Retirar MediaTracker do ImageDisplay e usar metodo de load image do TimeSeriesOperator
-
-PaintBrush desamarrar (passar imagem e mascara) (nao passar ImageDisplay)
+Use JAI for imaging
 
 PhenoViewer gravar BufferedImage e passar como parâmetro pro Display e PaintBrush
 
-Criar novo construtor pra usar BI ou FileNode
-
 
 *Add Mass Renamer (new one or reimplement) (verificar cabeçalho da imagem com data ou pedir pra especificar data incial)
+
 
 *Create Multiple Mask Export
 

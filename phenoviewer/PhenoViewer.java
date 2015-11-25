@@ -65,12 +65,11 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   FileNode currentMask = null;
 
-  int vr = 0;
-
   double[] zoomFactors = new double[] { 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 
   int[] rotateFactors = new int[] { -3, -2, -1, 0, 1, 2, 3 };
   int rotateIndex = 3;
+
 
   public PhenoViewer() {
     super("e-Phenology Image Viewer");
@@ -108,7 +107,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     maskCreator = new JMenuItem("Create Mask");
     maskCreator.setMnemonic('M');
     maskCreator.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-                                                   KeyEvent.CTRL_MASK));
+                                                      KeyEvent.CTRL_MASK));
     maskCreator.addActionListener(this);
     fileMenu.add(maskCreator);
     exitItem = new JMenuItem("Exit");
@@ -324,16 +323,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
     });
     treeMask.getSelectionModel().setSelectionMode(
       TreeSelectionModel.SINGLE_TREE_SELECTION);
-    /*treeMask.addTreeSelectionListener(new TreeSelectionListener() {
-     *	public void valueChanged(TreeSelectionEvent e) {
-     *		TreePath path = e.getPath();
-     *		treeMask.imageScrollPathToVisible(path);
-     *		FileNode node = (FileNode) path.getLastPathComponent();
-     *		if (node != currentMask)
-     *			changeMask(node);
-     *	}
-     *});
-     */
     treeMask.addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent e) {
         int selRow = treeMask.getRowForLocation(e.getX(), e.getY());
@@ -388,18 +377,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
       }
     });
     imageDisplay.setComponentPopupMenu(popupMenu);
-
-    //graphPanel = new JPanel();
-    //graphPanel.setLayout(new GridLayout(1, 1));
-    //graphPanel.setBorder(new TitledBorder("Time Series"));
-    //graphPanel.setPreferredSize(new Dimension(1024, 128));
-    //averagePanel = new DrawGraph(imageDisplay.getRedMean(), imageDisplay.getGreenMean(), imageDisplay.getBlueMean(), imageDisplay.getTotalMean(), 0);
-    //rhythmPanel = new JPanel();
-    //rhythmPanel.setLayout(new GridLayout(1, 1));
-    //rhythmScroll = new JScrollPane();
-    //rhythmScroll.getViewport().add(//rhythmPanel);
-
-    //container.add(BorderLayout.PAGE_END, graphPanel);
 
     histogramPanel = new JPanel();
     histogramPanel.setLayout(new GridLayout(3, 0));
@@ -570,7 +547,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                  .getText());
       histogramPanel.repaint();
     } else if (source == rhythmSeries) {
-      vr = 1;
       calcVisualRhythmMask();
     } else if (source == csvparser) {
       CSVParse();
@@ -645,9 +621,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
         imageDisplay.repaint();
         histogramPanel.repaint();
       }
-      if (vr == 1) {
-        calcVisualRhythmMask();
-      }
     }
     container.setCursor(null);
   }
@@ -663,7 +636,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageDisplay.filter();
     imageDisplay.repaint();
     histogramPanel.repaint();
-    resetVR();
 
     container.setCursor(null);
   }
@@ -872,13 +844,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
     if (imageDisplay.isMaskLoaded()) {
       VisualRhythm vr = new VisualRhythm(treeImage.getFileArray(), currentMask.getFile());
       VRhythmPanel vrhythm = new VRhythmPanel(vr.process(), currentMask.getFile().getName());
-      //add list
     }
     container.setCursor(null);
-  }
-
-  private void resetVR() {
-    vr = 0;
   }
 
   public void writeCSVFile() {

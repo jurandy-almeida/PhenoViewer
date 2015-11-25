@@ -51,43 +51,51 @@ public class CSVHandler {
 
   public File FileToSave() {
     JFrame parentFrame = new JFrame();
-      JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-      int result = fileChooser.showSaveDialog(parentFrame);
-      if (result == JFileChooser.APPROVE_OPTION) {
-        return fileChooser.getSelectedFile();
-      } else {
-        return null;
-      }
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    int result = fileChooser.showSaveDialog(parentFrame);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      return fileChooser.getSelectedFile();
+    } else {
+      return null;
+    }
   }
 
 
   public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
     try {
-        BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
-        CSVWriter writer = new CSVWriter(out);
+      BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
+      CSVWriter writer = new CSVWriter(out);
 
-        AvgRgb avg = new AvgRgb(imageList, mask);
-        MeanH meanh = new MeanH(imageList, mask);
-        ExcGreen excg = new ExcGreen(imageList, mask);
+      AvgRgb avg = new AvgRgb(imageList, mask);
+      MeanH meanh = new MeanH(imageList, mask);
+      ExcGreen excg = new ExcGreen(imageList, mask);
 
-        ArrayList<ColorRGB> avgArray = avg.process();
-        ArrayList<Float> meanHArray = meanh.process();
-        ArrayList<Float> excgArray = excg.process();
+      ArrayList<ColorRGB> avgArray = avg.process();
+      ArrayList<Float> meanHArray = meanh.process();
+      ArrayList<Float> excgArray = excg.process();
 
-        String[] title = ("filename,year,day,hour,avgR,avgG,avgB,relR,relG,relB,meanH,excG").split(",");
-        writer.writeNext(title);
+      String[] title = ("filename,year,day,hour,avgR,avgG,avgB,relR,relG,relB,meanH,excG").split(",");
+      writer.writeNext(title);
 
-        for (int i=0; i<avgArray.size(); i++) {
-          String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+avgArray.get(i).toRelRGB().toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
-          writer.writeNext(entries);
-        }
-        writer.close();
-        out = null;
+      for (int i=0; i<avgArray.size(); i++) {
+        String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+avgArray.get(i).toRelRGB().toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
+        writer.writeNext(entries);
+      }
+      writer.close();
+      out = null;
     }
     catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void WriteMultipleCSV(ArrayList<File> imageList, ArrayList<File> maskList, File fileToSaveBase) {
+    for (File Mask: maskList) {
+      String path = fileToSaveBase.toString()+Mask.getName();
+      WriteCSV(imageList, Mask, new File(path.substring(0, path.length()-3)+"csv"));
+    }
+
   }
 
   public JFrame AnalyzeCSV(String path) {

@@ -91,7 +91,7 @@ public class CSVHandler {
   }
 
   public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
-    JFrame exporter = new JFrame();
+    JFrame exporter = new JFrame("CSX Exporter");
     exporter.setSize(700,620);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

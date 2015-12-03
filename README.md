@@ -13,3 +13,4 @@ Software de processamento e análise de imagens biológicas para o projeto e-Phe
  * Máscaras de região
  * Exibir Histograma interativo das imagens abertas
  * Ler e mostrar um arquivo CSV com gŕaficos personalizados
+ * Exportar arquivo CSV com informações extraidas para uma série de imagem para uma ou várias máscaras

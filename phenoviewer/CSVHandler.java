@@ -51,20 +51,7 @@ public class CSVHandler {
     return cal.get(Calendar.HOUR_OF_DAY);
   }
 
-  public File FileToSave() {
-    JFrame parentFrame = new JFrame();
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-    int result = fileChooser.showSaveDialog(parentFrame);
-    if (result == JFileChooser.APPROVE_OPTION) {
-      return fileChooser.getSelectedFile();
-    } else {
-      return null;
-    }
-  }
-
-
-  public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
+  /*public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
       CSVWriter writer = new CSVWriter(out);
@@ -90,6 +77,17 @@ public class CSVHandler {
     catch (IOException e) {
       e.printStackTrace();
     }
+  }*/
+
+  public String filterCommaString(String[] data, String filter) {
+    String result = "";
+    for (int i = 0; i<filter.length(); i++) {
+      //check if is to be removed or not
+      if (filter.charAt(i) == '1') {
+        result += ","+data[i];
+      }
+    }
+    return result;
   }
 
   public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
@@ -129,7 +127,7 @@ public class CSVHandler {
 
     panel.add(selectorPanel);
 
-    String pathToSave = "./aa/";
+    String pathToSave = "./";
     JTextField path = new JTextField(pathToSave);
     path.setPreferredSize( new Dimension(100, 50));
     panel.add(path);
@@ -137,10 +135,7 @@ public class CSVHandler {
 
     JButton plotButton = new JButton("Export Series");
     plotButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e)
-      {
-        System.out.println("pressed!");
-
+      public void actionPerformed(ActionEvent e) {
         List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
         for( Component comp : maskPanel.getComponents() ) {
           if( comp instanceof JCheckBox) maskcheckboxes.add( (JCheckBox)comp );
@@ -166,6 +161,49 @@ public class CSVHandler {
             seriesFilter += "0";
         }
         System.out.println(seriesFilter);
+
+        for (int i=0; i<maskList.size(); i++) {
+          if (maskFilter.charAt(i) == '1') {
+            //Export Data for mask
+            File Mask = maskList.get(i);
+
+            //Generate data
+            try {
+              //Create File for export
+              File file = new File(path.getText()+Mask.getName().substring(0, Mask.getName().length()-3)+"csv");
+
+
+              BufferedWriter out = new BufferedWriter(new FileWriter(file));
+              CSVWriter writer = new CSVWriter(out);
+
+              AvgRgb avg = new AvgRgb(imageList, Mask);
+              MeanH meanh = new MeanH(imageList, Mask);
+              ExcGreen excg = new ExcGreen(imageList, Mask);
+
+              ArrayList<ColorRGB> avgArray = avg.process();
+              ArrayList<Float> meanHArray = meanh.process();
+              ArrayList<Float> excgArray = excg.process();
+
+
+              //Check for data to export
+              String[] title = ("filename,year,day,hour"+filterCommaString("avgR,avgG,avgB,relR,relG,relB,meanH,excG".split(","),seriesFilter)).split(",");
+
+              writer.writeNext(title);
+              for (int j=0; j<avgArray.size(); j++) {
+                //Check each data to be inserted
+                String[] data = (avgArray.get(j).toCSV()+","+avgArray.get(j).toRelRGB().toCSV()+","+meanHArray.get(j)+","+excgArray.get(j)).split(",");
+                String[] entries = (imageList.get(j).getName()+","+calculaAno(imageList.get(j))+","+calculaDia(imageList.get(j))+","+calculaHora(imageList.get(j))+filterCommaString(data,seriesFilter)).split(",");
+                writer.writeNext(entries);
+              }
+
+              writer.close();
+              out = null;
+            } catch (IOException ex) {
+              ex.printStackTrace();
+            }
+            System.out.println(Mask.getName());
+          }
+        }
       }
     });
 

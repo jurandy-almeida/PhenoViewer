@@ -1,14 +1,15 @@
-Use JAI for imaging (step back on multiplataform)
+Use JAI for imaging
 PhenoViewer gravar BufferedImage e passar como parâmetro pro Display e PaintBrush
+
+Add Mask Generator (falta função de quadriculado e de geometria)
 
 *Add Mass Renamer (new one or reimplement) (verificar cabeçalho da imagem com data ou pedir pra especificar data incial)
 
 Create selction on what data to export (CSV FILTER  cria arquivo X-filtered.csv)
+Selecionar a máscara a ser usada no export (select all , deselect all, filearray)
 
-Add Mask Generator (falta função de quadriculado e de geometria)
 Add R integration
 Add Classification
 
 Read .tif
-Read Larger images (wider AND/OR heavier)
 Align Images that are not the same size or have moved

@@ -11,6 +11,8 @@ import javax.swing.event.*;
 import java.util.Arrays;
 import java.awt.Color;
 import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.Component;
 import com.opencsv.*;
 
 import java.awt.image.BufferedImage;
@@ -90,12 +92,102 @@ public class CSVHandler {
     }
   }
 
-  public void WriteMultipleCSV(ArrayList<File> imageList, ArrayList<File> maskList, File fileToSaveBase) {
-    for (File Mask: maskList) {
-      String path = fileToSaveBase.toString()+Mask.getName();
-      WriteCSV(imageList, Mask, new File(path.substring(0, path.length()-3)+"csv"));
-    }
+  public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
+    JFrame exporter = new JFrame();
+    exporter.setSize(700,620);
+    JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+    JPanel selectorPanel = new JPanel();
+    selectorPanel.setLayout(new BoxLayout(selectorPanel, BoxLayout.X_AXIS));
+
+    String[] methodNames = {"Mean R", "Mean G", "Mean B", "Mean H", "Average R", "Average G", "Average B", "Excess Green"};
+    JPanel seriesPanel = new JPanel();
+    seriesPanel.setLayout(new BoxLayout(seriesPanel, BoxLayout.Y_AXIS));
+    for (int i=0; i<methodNames.length; i++) {
+      JCheckBox checkBox = new JCheckBox(methodNames[i], true);
+      seriesPanel.add(checkBox);
+    }
+    JScrollPane seriesScroll = new JScrollPane(seriesPanel);
+    selectorPanel.add(seriesScroll);
+
+    JPanel maskPanel = new JPanel();
+    maskPanel.setLayout(new BoxLayout(maskPanel, BoxLayout.Y_AXIS));
+    if (currentMask != null) {
+      for (File archive: maskList) {
+        JCheckBox checkBox = new JCheckBox(archive.getName(), archive.getAbsolutePath().equals(currentMask.getFile().getAbsolutePath()));
+        maskPanel.add(checkBox);
+      }
+    } else {
+      for (File archive: maskList) {
+        JCheckBox checkBox = new JCheckBox(archive.getName(),false);
+        maskPanel.add(checkBox);
+      }
+    }
+    JScrollPane maskScroll = new JScrollPane(maskPanel);
+    selectorPanel.add(maskScroll);
+
+    panel.add(selectorPanel);
+
+    String pathToSave = "./aa/";
+    JTextField path = new JTextField(pathToSave);
+    path.setPreferredSize( new Dimension(100, 50));
+    panel.add(path);
+
+
+    JButton plotButton = new JButton("Export Series");
+    plotButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        System.out.println("pressed!");
+
+        List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
+        for( Component comp : maskPanel.getComponents() ) {
+          if( comp instanceof JCheckBox) maskcheckboxes.add( (JCheckBox)comp );
+        }
+        String maskFilter = "";
+        for (JCheckBox chk: maskcheckboxes) {
+          if (chk.isSelected())
+            maskFilter += "1";
+          else
+            maskFilter += "0";
+        }
+        System.out.println(maskFilter);
+
+        List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
+        for( Component comp : seriesPanel.getComponents() ) {
+          if( comp instanceof JCheckBox) seriescheckboxes.add( (JCheckBox)comp );
+        }
+        String seriesFilter = "";
+        for (JCheckBox chk: seriescheckboxes) {
+          if (chk.isSelected())
+            seriesFilter += "1";
+          else
+            seriesFilter += "0";
+        }
+        System.out.println(seriesFilter);
+      }
+    });
+
+    panel.add(plotButton);
+
+    /*try {
+      BufferedWriter out = new BufferedWriter(new FileWriter(path.getText()));
+      CSVWriter writer = new CSVWriter(out);
+
+      AvgRgb avg = new AvgRgb(imageList, mask);
+      MeanH meanh = new MeanH(imageList, mask);
+      ExcGreen excg = new ExcGreen(imageList, mask);
+
+      ArrayList<ColorRGB> avgArray = avg.process();
+      ArrayList<Float> meanHArray = meanh.process();
+      ArrayList<Float> excgArray = excg.process();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }*/
+
+    exporter.add(panel);
+    exporter.setVisible(true);
   }
 
   public JFrame AnalyzeCSV(String path) {

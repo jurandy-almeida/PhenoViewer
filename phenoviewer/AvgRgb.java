@@ -16,7 +16,7 @@ public class AvgRgb extends TimeSeriesOperator<ArrayList<ColorRGB>>{
   }
 
   public void calcAvgRGB(File f) {
-    BufferedImage biCalc = new ImageFunctions().load(f);
+    BufferedImage biCalc = ImageFunctions.load(f);
     int sumR = 0;
     int sumG = 0;
     int sumB = 0;

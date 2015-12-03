@@ -38,7 +38,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   //Menu Items
   //File
-  JMenuItem openImageItem, openMaskItem, saveSeriesItem, saveMultiSeriesItem, exitItem, rgbModel, hsbModel, maskCreator;
+  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel, maskCreator;
   //View
   JMenuItem nextImage, prevImage, slideShow, zoomOut, zoomIn, fitScreen, oriSize;
   //Image
@@ -100,10 +100,6 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                                          KeyEvent.CTRL_MASK));
     saveSeriesItem.addActionListener(this);
     fileMenu.add(saveSeriesItem);
-    saveMultiSeriesItem = new JMenuItem("Export Multiple Series");
-    saveMultiSeriesItem.setMnemonic('R');
-    saveMultiSeriesItem.addActionListener(this);
-    fileMenu.add(saveMultiSeriesItem);
     maskCreator = new JMenuItem("Create Mask");
     maskCreator.setMnemonic('M');
     maskCreator.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
@@ -501,7 +497,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
         container.setCursor(null);
       }
     } else if (source == maskCreator){
-      PaintFrame pntFrame = new PaintFrame(imageDisplay.biSrc, imageDisplay.biMask, true);
+      PaintFrame pntFrame = new PaintFrame(ImageFunctions.load(currentNode), ImageFunctions.load(currentMask), currentMask!=null);
     } else if (source == exitItem)
       System.exit(0);
       else if (source == nextImage)
@@ -540,11 +536,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
       resetImage();
       else if (source == saveSeriesItem)
       writeCSVFile();
-      else if (source == saveMultiSeriesItem)
-      writeMultiCSVFile();
       else if ((source == rgbModel) || (source == hsbModel)) {
-      imageDisplay.setColorModel(((JRadioButtonMenuItem) source)
-                                 .getText());
+      imageDisplay.setColorModel(((JRadioButtonMenuItem) source).getText());
       histogramPanel.repaint();
     } else if (source == rhythmSeries) {
       calcVisualRhythmMask();
@@ -561,6 +554,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageMenu.setEnabled(false);
     toolsMenu.setEnabled(false);
     colorMenu.setEnabled(false);
+    maskCreator.setEnabled(false);
   }
 
   private void enableImageOperations() {
@@ -571,8 +565,8 @@ public class PhenoViewer extends JFrame implements ActionListener {
     imageMenu.setEnabled(true);
     toolsMenu.setEnabled(true);
     colorMenu.setEnabled(true);
+    maskCreator.setEnabled(true);
   }
-
   private void enableMaskOperations() {
     rhythmSeries.setEnabled(true);
   }
@@ -849,18 +843,18 @@ public class PhenoViewer extends JFrame implements ActionListener {
   }
 
   public void writeCSVFile() {
-    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     CSVHandler handle = new CSVHandler();
-    File toSave = handle.FileToSave();
-    if (toSave != null) handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),toSave);
-    container.setCursor(null);
+    handle.ExportCSV(treeImage.getFileArray(),treeMask.getFileArray(),currentMask);
   }
 
-  public void writeMultiCSVFile() {
-    container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    CSVHandler handle = new CSVHandler();
-    File toSave = handle.FileToSave();
-    if (toSave != null) handle.WriteMultipleCSV(treeImage.getFileArray(),treeMask.getFileArray(),toSave);
-    container.setCursor(null);
-  }
+
+    /*
+      public void writeCSVFile() {
+        container.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        CSVHandler handle = new CSVHandler();
+        File toSave = handle.FileToSave();
+        if (toSave != null) handle.WriteCSV(treeImage.getFileArray(),currentMask.getFile(),toSave);
+        container.setCursor(null);
+      }
+    */
 }

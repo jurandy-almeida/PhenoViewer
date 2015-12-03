@@ -6,16 +6,17 @@ import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
 
-public class ImageFunctions {
+public final class ImageFunctions {
 
   ImageFunctions() {
   }
 
-  public BufferedImage load(File f) {
+  public static BufferedImage load(File f) {
     BufferedImage image = null;
     try
     {
-      image = ImageIO.read(f);
+      if (f!=null)
+        image = ImageIO.read(f);
     }
     catch (Exception e)
     {
@@ -26,26 +27,26 @@ public class ImageFunctions {
     }
   }
 
-  public BufferedImage load(FileNode f) {
-    return load((File)f.getFile());
+  public static BufferedImage load(FileNode f) {
+    return load(f!=null ? (File)f.getFile() : null);
   }
 
-  public BufferedImage load(String path) {
+  public static BufferedImage load(String path) {
     return load((File)new File(path));
   }
 
   //Name Place-holders
-  public BufferedImage read(File f) {
+  public static BufferedImage read(File f) {
     return load(f);
   }
-  public BufferedImage read(FileNode f) {
+  public static BufferedImage read(FileNode f) {
     return load(f);
   }
-  public BufferedImage read(String f) {
+  public static BufferedImage read(String f) {
     return load(f);
   }
 
-  public ImageIcon toIcon(BufferedImage img) {
+  public static ImageIcon toIcon(BufferedImage img) {
     return new ImageIcon(img);
   }
 }

@@ -69,7 +69,7 @@ public class VisualRhythm extends TimeSeriesOperator<BufferedImage>{
   }
 
   public void calcVisualRhythm(File f) {
-    BufferedImage biCalc = new ImageFunctions().load(f);
+    BufferedImage biCalc = ImageFunctions.load(f);
     for (Map.Entry<Double, Integer> entry : maskIndex.entrySet()) {
       Pixel p = maskPixels.get(entry.getValue());
       int i = p.getX();

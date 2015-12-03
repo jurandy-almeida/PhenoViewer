@@ -59,7 +59,7 @@ public abstract class TimeSeriesOperator<T>{
   }
 
   private void getMaskPixels(File mask) {
-    BufferedImage maskImage = new ImageFunctions().load(mask);
+    BufferedImage maskImage = ImageFunctions.load(mask);
 
     int width  = maskImage.getWidth();
     int height = maskImage.getHeight();

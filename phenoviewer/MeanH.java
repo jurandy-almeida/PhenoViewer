@@ -19,7 +19,7 @@ public class MeanH extends TimeSeriesOperator<ArrayList<Float>>{
   }
 
   public void calcMeanH(File f) {
-    BufferedImage biCalc = new ImageFunctions().load(f);
+    BufferedImage biCalc = ImageFunctions.load(f);
     int sumH = 0;
     for (Pixel p : maskPixels) {
       int i = p.getX();

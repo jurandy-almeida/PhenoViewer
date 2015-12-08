@@ -9,10 +9,11 @@ import javax.swing.table.*;
 import javax.swing.JRadioButton;
 import javax.swing.event.*;
 import java.util.Arrays;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.event.*;
 import java.awt.Dimension;
-import java.awt.Component;
+import java.awt.BorderLayout;
 import com.opencsv.*;
 
 import java.awt.image.BufferedImage;
@@ -64,32 +65,32 @@ public class CSVHandler {
   }
 
   /*public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
-    try {
-      BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
-      CSVWriter writer = new CSVWriter(out);
+      try {
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
+        CSVWriter writer = new CSVWriter(out);
 
-      AvgRgb avg = new AvgRgb(imageList, mask);
-      MeanH meanh = new MeanH(imageList, mask);
-      ExcGreen excg = new ExcGreen(imageList, mask);
+        AvgRgb avg = new AvgRgb(imageList, mask);
+        MeanH meanh = new MeanH(imageList, mask);
+        ExcGreen excg = new ExcGreen(imageList, mask);
 
-      ArrayList<ColorRGB> avgArray = avg.process();
-      ArrayList<Float> meanHArray = meanh.process();
-      ArrayList<Float> excgArray = excg.process();
+        ArrayList<ColorRGB> avgArray = avg.process();
+        ArrayList<Float> meanHArray = meanh.process();
+        ArrayList<Float> excgArray = excg.process();
 
-      String[] title = ("filename,year,day,hour,avgR,avgG,avgB,relR,relG,relB,meanH,excG").split(",");
-      writer.writeNext(title);
+        String[] title = ("filename,year,day,hour,avgR,avgG,avgB,relR,relG,relB,meanH,excG").split(",");
+        writer.writeNext(title);
 
-      for (int i=0; i<avgArray.size(); i++) {
-        String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+avgArray.get(i).toRelRGB().toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
-        writer.writeNext(entries);
+        for (int i=0; i<avgArray.size(); i++) {
+          String[] entries = (imageList.get(i).getName()+","+calculaAno(imageList.get(i))+","+calculaDia(imageList.get(i))+","+calculaHora(imageList.get(i))+","+avgArray.get(i).toCSV()+","+avgArray.get(i).toRelRGB().toCSV()+","+meanHArray.get(i)+","+excgArray.get(i)).split(",");
+          writer.writeNext(entries);
+        }
+        writer.close();
+        out = null;
       }
-      writer.close();
-      out = null;
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-  }*/
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+    }*/
 
   public String filterCommaString(String[] data, String filter) {
     String result = "";
@@ -103,8 +104,8 @@ public class CSVHandler {
   }
 
   public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
-    JFrame exporter = new JFrame("CSX Exporter");
-    exporter.setSize(700,620);
+    JFrame exporter = new JFrame("CSV Exporter");
+    exporter.setSize(500,320);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -139,19 +140,22 @@ public class CSVHandler {
 
     panel.add(selectorPanel);
 
-    String pathToSave = "./";
-    JTextField path = new JTextField(pathToSave);
+
+    JPanel actionPanel = new JPanel();
+    actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
+    actionPanel.add(Box.createHorizontalGlue());
+    actionPanel.setPreferredSize(new Dimension(500, 32));
+    JTextField path = new JTextField("./");
     path.setEditable(false);
-    path.setPreferredSize( new Dimension(100, 50));
-    panel.add(path);
+    actionPanel.add(path);
+    actionPanel.add(Box.createRigidArea(new Dimension(10, 0)));
     JButton selectPathButton = new JButton("Select File Path");
     selectPathButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         path.setText(FileToSave().getAbsolutePath());
       }
     });
-    panel.add(selectPathButton);
-
+    actionPanel.add(selectPathButton);
 
     //Populate List of CheckBoxes
     List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
@@ -291,22 +295,23 @@ public class CSVHandler {
       }
     });
 
-    panel.add(plotButton);
+    actionPanel.add(plotButton);
+    panel.add(actionPanel);
 
     /*try {
-      BufferedWriter out = new BufferedWriter(new FileWriter(path.getText()));
-      CSVWriter writer = new CSVWriter(out);
+        BufferedWriter out = new BufferedWriter(new FileWriter(path.getText()));
+        CSVWriter writer = new CSVWriter(out);
 
-      AvgRgb avg = new AvgRgb(imageList, mask);
-      MeanH meanh = new MeanH(imageList, mask);
-      ExcGreen excg = new ExcGreen(imageList, mask);
+        AvgRgb avg = new AvgRgb(imageList, mask);
+        MeanH meanh = new MeanH(imageList, mask);
+        ExcGreen excg = new ExcGreen(imageList, mask);
 
-      ArrayList<ColorRGB> avgArray = avg.process();
-      ArrayList<Float> meanHArray = meanh.process();
-      ArrayList<Float> excgArray = excg.process();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }*/
+        ArrayList<ColorRGB> avgArray = avg.process();
+        ArrayList<Float> meanHArray = meanh.process();
+        ArrayList<Float> excgArray = excg.process();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }*/
 
     exporter.add(panel);
     exporter.setVisible(true);

@@ -2,7 +2,7 @@ Add Mask Generator (falta função de quadriculado e de geometria)
 
 *Add Mass Renamer (new one or reimplement) (verificar cabeçalho da imagem com data ou pedir pra especificar data incial)
 
-Selecionar a máscara a ser usada no export (select all , deselect all, filearray)
+filtragem do periodo que vai ser usado nos dados.
 Refazer a GUI do exporter, deixar usável e melhorar o path
 
 Add R integration

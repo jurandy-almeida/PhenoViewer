@@ -51,6 +51,18 @@ public class CSVHandler {
     return cal.get(Calendar.HOUR_OF_DAY);
   }
 
+  public File FileToSave() {
+    JFrame parentFrame = new JFrame();
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    int result = fileChooser.showSaveDialog(parentFrame);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      return fileChooser.getSelectedFile();
+    } else {
+      return null;
+    }
+  }
+
   /*public void WriteCSV(ArrayList<File> imageList, File mask, File fileToSave) {
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(fileToSave.getAbsolutePath()));
@@ -129,17 +141,94 @@ public class CSVHandler {
 
     String pathToSave = "./";
     JTextField path = new JTextField(pathToSave);
+    path.setEditable(false);
     path.setPreferredSize( new Dimension(100, 50));
     panel.add(path);
+    JButton selectPathButton = new JButton("Select File Path");
+    selectPathButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        path.setText(FileToSave().getAbsolutePath());
+      }
+    });
+    panel.add(selectPathButton);
 
+
+    //Populate List of CheckBoxes
+    List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
+    for( Component comp : seriesPanel.getComponents() ) {
+      if( comp instanceof JCheckBox) seriescheckboxes.add( (JCheckBox)comp );
+    }
+    List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
+    for( Component comp : maskPanel.getComponents() ) {
+      if( comp instanceof JCheckBox) maskcheckboxes.add( (JCheckBox)comp );
+    }
+
+    //Buttons for Mask Selection
+    JButton selectMaskButton = new JButton("Select All Masks");
+    selectMaskButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: maskcheckboxes)
+          chk.setSelected(true);
+      }
+    });
+
+    JButton deselectMaskButton = new JButton("Deselect All Masks");
+    deselectMaskButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: maskcheckboxes) {
+          chk.setSelected(false);
+        }
+      }
+    });
+
+    JButton invertMaskButton = new JButton("Invert Mask Selection");
+    invertMaskButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: maskcheckboxes) {
+          chk.setSelected(!chk.isSelected());
+        }
+      }
+    });
+
+    maskPanel.add(selectMaskButton);
+    maskPanel.add(deselectMaskButton);
+    maskPanel.add(invertMaskButton);
+
+
+    //Buttons for Data Selection
+    JButton selectSeriesButton = new JButton("Select All Series");
+    selectSeriesButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: seriescheckboxes)
+          chk.setSelected(true);
+      }
+    });
+
+    JButton deselectSeriesButton = new JButton("Deselect All Series");
+    deselectSeriesButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: seriescheckboxes) {
+          chk.setSelected(false);
+        }
+      }
+    });
+
+    JButton invertSeriesButton = new JButton("Invert Series Selection");
+    invertSeriesButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        for (JCheckBox chk: seriescheckboxes) {
+          chk.setSelected(!chk.isSelected());
+        }
+      }
+    });
+
+    seriesPanel.add(selectSeriesButton);
+    seriesPanel.add(deselectSeriesButton);
+    seriesPanel.add(invertSeriesButton);
 
     JButton plotButton = new JButton("Export Series");
     plotButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
-        for( Component comp : maskPanel.getComponents() ) {
-          if( comp instanceof JCheckBox) maskcheckboxes.add( (JCheckBox)comp );
-        }
         String maskFilter = "";
         for (JCheckBox chk: maskcheckboxes) {
           if (chk.isSelected())
@@ -147,12 +236,7 @@ public class CSVHandler {
           else
             maskFilter += "0";
         }
-        System.out.println(maskFilter);
-
-        List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
-        for( Component comp : seriesPanel.getComponents() ) {
-          if( comp instanceof JCheckBox) seriescheckboxes.add( (JCheckBox)comp );
-        }
+        //System.out.println(maskFilter);
         String seriesFilter = "";
         for (JCheckBox chk: seriescheckboxes) {
           if (chk.isSelected())
@@ -160,7 +244,7 @@ public class CSVHandler {
           else
             seriesFilter += "0";
         }
-        System.out.println(seriesFilter);
+        //System.out.println(seriesFilter);
 
         for (int i=0; i<maskList.size(); i++) {
           if (maskFilter.charAt(i) == '1') {

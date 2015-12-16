@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.text.SimpleDateFormat;
 
 public class CSVHandler {
 
@@ -105,7 +105,7 @@ public class CSVHandler {
 
   public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
-    exporter.setSize(500,320);
+    exporter.setSize(500,340);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -140,6 +140,25 @@ public class CSVHandler {
 
     panel.add(selectorPanel);
 
+    JPanel timePanel = new JPanel();
+    FileFunctions ff = new FileFunctions();
+    Date inicio  = ff.readDate(imageList.get(0));
+    Date termino  = ff.readDate(imageList.get(0));
+    for (File image: imageList) {
+      Date aux = ff.readDate(image);
+      if (aux.before(inicio)) {
+        inicio = aux;
+      }
+      if (aux.after(termino)) {
+        termino = aux;
+      }
+    }
+
+    JLabel dataInicial = new JLabel("Inicial: "+new SimpleDateFormat("yyyy-MM-dd").format(inicio));
+    JLabel dataTermino = new JLabel("Termino: "+new SimpleDateFormat("yyyy-MM-dd").format(termino));
+
+    timePanel.add(dataInicial);
+    timePanel.add(dataTermino);
 
     JPanel actionPanel = new JPanel();
     actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
@@ -296,6 +315,7 @@ public class CSVHandler {
     });
 
     actionPanel.add(plotButton);
+    panel.add(timePanel);
     panel.add(actionPanel);
 
     /*try {

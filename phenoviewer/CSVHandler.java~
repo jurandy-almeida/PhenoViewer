@@ -192,8 +192,7 @@ public class CSVHandler {
     selectorButtonPanel.add(deselectSeriesButton);
     selectorButtonPanel.add(invertMaskButton);
     selectorButtonPanel.add(invertSeriesButton);
-
-	panel.add(selectorButtonPanel);
+	panel.add(selectorPanel);
 
 
 	//Adding the time interval selector.

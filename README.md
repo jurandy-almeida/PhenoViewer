@@ -5,8 +5,10 @@ Software de processamento e análise de imagens biológicas para o projeto e-Phe
   * [Jurandy Gomes de Almeida Junior] (http://lattes.cnpq.br/4495269939725770)
   * [Héctor Castelli Zacharias] (http://lattes.cnpq.br/9639614559519495)
 
-##Requisitos:
- * JAVA
+##Testado em:
+ * openjdk version "1.8.0_65"
+ * OpenJDK Runtime Environment (build 1.8.0_65-b17)
+ * OpenJDK 64-Bit Server VM (build 25.65-b01, mixed mode)
 
 #Funções:
  * Abrir séries de imagens

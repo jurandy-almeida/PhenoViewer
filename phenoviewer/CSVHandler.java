@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 
 public class CSVHandler {
 
@@ -80,11 +81,13 @@ public class CSVHandler {
     return result;
   }
 
-  public void ExportCSV(ArrayList<File> imageList, ArrayList<File> maskList, FileNode currentMask) {
+  public void ExportCSV(ArrayList<File> imageListOriginal, ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
     exporter.setSize(500,450);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+  //Clone ImageList for use
+    ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
 
 	//Adding the Masks and Data selectors
     JPanel selectorPanel = new JPanel();
@@ -202,8 +205,10 @@ public class CSVHandler {
 	//Get first date and last date.
     Date inicio  = ff.readDate(imageList.get(0));
     Date termino  = ff.readDate(imageList.get(0));
+    ArrayList<Date> dateList = new ArrayList<Date>();
     for (File image: imageList) {
       Date aux = ff.readDate(image);
+      dateList.add(aux);
       if (aux.before(inicio)) {
         inicio = aux;
       }
@@ -212,8 +217,19 @@ public class CSVHandler {
       }
     }
     JLabel datas = new JLabel("Período: de "+new SimpleDateFormat("dd/MM/yyyy").format(inicio)+" (Dia:"+calculaDia(inicio)+") a "+new SimpleDateFormat("dd/MM/yyyy").format(termino)+" (Dia:"+calculaDia(termino)+").");
-    timePanel.add(datas);	
-	//timePanel.add(datePicker);
+    timePanel.add(datas);
+    JPanel datePicker = new JPanel();
+    //
+    //Add ComboBox
+    JComboBox firstDate = new JComboBox();
+    firstDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
+    firstDate.setSelectedIndex(0);
+    datePicker.add(firstDate);
+    JComboBox lastDate = new JComboBox();
+    lastDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
+    lastDate.setSelectedIndex(dateList.size()-1);
+    datePicker.add(lastDate);
+	  timePanel.add(datePicker);
     panel.add(timePanel);
 
 
@@ -231,7 +247,7 @@ public class CSVHandler {
     });
     pathPanel.add(selectPathButton);
 
-    
+
 
     JButton plotButton = new JButton("Export Series");
     plotButton.addActionListener(new ActionListener() {
@@ -252,6 +268,23 @@ public class CSVHandler {
             seriesFilter += "0";
         }
         //System.out.println(seriesFilter);
+
+
+        //Filter ImageList according to the period selection
+        Iterator<File> lit = imageList.iterator();
+        while (lit.hasNext()) {
+          File f = lit.next();
+          if (ff.readDate(f).after((Date)lastDate.getSelectedItem())) {
+            //System.out.println("DATA:"+ff.readDate(f)+" INICIAL:"+(Date)lastDate.getSelectedItem()+" FINAL:"+(Date)firstDate.getSelectedItem()+" .");
+            lit.remove();
+            //break;
+          }
+          if (ff.readDate(f).before((Date)firstDate.getSelectedItem())) {
+            //System.out.println("DATA:"+ff.readDate(f)+" INICIAL:"+(Date)lastDate.getSelectedItem()+" FINAL:"+(Date)firstDate.getSelectedItem()+" .");
+            lit.remove();
+            //break;
+          }
+        }
 
         for (int i=0; i<maskList.size(); i++) {
           if (maskFilter.charAt(i) == '1') {
@@ -292,7 +325,9 @@ public class CSVHandler {
             } catch (IOException ex) {
               ex.printStackTrace();
             }
-            System.out.println(Mask.getName());
+            System.out.println(Mask.getName()+" DONE.");
+            //Reset ArrayList for use
+            ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
           }
         }
       }
@@ -306,7 +341,7 @@ public class CSVHandler {
 	plotButtonAligner.add(new JLabel(""));
     plotButtonAligner.add(plotButton);
 	panel.add(plotButtonAligner);
-	
+
 	//Add all panels to screen
     exporter.add(panel);
     exporter.setVisible(true);

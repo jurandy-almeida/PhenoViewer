@@ -221,11 +221,11 @@ public class CSVHandler {
     JPanel datePicker = new JPanel();
     //
     //Add ComboBox
-    JComboBox firstDate = new JComboBox();
+    final JComboBox firstDate = new JComboBox();
     firstDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
     firstDate.setSelectedIndex(0);
     datePicker.add(firstDate);
-    JComboBox lastDate = new JComboBox();
+    final JComboBox lastDate = new JComboBox();
     lastDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
     lastDate.setSelectedIndex(dateList.size()-1);
     datePicker.add(lastDate);

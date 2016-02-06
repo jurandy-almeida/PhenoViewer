@@ -237,7 +237,7 @@ public class CSVHandler {
     JPanel pathPanel = new JPanel();
     pathPanel.setLayout(new GridLayout(0,1));
     pathPanel.add(Box.createHorizontalGlue());
-    JLabel path = new JLabel("./");
+    final JLabel path = new JLabel("./");
     pathPanel.add(path);
     JButton selectPathButton = new JButton("Select File Path");
     selectPathButton.addActionListener(new ActionListener() {

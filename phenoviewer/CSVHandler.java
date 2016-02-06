@@ -81,13 +81,13 @@ public class CSVHandler {
     return result;
   }
 
-  public void ExportCSV(ArrayList<File> imageListOriginal, ArrayList<File> maskList, FileNode currentMask) {
+  public void ExportCSV(final ArrayList<File> imageListOriginal, ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
     exporter.setSize(500,450);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
   //Clone ImageList for use
-    ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
+    final ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
 
 	//Adding the Masks and Data selectors
     JPanel selectorPanel = new JPanel();

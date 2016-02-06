@@ -123,11 +123,11 @@ public class CSVHandler {
 
 	//Adding the selectors
 	//Populate List of CheckBoxes
-    List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
+    final List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
     for( Component comp : seriesPanel.getComponents() ) {
       if( comp instanceof JCheckBox) seriescheckboxes.add( (JCheckBox)comp );
     }
-    List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
+    final List<JCheckBox> maskcheckboxes = new ArrayList<JCheckBox>();
     for( Component comp : maskPanel.getComponents() ) {
       if( comp instanceof JCheckBox) maskcheckboxes.add( (JCheckBox)comp );
     }

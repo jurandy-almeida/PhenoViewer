@@ -81,7 +81,7 @@ public class CSVHandler {
     return result;
   }
 
-  public void ExportCSV(final ArrayList<File> imageListOriginal, ArrayList<File> maskList, FileNode currentMask) {
+  public void ExportCSV(final ArrayList<File> imageListOriginal, final ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
     exporter.setSize(500,450);
     JPanel panel = new JPanel();
@@ -201,7 +201,7 @@ public class CSVHandler {
 
 	//Adding the time interval selector.
     JPanel timePanel = new JPanel();
-    FileFunctions ff = new FileFunctions();
+    final FileFunctions ff = new FileFunctions();
 	//Get first date and last date.
     Date inicio  = ff.readDate(imageList.get(0));
     Date termino  = ff.readDate(imageList.get(0));

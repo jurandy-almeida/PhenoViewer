@@ -44,6 +44,32 @@ public class CSVHandler {
     return cal.get(Calendar.DAY_OF_YEAR);
   }
 
+  private int getDia(File file) {
+    Date date = new FileFunctions().readDate(file);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.DAY_OF_MONTH);
+  }
+
+  private int getDia(Date date) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.DAY_OF_MONTH);
+  }
+
+  private int getMes(File file) {
+    Date date = new FileFunctions().readDate(file);
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.MONTH);
+  }
+
+  private int getMes(Date date) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal.get(Calendar.MONTH);
+  }
+
   private int calculaAno(File file) {
     Date date = new FileFunctions().readDate(file);
     Calendar cal = Calendar.getInstance();
@@ -83,16 +109,16 @@ public class CSVHandler {
 
   public void ExportCSV(final ArrayList<File> imageListOriginal, final ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
-    exporter.setSize(500,490);
+    exporter.setSize(500,520);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-  //Clone ImageList for use
+    //Clone ImageList for use
     final ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
 
-	//Adding the Masks and Data selectors
+    //Adding the Masks and Data selectors
     JPanel selectorPanel = new JPanel();
     selectorPanel.setLayout(new GridLayout(0,2));
-	//Adding the data selector
+    //Adding the data selector
     String[] methodNames = {"Mean R", "Mean G", "Mean B", "Mean H", "Average R", "Average G", "Average B", "Excess Green"};
     JPanel seriesPanel = new JPanel();
     seriesPanel.setLayout(new GridLayout(0,1));
@@ -103,7 +129,7 @@ public class CSVHandler {
     JScrollPane seriesScroll = new JScrollPane(seriesPanel);
     selectorPanel.add(seriesScroll);
 
-	//Adding the mask selector
+    //Adding the mask selector
     JPanel maskPanel = new JPanel();
     maskPanel.setLayout(new GridLayout(0,1));
     if (currentMask != null) {
@@ -121,8 +147,8 @@ public class CSVHandler {
     selectorPanel.add(maskScroll);
     panel.add(selectorPanel);
 
-	//Adding the selectors
-	//Populate List of CheckBoxes
+    //Adding the selectors
+    //Populate List of CheckBoxes
     final List<JCheckBox> seriescheckboxes = new ArrayList<JCheckBox>();
     for( Component comp : seriesPanel.getComponents() ) {
       if( comp instanceof JCheckBox) seriescheckboxes.add( (JCheckBox)comp );
@@ -186,8 +212,8 @@ public class CSVHandler {
       }
     });
 
-	//Add panel for the selector buttons
-	JPanel selectorButtonPanel = new JPanel();
+    //Add panel for the selector buttons
+    JPanel selectorButtonPanel = new JPanel();
     selectorButtonPanel.setLayout(new GridLayout(0,2));
     selectorButtonPanel.add(selectSeriesButton);
     selectorButtonPanel.add(selectMaskButton);
@@ -196,13 +222,13 @@ public class CSVHandler {
     selectorButtonPanel.add(invertSeriesButton);
     selectorButtonPanel.add(invertMaskButton);
 
-	panel.add(selectorButtonPanel);
+    panel.add(selectorButtonPanel);
 
 
-	//Adding the time interval selector.
+    //Adding the time interval selector.
     JPanel timePanel = new JPanel();
     final FileFunctions ff = new FileFunctions();
-	//Get first date and last date.
+    //Get first date and last date.
     Date inicio  = ff.readDate(imageList.get(0));
     Date termino  = ff.readDate(imageList.get(0));
     ArrayList<Date> dateList = new ArrayList<Date>();
@@ -219,17 +245,33 @@ public class CSVHandler {
     JLabel datas = new JLabel("Período: de "+new SimpleDateFormat("dd/MM/yyyy").format(inicio)+" (Dia:"+calculaDia(inicio)+") a "+new SimpleDateFormat("dd/MM/yyyy").format(termino)+" (Dia:"+calculaDia(termino)+").");
     timePanel.add(datas);
     JPanel datePicker = new JPanel();
-    //
+    datePicker.setLayout(new GridLayout(0,4));
+
+    String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+    String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+    String[] years = {"2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"};
+
     //Add ComboBox
-    final JComboBox firstDate = new JComboBox();
-    firstDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
-    firstDate.setSelectedIndex(0);
-    datePicker.add(firstDate);
-    final JComboBox lastDate = new JComboBox();
-    lastDate.setModel(new DefaultComboBoxModel(dateList.toArray()));
-    lastDate.setSelectedIndex(dateList.size()-1);
-    datePicker.add(lastDate);
-	  timePanel.add(datePicker);
+    final JComboBox firstDateD = new JComboBox(days);
+    final JComboBox firstDateM = new JComboBox(months);
+    final JComboBox firstDateY = new JComboBox(years);
+
+    datePicker.add(new JLabel("Limite Inferior: "));
+    datePicker.add(firstDateD);
+    datePicker.add(firstDateM);
+    datePicker.add(firstDateY);
+
+
+    datePicker.add(new JLabel("Limite Supeior: "));
+    final JComboBox lastDateD = new JComboBox(days);
+    final JComboBox lastDateM = new JComboBox(months);
+    final JComboBox lastDateY = new JComboBox(years);
+
+    datePicker.add(lastDateD);
+    datePicker.add(lastDateM);
+    datePicker.add(lastDateY);
+
+    timePanel.add(datePicker);
     panel.add(timePanel);
 
 
@@ -274,7 +316,21 @@ public class CSVHandler {
         Iterator<File> lit = imageList.iterator();
         while (lit.hasNext()) {
           File f = lit.next();
-          if (ff.readDate(f).after((Date)lastDate.getSelectedItem())) {
+          //Filter Year
+          //Filter Month
+          //Filter Day
+          if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else  if (getMes(f) < Integer.parseInt((String)firstDateM.getSelectedItem()) || getMes(f) > Integer.parseInt((String)lastDateM.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+            lit.remove();
+            //break;
+          }
+
+          /*if (ff.readDate(f).after((Date)lastDate.getSelectedItem())) {
             //System.out.println("DATA:"+ff.readDate(f)+" INICIAL:"+(Date)lastDate.getSelectedItem()+" FINAL:"+(Date)firstDate.getSelectedItem()+" .");
             lit.remove();
             //break;
@@ -283,7 +339,8 @@ public class CSVHandler {
             //System.out.println("DATA:"+ff.readDate(f)+" INICIAL:"+(Date)lastDate.getSelectedItem()+" FINAL:"+(Date)firstDate.getSelectedItem()+" .");
             lit.remove();
             //break;
-          }
+          }*/
+
         }
 
         for (int i=0; i<maskList.size(); i++) {
@@ -335,14 +392,14 @@ public class CSVHandler {
     panel.add(pathPanel);
 
 
-	//Add the plot button panel
-	JPanel plotButtonAligner =  new JPanel();
+    //Add the plot button panel
+    JPanel plotButtonAligner =  new JPanel();
     plotButtonAligner.setLayout(new GridLayout(0,3));
-	plotButtonAligner.add(new JLabel(""));
+    plotButtonAligner.add(new JLabel(""));
     plotButtonAligner.add(plotButton);
-	panel.add(plotButtonAligner);
+    panel.add(plotButtonAligner);
 
-	//Add all panels to screen
+    //Add all panels to screen
     exporter.add(panel);
     exporter.setVisible(true);
   }

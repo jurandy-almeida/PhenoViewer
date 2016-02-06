@@ -83,7 +83,7 @@ public class CSVHandler {
 
   public void ExportCSV(final ArrayList<File> imageListOriginal, final ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
-    exporter.setSize(500,450);
+    exporter.setSize(500,490);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
   //Clone ImageList for use
@@ -189,12 +189,12 @@ public class CSVHandler {
 	//Add panel for the selector buttons
 	JPanel selectorButtonPanel = new JPanel();
     selectorButtonPanel.setLayout(new GridLayout(0,2));
-    selectorButtonPanel.add(selectMaskButton);
     selectorButtonPanel.add(selectSeriesButton);
-    selectorButtonPanel.add(deselectMaskButton);
+    selectorButtonPanel.add(selectMaskButton);
     selectorButtonPanel.add(deselectSeriesButton);
-    selectorButtonPanel.add(invertMaskButton);
+    selectorButtonPanel.add(deselectMaskButton);
     selectorButtonPanel.add(invertSeriesButton);
+    selectorButtonPanel.add(invertMaskButton);
 
 	panel.add(selectorButtonPanel);
 

@@ -391,12 +391,103 @@ public class CSVHandler {
     });
     panel.add(pathPanel);
 
+    //AnalyzeCSV JTable Generator
+    JButton analyzeButton = new JButton("Analyze Series(no export)");
+    analyzeButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        String maskFilter = "";
+        for (JCheckBox chk: maskcheckboxes) {
+          if (chk.isSelected())
+            maskFilter += "1";
+          else
+            maskFilter += "0";
+        }
+        //System.out.println(maskFilter);
+        String seriesFilter = "";
+        for (JCheckBox chk: seriescheckboxes) {
+          if (chk.isSelected())
+            seriesFilter += "1";
+          else
+            seriesFilter += "0";
+        }
+        //System.out.println(seriesFilter);
+
+
+        //Filter ImageList according to the period selection
+        Iterator<File> lit = imageList.iterator();
+        while (lit.hasNext()) {
+          File f = lit.next();
+          //Filter Year
+          //Filter Month
+          //Filter Day
+          if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else  if (getMes(f) < Integer.parseInt((String)firstDateM.getSelectedItem()) || getMes(f) > Integer.parseInt((String)lastDateM.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+            lit.remove();
+            //break;
+          }
+        }
+
+        for (int i=0; i<maskList.size(); i++) {
+          if (maskFilter.charAt(i) == '1') {
+            //Export Data for mask
+            File Mask = maskList.get(i);
+
+            //Generate data
+            try {
+              AvgRgb avg = new AvgRgb(imageList, Mask);
+              MeanH meanh = new MeanH(imageList, Mask);
+              ExcGreen excg = new ExcGreen(imageList, Mask);
+
+              ArrayList<ColorRGB> avgArray = avg.process();
+              ArrayList<Float> meanHArray = meanh.process();
+              ArrayList<Float> excgArray = excg.process();
+
+
+              //Check for data to export
+              String[] title = ("filename,year,day,hour"+filterCommaString("avgR,avgG,avgB,relR,relG,relB,meanH,excG".split(","),seriesFilter)).split(",");
+
+              //writer.writeNext(title);
+              JTable table;
+              DefaultTableModel tableModel = new DefaultTableModel(title,0);
+
+              List<String[]> dataList = new ArrayList<String[]>();
+              for (int j=0; j<avgArray.size(); j++) {
+                //Check each data to be inserted
+                String[] data = (avgArray.get(j).toCSV()+","+avgArray.get(j).toRelRGB().toCSV()+","+meanHArray.get(j)+","+excgArray.get(j)).split(",");
+                String[] entries = (imageList.get(j).getName()+","+calculaAno(imageList.get(j))+","+calculaDia(imageList.get(j))+","+calculaHora(imageList.get(j))+filterCommaString(data,seriesFilter)).split(",");
+
+                dataList.add(entries);
+                tableModel.addRow(entries);
+              }
+              table = new JTable(tableModel);
+
+              String[][] graphData = dataList.toArray(new String[0][]);
+
+              AnalyzeCSV(table, title, graphData).setVisible(true);
+
+            } catch (IOException ex) {
+              ex.printStackTrace();
+            }
+            System.out.println(Mask.getName()+" DONE.");
+            //Reset ArrayList for use
+            ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
+          }
+        }
+      }
+    });
+    panel.add(pathPanel);
+
 
     //Add the plot button panel
     JPanel plotButtonAligner =  new JPanel();
-    plotButtonAligner.setLayout(new GridLayout(0,3));
-    plotButtonAligner.add(new JLabel(""));
+    plotButtonAligner.setLayout(new GridLayout(0,2));
     plotButtonAligner.add(plotButton);
+    plotButtonAligner.add(analyzeButton);
     panel.add(plotButtonAligner);
 
     //Add all panels to screen
@@ -427,5 +518,10 @@ public class CSVHandler {
       System.out.println("ERROR: File error!");
     }
     return null;
+  }
+
+  public JFrame AnalyzeCSV(JTable table, String[] legend, String[][] graphData) {
+    CSVAnalyzer analyzer = new CSVAnalyzer(table, legend, graphData);
+    return analyzer;
   }
 }

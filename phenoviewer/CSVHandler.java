@@ -264,12 +264,16 @@ public class CSVHandler {
 
     datePicker.add(new JLabel("Limite Supeior: "));
     final JComboBox lastDateD = new JComboBox(days);
+    lastDateD.setSelectedItem("31");
     final JComboBox lastDateM = new JComboBox(months);
+    lastDateM.setSelectedItem("12");
     final JComboBox lastDateY = new JComboBox(years);
+    lastDateY.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 
     datePicker.add(lastDateD);
     datePicker.add(lastDateM);
     datePicker.add(lastDateY);
+
 
     timePanel.add(datePicker);
     panel.add(timePanel);

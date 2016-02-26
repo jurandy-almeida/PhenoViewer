@@ -268,7 +268,7 @@ public class CSVHandler {
     final JComboBox lastDateM = new JComboBox(months);
     lastDateM.setSelectedItem("12");
     final JComboBox lastDateY = new JComboBox(years);
-    lastDateY.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+    lastDateY.setSelectedItem(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
     datePicker.add(lastDateD);
     datePicker.add(lastDateM);

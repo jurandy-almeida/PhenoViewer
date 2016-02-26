@@ -262,7 +262,7 @@ public class CSVHandler {
     datePicker.add(firstDateY);
 
 
-    datePicker.add(new JLabel("Limite Supeior: "));
+    datePicker.add(new JLabel("Limite Superior: "));
     final JComboBox lastDateD = new JComboBox(days);
     lastDateD.setSelectedItem("31");
     final JComboBox lastDateM = new JComboBox(months);
@@ -274,6 +274,7 @@ public class CSVHandler {
     datePicker.add(lastDateM);
     datePicker.add(lastDateY);
 
+    datePicker.add(new JLabel(""));
 
     timePanel.add(datePicker);
     panel.add(timePanel);

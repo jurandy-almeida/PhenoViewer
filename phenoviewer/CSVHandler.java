@@ -109,7 +109,7 @@ public class CSVHandler {
 
   public void ExportCSV(final ArrayList<File> imageListOriginal, final ArrayList<File> maskList, FileNode currentMask) {
     JFrame exporter = new JFrame("CSV Exporter");
-    exporter.setSize(500,520);
+    exporter.setSize(650,520);
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     //Clone ImageList for use
@@ -245,21 +245,30 @@ public class CSVHandler {
     JLabel datas = new JLabel("Período: de "+new SimpleDateFormat("dd/MM/yyyy").format(inicio)+" (Dia:"+calculaDia(inicio)+") a "+new SimpleDateFormat("dd/MM/yyyy").format(termino)+" (Dia:"+calculaDia(termino)+").");
     timePanel.add(datas);
     JPanel datePicker = new JPanel();
-    datePicker.setLayout(new GridLayout(0,4));
+    datePicker.setLayout(new GridLayout(0,5));
 
     String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
     String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     String[] years = {"2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"};
+    String[] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"};
+
+    datePicker.add(new JLabel(""));
+    datePicker.add(new JLabel("Dia"));
+    datePicker.add(new JLabel("Mês"));
+    datePicker.add(new JLabel("Ano"));
+    datePicker.add(new JLabel("Hora"));
 
     //Add ComboBox
     final JComboBox firstDateD = new JComboBox(days);
     final JComboBox firstDateM = new JComboBox(months);
     final JComboBox firstDateY = new JComboBox(years);
+    final JComboBox firstDateH = new JComboBox(hours);
 
     datePicker.add(new JLabel("Limite Inferior: "));
     datePicker.add(firstDateD);
     datePicker.add(firstDateM);
     datePicker.add(firstDateY);
+    datePicker.add(firstDateH);
 
 
     datePicker.add(new JLabel("Limite Superior: "));
@@ -269,10 +278,13 @@ public class CSVHandler {
     lastDateM.setSelectedItem("12");
     final JComboBox lastDateY = new JComboBox(years);
     lastDateY.setSelectedItem(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+    final JComboBox lastDateH = new JComboBox(hours);
+    lastDateH.setSelectedItem("24");
 
     datePicker.add(lastDateD);
     datePicker.add(lastDateM);
     datePicker.add(lastDateY);
+    datePicker.add(lastDateH);
 
     datePicker.add(new JLabel(""));
 
@@ -324,6 +336,7 @@ public class CSVHandler {
           //Filter Year
           //Filter Month
           //Filter Day
+          //Filter Hour
           if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
             lit.remove();
             //break;
@@ -331,6 +344,9 @@ public class CSVHandler {
             lit.remove();
             //break;
           } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else if (calculaHora(f) < Integer.parseInt((String)firstDateH.getSelectedItem()) || calculaHora(f) > Integer.parseInt((String)lastDateH.getSelectedItem())) {
             lit.remove();
             //break;
           }
@@ -372,7 +388,7 @@ public class CSVHandler {
 
 
               //Check for data to export
-              String[] title = ("filename,year,day,hour"+filterCommaString("avgR,avgG,avgB,relR,relG,relB,meanH,excG".split(","),seriesFilter)).split(",");
+              String[] title = ("filename,year,day,hour"+filterCommaString("Mean R,Mean G,Mean B,Mean H,Average R,Average G,Average B,Excess Green".split(","),seriesFilter)).split(",");
 
               writer.writeNext(title);
               for (int j=0; j<avgArray.size(); j++) {
@@ -387,11 +403,14 @@ public class CSVHandler {
             } catch (IOException ex) {
               ex.printStackTrace();
             }
+            JOptionPane.showMessageDialog(null, "Exporting: "+Mask.getName()+". DONE.");
             System.out.println(Mask.getName()+" DONE.");
-            //Reset ArrayList for use
-            ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
           }
         }
+
+        //Reset ArrayList for use
+        imageList.clear();
+        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
       }
     });
     panel.add(pathPanel);
@@ -425,6 +444,7 @@ public class CSVHandler {
           //Filter Year
           //Filter Month
           //Filter Day
+          //Filter Hour
           if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
             lit.remove();
             //break;
@@ -432,6 +452,9 @@ public class CSVHandler {
             lit.remove();
             //break;
           } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+            lit.remove();
+            //break;
+          } else if (calculaHora(f) < Integer.parseInt((String)firstDateH.getSelectedItem()) || calculaHora(f) > Integer.parseInt((String)lastDateH.getSelectedItem())) {
             lit.remove();
             //break;
           }
@@ -454,7 +477,8 @@ public class CSVHandler {
 
 
               //Check for data to export
-              String[] title = ("filename,year,day,hour"+filterCommaString("avgR,avgG,avgB,relR,relG,relB,meanH,excG".split(","),seriesFilter)).split(",");
+              String[] legend = ("filename,year,day,hour"+filterCommaString("Mean R,Mean G,Mean B,Mean H,Average R,Average G,Average B,Excess Green".split(","),seriesFilter)).split(",");
+              String[] title = ("filename,year,day,hour"+filterCommaString("Mean R,Mean G,Mean B,Mean H,Average R,Average G,Average B,Excess Green".split(","),seriesFilter)).split(",");
 
               //writer.writeNext(title);
               JTable table;
@@ -473,16 +497,18 @@ public class CSVHandler {
 
               String[][] graphData = dataList.toArray(new String[0][]);
 
-              AnalyzeCSV(table, title, graphData).setVisible(true);
+              AnalyzeCSV(table, legend, graphData).setVisible(true);
 
             } catch (IOException ex) {
               ex.printStackTrace();
             }
+            JOptionPane.showMessageDialog(null, "Exporting: "+Mask.getName()+". DONE.");
             System.out.println(Mask.getName()+" DONE.");
-            //Reset ArrayList for use
-            ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
           }
         }
+        //Reset ArrayList for use
+        imageList.clear();
+        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
       }
     });
     panel.add(pathPanel);

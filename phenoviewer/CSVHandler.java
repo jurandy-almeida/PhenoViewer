@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
+
 
 public class CSVHandler {
 
@@ -315,6 +318,7 @@ public class CSVHandler {
     JButton plotButton = new JButton("Export Series");
     plotButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        System.out.println("I'm Here");
         String maskFilter = "";
         for (JCheckBox chk: maskcheckboxes) {
           if (chk.isSelected())
@@ -334,23 +338,27 @@ public class CSVHandler {
 
 
         //Filter ImageList according to the period selection
-        Iterator<File> lit = imageList.iterator();
+        ListIterator<File> lit = imageList.listIterator();
         while (lit.hasNext()) {
           File f = lit.next();
           //Filter Year
           //Filter Month
           //Filter Day
           //Filter Hour
-          if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
+          int ano = calculaAno(f);
+          int mes = getMes(f);
+          int dia = getDia(f);
+          int hora = calculaHora(f);
+          if (ano < Integer.parseInt((String)firstDateY.getSelectedItem()) || ano > Integer.parseInt((String)lastDateY.getSelectedItem())) {
             lit.remove();
             //break;
-          } else  if (getMes(f) < Integer.parseInt((String)firstDateM.getSelectedItem()) || getMes(f) > Integer.parseInt((String)lastDateM.getSelectedItem())) {
+          } else  if (mes < Integer.parseInt((String)firstDateM.getSelectedItem()) || mes > Integer.parseInt((String)lastDateM.getSelectedItem())) {
             lit.remove();
             //break;
-          } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+          } else if (dia < Integer.parseInt((String)firstDateD.getSelectedItem()) || dia > Integer.parseInt((String)lastDateD.getSelectedItem())) {
             lit.remove();
             //break;
-          } else if (calculaHora(f) < Integer.parseInt((String)firstDateH.getSelectedItem()) || calculaHora(f) > Integer.parseInt((String)lastDateH.getSelectedItem())) {
+          } else if (hora < Integer.parseInt((String)firstDateH.getSelectedItem()) || hora > Integer.parseInt((String)lastDateH.getSelectedItem())) {
             lit.remove();
             //break;
           }
@@ -413,6 +421,7 @@ public class CSVHandler {
         }
 
         //Reset ArrayList for use
+        lit=null;
         imageList.clear();
         ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
       }
@@ -449,17 +458,25 @@ public class CSVHandler {
           //Filter Month
           //Filter Day
           //Filter Hour
-          if (calculaAno(f) < Integer.parseInt((String)firstDateY.getSelectedItem()) || calculaAno(f) > Integer.parseInt((String)lastDateY.getSelectedItem())) {
+          int ano = calculaAno(f);
+          int mes = getMes(f);
+          int dia = getDia(f);
+          int hora = calculaHora(f);
+          if (ano < Integer.parseInt((String)firstDateY.getSelectedItem()) || ano > Integer.parseInt((String)lastDateY.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
-          } else  if (getMes(f) < Integer.parseInt((String)firstDateM.getSelectedItem()) || getMes(f) > Integer.parseInt((String)lastDateM.getSelectedItem())) {
+          } else  if (mes < Integer.parseInt((String)firstDateM.getSelectedItem()) || mes > Integer.parseInt((String)lastDateM.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
-          } else if (getDia(f) < Integer.parseInt((String)firstDateD.getSelectedItem()) || getDia(f) > Integer.parseInt((String)lastDateD.getSelectedItem())) {
+          } else if (dia < Integer.parseInt((String)firstDateD.getSelectedItem()) || dia > Integer.parseInt((String)lastDateD.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
-          } else if (calculaHora(f) < Integer.parseInt((String)firstDateH.getSelectedItem()) || calculaHora(f) > Integer.parseInt((String)lastDateH.getSelectedItem())) {
+          } else if (hora < Integer.parseInt((String)firstDateH.getSelectedItem()) || hora > Integer.parseInt((String)lastDateH.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
           }
         }

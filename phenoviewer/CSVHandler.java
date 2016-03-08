@@ -318,7 +318,6 @@ public class CSVHandler {
     JButton plotButton = new JButton("Export Series");
     plotButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("I'm Here");
         String maskFilter = "";
         for (JCheckBox chk: maskcheckboxes) {
           if (chk.isSelected())
@@ -337,8 +336,9 @@ public class CSVHandler {
         //System.out.println(seriesFilter);
 
 
+        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
         //Filter ImageList according to the period selection
-        ListIterator<File> lit = imageList.listIterator();
+        Iterator<File> lit = imageList.iterator();
         while (lit.hasNext()) {
           File f = lit.next();
           //Filter Year
@@ -351,15 +351,19 @@ public class CSVHandler {
           int hora = calculaHora(f);
           if (ano < Integer.parseInt((String)firstDateY.getSelectedItem()) || ano > Integer.parseInt((String)lastDateY.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
           } else  if (mes < Integer.parseInt((String)firstDateM.getSelectedItem()) || mes > Integer.parseInt((String)lastDateM.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
           } else if (dia < Integer.parseInt((String)firstDateD.getSelectedItem()) || dia > Integer.parseInt((String)lastDateD.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
           } else if (hora < Integer.parseInt((String)firstDateH.getSelectedItem()) || hora > Integer.parseInt((String)lastDateH.getSelectedItem())) {
             lit.remove();
+            System.out.println(f.getAbsolutePath()+"   ->"+ano+"/"+mes+"/"+dia+":"+hora);
             //break;
           }
 
@@ -423,7 +427,7 @@ public class CSVHandler {
         //Reset ArrayList for use
         lit=null;
         imageList.clear();
-        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
+        imageList = (ArrayList<File>) imageListOriginal.clone();
       }
     });
     panel.add(pathPanel);
@@ -450,6 +454,7 @@ public class CSVHandler {
         //System.out.println(seriesFilter);
 
 
+        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
         //Filter ImageList according to the period selection
         Iterator<File> lit = imageList.iterator();
         while (lit.hasNext()) {
@@ -529,7 +534,7 @@ public class CSVHandler {
         }
         //Reset ArrayList for use
         imageList.clear();
-        ArrayList<File> imageList = (ArrayList<File>) imageListOriginal.clone();
+        imageList = (ArrayList<File>) imageListOriginal.clone();
       }
     });
     panel.add(pathPanel);

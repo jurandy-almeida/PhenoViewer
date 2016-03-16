@@ -256,6 +256,11 @@ public class CSVHandler {
     for (int i=0; i<=inicio.getYear()-termino.getYear() ;i++) {
       years2 += String.valueOf(inicio.getYear()+1900+i)+",";
     }
+    if (years2 == " " || years2 == null || years2 == "") {
+      for (int i=0; i<=30 ;i++) {
+        years2 += String.valueOf(2000+i)+",";
+      }
+    }
     String[] years = years2.split(",");
     String[] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"};
 

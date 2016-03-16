@@ -83,11 +83,9 @@ public class FileFunctions
         }
       }
   } catch (Exception e) {
-    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-    //System.out.println("Modified Date :- " + sdf.format(f.lastModified()));
-    dateTime = new Date(f.lastModified());
+        dateTime = new Date(f.lastModified());
   } finally {
-    return dateTime;
+    return (dateTime!= null ? dateTime : new Date(100));
   }
 }
 }

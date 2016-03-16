@@ -262,8 +262,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
     treeImage = new BasicFileTree(".", new java.io.FileFilter() {
       public boolean accept(File f) {
-        return f.getName().toLowerCase().endsWith(".jpg")
-          || f.isDirectory();
+        return f.getName().toLowerCase().endsWith(".jpg") || f.getName().toLowerCase().endsWith(".tif") || f.isDirectory();
       }
     });
     treeImage.getSelectionModel().setSelectionMode(
@@ -285,8 +284,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
     listImage = new BasicFileList(".", new java.io.FileFilter() {
       public boolean accept(File f) {
-        return f.getName().toLowerCase().endsWith(".jpg")
-          || f.isDirectory();
+        return f.getName().toLowerCase().endsWith(".jpg") || f.getName().toLowerCase().endsWith(".tif") || f.isDirectory();
       }
     });
     listImage.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -313,8 +311,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
     treeMask = new BasicFileTree(".", new java.io.FileFilter() {
       public boolean accept(File f) {
-        return f.getName().toLowerCase().endsWith(".bmp")
-          || f.isDirectory();
+        return f.getName().toLowerCase().endsWith(".bmp") || f.isDirectory();
       }
     });
     treeMask.getSelectionModel().setSelectionMode(

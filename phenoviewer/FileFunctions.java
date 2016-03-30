@@ -47,54 +47,64 @@ public class FileFunctions {
 
   public Date readDate(File f){
     String dat = null, tim = null;
-          Date dateTime = null;
-        try { //Trata imagens de outras cameras
-              Metadata metadata = ImageMetadataReader.readMetadata(f);
-              Directory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-              if(directory !=null) {
-                  Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-                  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-  //              System.out.println(format.format(date));
-                  return date;
-              }
-          } catch (Exception e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-          }
-          try {
-              BufferedReader br = new BufferedReader(
-                      new FileReader(f.getAbsolutePath()));
-              String str = null;
-              do {
-                  str = br.readLine();
-              } while ((str != null) && !str.toUpperCase().
-                       equals("SECTION FINGERPRINT"));
+    Date dateTime = null;
+    try { //Trata imagens de outras cameras
+      Metadata metadata = ImageMetadataReader.readMetadata(f);
+      Directory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+      if(directory !=null) {
+        Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        //              System.out.println(format.format(date));
+        return date;
+      }
+    } catch (Exception e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    try {
+      BufferedReader br = new BufferedReader(
+        new FileReader(f.getAbsolutePath()));
+      String str = null;
+      do {
+        str = br.readLine();
+      } while ((str != null) && !str.toUpperCase().
+               equals("SECTION FINGERPRINT"));
 
-              do {
-                  str = br.readLine();
-                  if (str != null) {
-                      if (str.substring(0, 3).toUpperCase().equals("DAT"))
-                          dat = str.substring(4, str.length());
-                      if (str.substring(0, 3).toUpperCase().equals("TIM"))
-                          tim = str.substring(4, str.length());
-                  }
-              } while ((str != null) && !str.toUpperCase().
-                       equals("ENDSECTION FINGERPRINT"));
-              br.close();
-          } catch (IOException e) {
-              System.out.println("File not found.");
-          }
+      do {
+        str = br.readLine();
+        if (str != null) {
+          if (str.substring(0, 3).toUpperCase().equals("DAT"))
+            dat = str.substring(4, str.length());
+          if (str.substring(0, 3).toUpperCase().equals("TIM"))
+            tim = str.substring(4, str.length());
+        }
+      } while ((str != null) && !str.toUpperCase().
+               equals("ENDSECTION FINGERPRINT"));
+      br.close();
+    } catch (IOException e) {
+      System.out.println("File not found.");
+    }
 
-          if ((dat != null) && (tim != null)) {
-              try {
-                  SimpleDateFormat format =
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                  dateTime = format.parse(dat + " " + tim);
-              } catch (ParseException e) {
-                  System.out.println("Unknown file format.");
-              }
-          }
+    if ((dat != null) && (tim != null)) {
+      try {
+        SimpleDateFormat format =
+          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        dateTime = format.parse(dat + " " + tim);
+      } catch (ParseException e) {
+        System.out.println("Unknown file format.");
+      }
+    }
+    if (dateTime==null) {
+      try {
+        String filename = f.getName();
+        DateFormat df = new SimpleDateFormat("yyyy_D_k");
+        dateTime =  df.parse(filename);
+        System.out.println("DATE = "+dateTime);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
 
-          return (dateTime!=null) ? dateTime : new Date();
+    return (dateTime!=null) ? dateTime : new Date();
   }
 }

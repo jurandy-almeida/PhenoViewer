@@ -158,14 +158,14 @@ public class ImageDisplay extends JLabel {
 
     createBufferedImages();
 
-    if(biShow!=null) biShow.flush();
-    biShow = biSrc;
-
     redHistogram.setFilterBin(-1);
     greenHistogram.setFilterBin(-1);
     blueHistogram.setFilterBin(-1);
-
+/*
+    if(biShow!=null) biShow.flush();
+    biShow = biSrc;
     computeColorHistograms();
+*/
   }
 
   public void computeColorHistograms() {

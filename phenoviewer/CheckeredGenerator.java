@@ -29,8 +29,23 @@ public class CheckeredGenerator extends JFrame {
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new GridLayout(0,1));
         imagePanel.add(new JLabel("Select the squares you want the software to analyze:"));
-        imagePanel.add(new JLabel(new ImageIcon(image.getScaledInstance(800, 400, Image.SCALE_DEFAULT))));
 
+        BufferedImage squared = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+        //http://stackoverflow.com/questions/3914265/drawing-multiple-lines-in-a-bufferedimage
+
+        Graphics2D g2d = image.createGraphics();
+        g2d.setColor(Color.RED);
+        BasicStroke bs = new BasicStroke(2);
+        g2d.setStroke(bs);
+        // draw the black vertical and horizontal lines
+        for(int i=0;i<Integer.parseInt(x.getText());i++){
+            // unless divided by some factor, these lines were being
+            // drawn outside the bound of the image..
+            g2d.drawLine((image.getWidth()+2)/20*i, 0, (image.getWidth()+2)/20*i,image.getHeight()-1);
+            g2d.drawLine(0, (image.getHeight()+2)/20*i, image.getWidth()-1, (image.getHeight()+2)/20*i);
+        }
+        imagePanel.add(new JLabel(new ImageIcon(image.getScaledInstance(800, 400, Image.SCALE_DEFAULT))));
 
 
         add(imagePanel);

@@ -16,4 +16,5 @@ TO-DO
 
 
 #JAR executable
-PhenoViewer.jar
+#PhenoViewer.jar
+#allowed for easier testing if repository is not downloaded

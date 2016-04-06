@@ -89,11 +89,104 @@ public class phenoviewer.CSVAnalyzer extends javax.swing.JFrame {
   public phenoviewer.CSVAnalyzer(javax.swing.JTable, java.lang.String[], java.lang.String[][]);
 }
 Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$1 implements java.awt.event.ActionListener {
+  final java.util.List val$maskcheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$1(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$2 implements java.awt.event.ActionListener {
+  final java.util.List val$maskcheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$2(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$3 implements java.awt.event.ActionListener {
+  final java.util.List val$maskcheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$3(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$4 implements java.awt.event.ActionListener {
+  final java.util.List val$seriescheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$4(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$5 implements java.awt.event.ActionListener {
+  final java.util.List val$seriescheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$5(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$6 implements java.awt.event.ActionListener {
+  final java.util.List val$seriescheckboxes;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$6(phenoviewer.CSVHandler, java.util.List);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$7 implements java.awt.event.ActionListener {
+  final javax.swing.JLabel val$path;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$7(phenoviewer.CSVHandler, javax.swing.JLabel);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$8 implements java.awt.event.ActionListener {
+  final java.util.List val$maskcheckboxes;
+  final java.util.List val$seriescheckboxes;
+  final java.util.ArrayList val$imageListOriginal;
+  final javax.swing.JComboBox val$firstDateY;
+  final javax.swing.JComboBox val$lastDateY;
+  final javax.swing.JComboBox val$firstDateM;
+  final javax.swing.JComboBox val$lastDateM;
+  final javax.swing.JComboBox val$firstDateD;
+  final javax.swing.JComboBox val$lastDateD;
+  final javax.swing.JComboBox val$firstDateH;
+  final javax.swing.JComboBox val$lastDateH;
+  final java.util.ArrayList val$maskList;
+  final javax.swing.JLabel val$path;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$8(phenoviewer.CSVHandler, java.util.List, java.util.List, java.util.ArrayList, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, java.util.ArrayList, javax.swing.JLabel);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
+class phenoviewer.CSVHandler$9 implements java.awt.event.ActionListener {
+  final java.util.List val$maskcheckboxes;
+  final java.util.List val$seriescheckboxes;
+  final java.util.ArrayList val$imageListOriginal;
+  final javax.swing.JComboBox val$firstDateY;
+  final javax.swing.JComboBox val$lastDateY;
+  final javax.swing.JComboBox val$firstDateM;
+  final javax.swing.JComboBox val$lastDateM;
+  final javax.swing.JComboBox val$firstDateD;
+  final javax.swing.JComboBox val$lastDateD;
+  final javax.swing.JComboBox val$firstDateH;
+  final javax.swing.JComboBox val$lastDateH;
+  final java.util.ArrayList val$maskList;
+  final phenoviewer.CSVHandler this$0;
+  phenoviewer.CSVHandler$9(phenoviewer.CSVHandler, java.util.List, java.util.List, java.util.ArrayList, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, javax.swing.JComboBox, java.util.ArrayList);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "CSVHandler.java"
 public class phenoviewer.CSVHandler {
   phenoviewer.CSVHandler();
   public java.io.File FileToSave();
-  public void WriteCSV(java.util.ArrayList<java.io.File>, java.io.File, java.io.File);
+  public java.lang.String filterCommaString(java.lang.String[], java.lang.String);
+  public void ExportCSV(java.util.ArrayList<java.io.File>, java.util.ArrayList<java.io.File>, phenoviewer.FileNode);
   public javax.swing.JFrame AnalyzeCSV(java.lang.String);
+  public javax.swing.JFrame AnalyzeCSV(javax.swing.JTable, java.lang.String[], java.lang.String[][]);
+  static int access$000(phenoviewer.CSVHandler, java.io.File);
+  static int access$100(phenoviewer.CSVHandler, java.io.File);
+  static int access$200(phenoviewer.CSVHandler, java.io.File);
+  static int access$300(phenoviewer.CSVHandler, java.io.File);
+  static int access$400(phenoviewer.CSVHandler, java.io.File);
 }
 Compiled from "DrawGraph.java"
 public class phenoviewer.DrawGraph extends javax.swing.JPanel {
@@ -249,6 +342,17 @@ public class phenoviewer.ImageDisplay extends javax.swing.JLabel {
   public void loadFileMask(phenoviewer.FileNode);
   static {};
 }
+Compiled from "ImageFunctions.java"
+public final class phenoviewer.ImageFunctions {
+  phenoviewer.ImageFunctions();
+  public static java.awt.image.BufferedImage load(java.io.File);
+  public static java.awt.image.BufferedImage load(phenoviewer.FileNode);
+  public static java.awt.image.BufferedImage load(java.lang.String);
+  public static java.awt.image.BufferedImage read(java.io.File);
+  public static java.awt.image.BufferedImage read(phenoviewer.FileNode);
+  public static java.awt.image.BufferedImage read(java.lang.String);
+  public static javax.swing.ImageIcon toIcon(java.awt.image.BufferedImage);
+}
 Compiled from "MeanH.java"
 public class phenoviewer.MeanH extends phenoviewer.TimeSeriesOperator<java.util.ArrayList<java.lang.Float>> {
   java.util.ArrayList<java.lang.Float> hMean;
@@ -256,6 +360,146 @@ public class phenoviewer.MeanH extends phenoviewer.TimeSeriesOperator<java.util.
   public void calcMeanH(java.io.File);
   public java.util.ArrayList<java.lang.Float> process();
   public java.lang.Object process();
+}
+Compiled from "PaintBrush.java"
+class phenoviewer.PaintBrush$1 implements java.awt.event.MouseListener {
+  final phenoviewer.PaintBrush this$0;
+  phenoviewer.PaintBrush$1(phenoviewer.PaintBrush);
+  public void mouseClicked(java.awt.event.MouseEvent);
+  public void mouseEntered(java.awt.event.MouseEvent);
+  public void mouseExited(java.awt.event.MouseEvent);
+  public void mousePressed(java.awt.event.MouseEvent);
+  public void mouseReleased(java.awt.event.MouseEvent);
+}
+Compiled from "PaintBrush.java"
+class phenoviewer.PaintBrush$2 extends java.awt.event.MouseMotionAdapter {
+  final phenoviewer.PaintBrush this$0;
+  phenoviewer.PaintBrush$2(phenoviewer.PaintBrush);
+  public void mouseDragged(java.awt.event.MouseEvent);
+}
+Compiled from "PaintBrush.java"
+public class phenoviewer.PaintBrush extends javax.swing.JPanel {
+  java.awt.image.BufferedImage mask;
+  java.awt.image.BufferedImage original;
+  java.awt.image.BufferedImage scaledOriginal;
+  java.awt.image.BufferedImage maskor;
+  java.awt.Color maskColor;
+  java.awt.Graphics2D maskG;
+  public phenoviewer.PaintBrush(java.awt.image.BufferedImage, java.awt.image.BufferedImage, boolean);
+  public static java.awt.image.BufferedImage getScaledImage(java.awt.image.BufferedImage, int, int) throws java.io.IOException;
+  public void paint(java.awt.Graphics);
+  public void moveLeft();
+  public void moveRight();
+  public void moveDown();
+  public void moveUp();
+  public void zoomIn();
+  public void zoomOut();
+  public void reset();
+  public void createPolygon();
+  public void setBrush(int);
+  public void setErase();
+  public java.awt.Dimension getPreferredSize();
+  public void close();
+  public void save();
+  static boolean access$002(phenoviewer.PaintBrush, boolean);
+  static int access$102(phenoviewer.PaintBrush, int);
+  static int access$202(phenoviewer.PaintBrush, int);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$10 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$10(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$11 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$11(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$12 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$12(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$13 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$13(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$14 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$14(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$15 extends java.awt.event.WindowAdapter {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$15(phenoviewer.PaintFrame);
+  public void windowClosing(java.awt.event.WindowEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$1 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$1(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$2 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$2(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$3 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$3(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$4 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$4(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$5 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$5(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$6 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$6(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$7 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$7(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$8 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$8(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+class phenoviewer.PaintFrame$9 extends javax.swing.AbstractAction {
+  final phenoviewer.PaintFrame this$0;
+  phenoviewer.PaintFrame$9(phenoviewer.PaintFrame, java.lang.String);
+  public void actionPerformed(java.awt.event.ActionEvent);
+}
+Compiled from "PaintFrame.java"
+public class phenoviewer.PaintFrame extends javax.swing.JFrame {
+  public phenoviewer.PaintFrame(java.awt.image.BufferedImage, java.awt.image.BufferedImage, boolean);
+  static phenoviewer.PaintBrush access$000(phenoviewer.PaintFrame);
+  static {};
 }
 Compiled from "PhenoViewer.java"
 class phenoviewer.PhenoViewer$10 extends java.awt.event.MouseAdapter {
@@ -370,6 +614,7 @@ public class phenoviewer.PhenoViewer extends javax.swing.JFrame implements java.
   javax.swing.JMenuItem exitItem;
   javax.swing.JMenuItem rgbModel;
   javax.swing.JMenuItem hsbModel;
+  javax.swing.JMenuItem maskCreator;
   javax.swing.JMenuItem nextImage;
   javax.swing.JMenuItem prevImage;
   javax.swing.JMenuItem slideShow;
@@ -517,6 +762,6 @@ public class phenoviewer.VisualRhythm extends phenoviewer.TimeSeriesOperator<jav
 Compiled from "VRhythmPanel.java"
 public class phenoviewer.VRhythmPanel extends javax.swing.JFrame {
   phenoviewer.VRhythmPanel();
-  phenoviewer.VRhythmPanel(java.awt.image.BufferedImage);
+  phenoviewer.VRhythmPanel(java.awt.image.BufferedImage, java.lang.String);
   public void addImage(java.awt.image.BufferedImage);
 }

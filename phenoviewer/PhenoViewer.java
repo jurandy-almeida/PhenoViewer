@@ -38,7 +38,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
 
   //Menu Items
   //File
-  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel, maskCreator;
+  JMenuItem openImageItem, openMaskItem, saveSeriesItem, exitItem, rgbModel, hsbModel, maskCreator, squareGenerator;
   //View
   JMenuItem nextImage, prevImage, slideShow, zoomOut, zoomIn, fitScreen, oriSize;
   //Image
@@ -106,6 +106,10 @@ public class PhenoViewer extends JFrame implements ActionListener {
                                                       KeyEvent.CTRL_MASK));
     maskCreator.addActionListener(this);
     fileMenu.add(maskCreator);
+    squareGenerator = new JMenuItem("Create Checkered Mask");
+    squareGenerator.setMnemonic('M');
+    squareGenerator.addActionListener(this);
+    fileMenu.add(squareGenerator);
     exitItem = new JMenuItem("Exit");
     exitItem.setMnemonic('X');
     exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
@@ -495,6 +499,9 @@ public class PhenoViewer extends JFrame implements ActionListener {
       }
     } else if (source == maskCreator){
       PaintFrame pntFrame = new PaintFrame(ImageFunctions.load(currentNode), ImageFunctions.load(currentMask), currentMask!=null);
+    } else if (source == squareGenerator){
+      CheckeredGenerator chkgen = new CheckeredGenerator(ImageFunctions.load(currentNode), ImageFunctions.load(currentMask));
+      chkgen.setVisible(true);
     } else if (source == exitItem)
       System.exit(0);
       else if (source == nextImage)
@@ -552,6 +559,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     toolsMenu.setEnabled(false);
     colorMenu.setEnabled(false);
     maskCreator.setEnabled(false);
+    squareGenerator.setEnabled(false);
   }
 
   private void enableImageOperations() {
@@ -563,6 +571,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     toolsMenu.setEnabled(true);
     colorMenu.setEnabled(true);
     maskCreator.setEnabled(true);
+    squareGenerator.setEnabled(true);
   }
   private void enableMaskOperations() {
     rhythmSeries.setEnabled(true);

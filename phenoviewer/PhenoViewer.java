@@ -500,7 +500,7 @@ public class PhenoViewer extends JFrame implements ActionListener {
     } else if (source == maskCreator){
       PaintFrame pntFrame = new PaintFrame(ImageFunctions.load(currentNode), ImageFunctions.load(currentMask), currentMask!=null);
     } else if (source == squareGenerator){
-      CheckeredGenerator chkgen = new CheckeredGenerator(ImageFunctions.load(currentNode), ImageFunctions.load(currentMask));
+      CheckeredGenerator chkgen = new CheckeredGenerator(ImageFunctions.load(currentNode));
       chkgen.setVisible(true);
     } else if (source == exitItem)
       System.exit(0);

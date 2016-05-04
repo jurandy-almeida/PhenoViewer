@@ -29,6 +29,7 @@ public class PaintBrush extends JPanel {
     first = true;
     maskColor = new Color(255, 255, 255, opacity);
     creatingPolygon = false;
+    generatingSquares = false;
     original = ori; //imageDisplay.biSrc;
     maskor = mskr;
     setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -275,7 +276,37 @@ public class PaintBrush extends JPanel {
     panel.add(new JLabel("Verticais"));
     panel.add(x);
     panel.add(y);
+
+    divide.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        setSize(800,700);
+        remove(panel);
+
+        //Save Original Image, Create image with lines, when the lining process is finished, restore image without lines
+        //original is the image. MaskG is where we set the final result.
+        BufferedImage before = original; //Backup for manipulation
+
+        Graphics2D g2d = original.createGraphics();
+        g2d.setColor(Color.RED);
+        BasicStroke bs = new BasicStroke(2);
+        g2d.setStroke(bs);
+        // draw the black vertical and horizontal lines
+        int xint = Integer.parseInt(x.getText());
+        int yint = Integer.parseInt(y.getText());
+
+        for(int i=0;i<xint;i++){
+          int x1 = (original.getWidth()+1)*i/xint;
+          g2d.drawLine(x1, 0, x1,original.getHeight());
+        }
+        for(int i=0;i<yint;i++){
+          int y1 = (original.getHeight()+1)*i/yint;
+          g2d.drawLine(0, y1, original.getWidth(), y1);
+        }
+      }
+    });
+
     panel.add(divide);
+
     panel.setVisible(true);
   }
 

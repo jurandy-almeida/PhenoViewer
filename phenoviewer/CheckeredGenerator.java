@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class CheckeredGenerator extends JFrame {
@@ -30,17 +32,20 @@ public class CheckeredGenerator extends JFrame {
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.PAGE_AXIS));
         imagePanel.add(new JLabel("Select the squares you want the software to analyze:"));
 
-        BufferedImage squared = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        BufferedImage maskbi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY); //mask where we draw
 
         //http://stackoverflow.com/questions/3914265/drawing-multiple-lines-in-a-bufferedimage
 
-        Graphics2D g2d = image.createGraphics();
+        Graphics2D mask = maskbi.createGraphics();
+
+        int xint = Integer.parseInt(x.getText());
+        int yint = Integer.parseInt(y.getText());
+
+        /*Graphics2D g2d = image.createGraphics();
         g2d.setColor(Color.RED);
         BasicStroke bs = new BasicStroke(2);
         g2d.setStroke(bs);
         // draw the black vertical and horizontal lines
-        int xint = Integer.parseInt(x.getText());
-        int yint = Integer.parseInt(y.getText());
         /*for(int i=0;i<xint;i++){
           // unless divided by some factor, these lines were being
           // drawn outside the bound of the image..
@@ -59,7 +64,7 @@ public class CheckeredGenerator extends JFrame {
         temp.setVisible(true);
         */
         JPanel miniatures = new JPanel();
-        miniatures.setLayout(new GridLayout(yint, xint, 3, 3)); //3 is value of gaps between tiles
+        miniatures.setLayout(new GridLayout(yint, xint, 2, 2)); //3 is value of gaps between tiles
         for (int j=0;j<yint;j++) {
           for(int i=0;i<xint;i++) {
             int x1,y1,h1,w1;
@@ -68,13 +73,46 @@ public class CheckeredGenerator extends JFrame {
             w1=image.getWidth()/xint;
             h1=image.getHeight()/yint;
 
-            JLabel section = new JLabel(new ImageIcon(image.getSubimage(x1,y1,w1,h1).getScaledInstance(800/xint,600/xint,Image.SCALE_SMOOTH)));
+            JButton section = new JButton();
+            section.setIcon(new ImageIcon(image.getSubimage(x1,y1,w1,h1).getScaledInstance(700/xint,525/xint,Image.SCALE_SMOOTH)));
+            section.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                if (new Color(maskbi.getRGB(x1+(w1/2),y1+(h1/2))).getRed()==255) { //invert the color on each click
+                  mask.setPaint(Color.black);
+                } else {
+                  mask.setPaint(Color.white);
+                }
+                mask.fill(new Rectangle2D.Double(x1, y1, w1, h1));
+                /*System.out.println("Filled "+x1+","+y1+","+w1+","+h1);
+                JFrame frame = new JFrame();
+                frame.add(new JLabel(new ImageIcon(maskbi)));
+                frame.setVisible(true);*/
+              }
+            });
+
             miniatures.add(section);
             //
           }
         }
         imagePanel.add(miniatures);
         imagePanel.add(new JLabel(""));
+        JButton savebtn = new JButton("Save");
+        savebtn.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(imagePanel) == JFileChooser.APPROVE_OPTION) {
+              File file = fileChooser.getSelectedFile();
+              // save to file
+              try {
+              ImageIO.write(maskbi, "BMP", file);
+              } catch (IOException ex) {
+                ex.printStackTrace();
+              }
+            }
+          }
+        });
+        imagePanel.add(savebtn);
+
         add(imagePanel);
       }
     });

@@ -28,15 +28,15 @@ public class CheckeredGenerator extends JFrame {
         setSize(800,700);
         remove(panel);
         //Show Image with squared image on top and selector
-        JPanel imagePanel = new JPanel();
+        final JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.PAGE_AXIS));
         imagePanel.add(new JLabel("Select the squares you want the software to analyze:"));
 
-        BufferedImage maskbi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY); //mask where we draw
+        final BufferedImage maskbi = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_BINARY); //mask where we draw
 
         //http://stackoverflow.com/questions/3914265/drawing-multiple-lines-in-a-bufferedimage
 
-        Graphics2D mask = maskbi.createGraphics();
+        final Graphics2D mask = maskbi.createGraphics();
 
         int xint = Integer.parseInt(x.getText());
         int yint = Integer.parseInt(y.getText());
@@ -67,7 +67,7 @@ public class CheckeredGenerator extends JFrame {
         miniatures.setLayout(new GridLayout(yint, xint, 2, 2)); //3 is value of gaps between tiles
         for (int j=0;j<yint;j++) {
           for(int i=0;i<xint;i++) {
-            int x1,y1,h1,w1;
+            final int x1,y1,h1,w1;
             x1=i*image.getWidth()/xint;
             y1=j*image.getHeight()/yint;
             w1=image.getWidth()/xint;

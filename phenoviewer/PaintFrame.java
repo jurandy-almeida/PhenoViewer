@@ -6,8 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+import java.io.File;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 @SuppressWarnings("serial")
 public class PaintFrame extends JFrame
@@ -29,7 +32,31 @@ public class PaintFrame extends JFrame
 
         Action action = new AbstractAction("saveMask") {
    		public void actionPerformed(ActionEvent e) {
-       		 paint.save();
+		    Component componenteOrigem = (Component) e.getSource();
+		    Window window = SwingUtilities.getWindowAncestor(componenteOrigem);
+						
+	        JFileChooser fileChooser = new JFileChooser();
+	        fileChooser.setCurrentDirectory(new File("."));
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP Image Files (*.bmp)", "bmp");
+	        fileChooser.setFileFilter(filter);
+	        fileChooser.setAcceptAllFileFilterUsed(false);
+	        int ret = fileChooser.showSaveDialog(window);
+	        if (ret == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+			    String path = file.getAbsolutePath();
+			    if (!path.toLowerCase().endsWith(".bmp")) {
+			        file = new File(path + ".bmp");
+			    }
+				
+       		 	if (paint.save(file)) {
+					JOptionPane.showMessageDialog(window, "Mask saved.", "",
+							JOptionPane.INFORMATION_MESSAGE);       		 		
+       		 	} else {
+					JOptionPane.showMessageDialog(window,
+							"Error trying to save the file.", "",
+							JOptionPane.INFORMATION_MESSAGE);					
+				}
+			}
        	 } };
 
         Action action2 = new AbstractAction("reset") {

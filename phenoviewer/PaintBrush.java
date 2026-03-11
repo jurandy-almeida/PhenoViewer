@@ -283,7 +283,9 @@ public class PaintBrush extends JPanel {
 		System.gc();
 	}
 
-	public void save() {
+	public boolean save(File fileToSave) {
+		boolean ret = false;
+		
 		try {
 			BufferedImage finalMask = new BufferedImage(original.getWidth(),
 					original.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -291,28 +293,15 @@ public class PaintBrush extends JPanel {
 			BufferedImage maskAux = getScaledImage(mask, original.getWidth(),
 					original.getHeight());
 			finalMaskG.drawImage(maskAux, offsetX, offsetY, this);
-
-			String nome = JOptionPane.showInputDialog("New mask name:");
-			if (nome == null || nome == "") {
-				JOptionPane.showMessageDialog(null, "Please fill in the name.",
-						"", JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
-			if (ImageIO.write(finalMask, "bmp", new File("./masks/" + nome
-					+ ".bmp"))) {
-				JOptionPane.showMessageDialog(null, "Mask saved.", "",
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(null,
-						"Error trying to save the file.", "",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
+			ret = ImageIO.write(finalMask, "bmp", fileToSave); 
 			finalMaskG.finalize();
 			finalMask.flush();
 			maskAux.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return ret;
 	}
 
 }

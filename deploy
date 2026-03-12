@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ ! -e "PhenoViewer.jar" ]
+then
+	./compile
+fi
+
+CLASSPATH=$(grep "Class-Path" MANIFEST.MF | cut -d ':' -f 2 | tr -d '\r')
+
+mkdir -p build
+
+cd build
+
+unzip ../lib/one-jar-appgen-0.97.jar
+
+mv ../PhenoViewer.jar main
+
+mkdir -p lib
+
+for LIB in $CLASSPATH
+do 
+	cp ../$LIB $LIB
+done
+
+echo "Manifest-Version: 1.0
+One-Jar-Main-Class: phenoviewer.PhenoViewer
+Main-Class: com.simontuffs.onejar.Boot" > MANIFEST.MF
+
+jar -cvfm ../PhenoViewer.jar MANIFEST.MF .
+
+cd ..
+
+rm -rf build
